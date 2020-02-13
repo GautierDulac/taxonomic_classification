@@ -25,7 +25,7 @@ def main_loading(sampling: float = 1) -> None:
         sampled_sequences = sequence_df.sample(frac=sampling)
         sampled_sequences.to_csv(folder_paths['data'] + 'gg_13_5_otus_rep_set_sampled_{}_percent.csv'.format(
             int(sampling * 100)), index=False)
-        ref_for_taxonomy = sampled_sequences.reference.distinct()
+        ref_for_taxonomy = sampled_sequences.reference.unique()
         sampled_taxonomy = taxonomy_df.loc[taxonomy_df.reference.isin(ref_for_taxonomy)]
         sampled_taxonomy.to_csv(folder_paths['data'] + 'gg_13_5_taxonomy_sampled_{}_percent.csv'.format(
             int(sampling * 100)), index=False)
