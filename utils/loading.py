@@ -9,20 +9,26 @@ import pandas as pd
 
 
 # Main Function
-def main_loading(sampling:float = 1) -> None:
+def main_loading(sampling: float = 1) -> None:
     """
-    Load all required files and save them in 'data' folder.
+    Load all required files and save them in 'data' folder above github project.
     :return:
     """
     sequence_df = get_complete_df()
-    sequence_df.sample(frac=sampling).to_csv('..\\data\\complete_gg_13_5_otus_rep_set.csv', index=False)
+    if sampling != 1:
+        sequence_df.sample(frac=sampling).to_csv(
+            'D:\\0 - Boulot\\5 - X4\\16. Research Paper\\data\\complete_gg_13_5_otus_rep_set_sampled_{}_percent.csv'.format(
+                int(sampling * 100)), index=False)
+    else:
+        sequence_df.to_csv(
+            'D:\\0 - Boulot\\5 - X4\\16. Research Paper\\data\\complete_gg_13_5_otus_rep_set_complete.csv', index=False)
 
     return
 
 
 # Functions
 def get_complete_df(
-        folder_path: str = 'D:\\0 - Boulot\\5 - X4\\16. Research Paper\\taxonomic_classification\\data\\gg_13_5_otus\\rep_set/') -> pd.DataFrame:
+        folder_path: str = 'D:\\0 - Boulot\\5 - X4\\16. Research Paper\\data\\gg_13_5_otus\\rep_set\\') -> pd.DataFrame:
     """
     Return the complete DataFrame with all sequences extracted from all fasta files
     :param folder_path: folder in which all fasta files are saved
@@ -33,11 +39,11 @@ def get_complete_df(
     final_df = pd.DataFrame()
     for num_file in number_to_load:
         print('Reading file {}'.format(num_file))
-        final_df = pd.concat([extract_data_from_fasta(num_file), final_df])
+        final_df = pd.concat([extract_data_from_fasta(num_file=num_file, folder_path=folder_path), final_df])
     return final_df
 
 
-def get_files_to_load(folder_path):
+def get_files_to_load(folder_path: str = ''):
     """
 
     :param folder_path: folder in which all fasta files are saved
@@ -47,14 +53,15 @@ def get_files_to_load(folder_path):
     return onlyfiles
 
 
-def extract_data_from_fasta(num_file: int) -> pd.DataFrame:
+def extract_data_from_fasta(num_file: int = 0, folder_path: str = '') -> pd.DataFrame:
     """
     Extract the sequences from a given fasta file.
     :param num_file: File number in which to look for sequences and references
+    :param folder_path: Folder path with all seq files
     :return: Pandas DataFrame with the references, sequences, and sequences sizes
     """
     seq_file = open(
-        'D:\\0 - Boulot\\5 - X4\\16. Research Paper\\taxonomic_classification\\data\\gg_13_5_otus\\rep_set\\{}_otus.fasta'.format(
+        folder_path + '{}_otus.fasta'.format(
             str(num_file)))
     line_to_read = True
     list_of_reads = []
