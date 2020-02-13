@@ -32,8 +32,35 @@ def main_loading(sampling: float = 1) -> None:
     else:
         sequence_df.to_csv(folder_paths['data'] + 'gg_13_5_otus_rep_set_complete.csv', index=False)
         taxonomy_df.to_csv(folder_paths['data'] + 'gg_13_5_taxonomy_complete.csv', index=False)
-
     return
+
+
+# Read saved file main function
+def read_saved_file(type_to_read: str = '', sampling: float = 1) -> pd.DataFrame:
+    """
+    Give access to the saved dataframe
+    :param type_to_read: desired file to retrieve (Sequence or Taxonomy)
+    :param sampling: desired sampling frac
+    :return: pd.DataFrame object
+    """
+    if type_to_read == 'Sequence':
+        if sampling == 1:
+            path = folder_paths['data'] + 'gg_13_5_otus_rep_set_complete.csv'
+        else:
+            path = folder_paths['data'] + 'gg_13_5_otus_rep_set_sampled_{}_percent.csv'.format(int(sampling * 100))
+    elif type_to_read == 'Taxonomy':
+        if sampling == 1:
+            path = folder_paths['data'] + 'gg_13_5_taxonomy_complete.csv'
+        else:
+            path = folder_paths['data'] + 'gg_13_5_taxonomy_sampled_{}_percent.csv'.format(int(sampling * 100))
+    else:
+        ValueError('Asked type does not exist, check type_to_read argument')
+        path = ''
+    try:
+        df = pd.read_csv(path)
+        return df
+    except FileNotFoundError:
+        FileNotFoundError('File not loaded yet, create the desired file with the main_loading function first')
 
 
 # Functions
