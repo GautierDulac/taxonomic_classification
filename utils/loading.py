@@ -107,6 +107,7 @@ def extract_taxonomy(num_file: int = 0) -> pd.DataFrame:
         s = line[7][3:-1]
         list_of_reads.append([ref, num_file, k, p, c, o, f, g, s])
         line = seq_file.readline()[:-2].replace('[', '').replace(']', '').upper().split()
+    seq_file.close()
     return pd.DataFrame(list_of_reads,
                         columns=['reference', 'file_num', 'kingdom', 'phylum', 'class', 'order', 'family', 'genus',
                                  'species'])
