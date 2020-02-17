@@ -3,13 +3,13 @@ import unittest
 
 import pandas as pd
 
-from utils.loading import main_loading, folder_paths
+from utils.loading import main_loading, folder_paths, read_saved_file, load_primers
 
 project_directory = os.path.dirname(os.path.dirname(os.getcwd()))
 
 
 class MyTestCase(unittest.TestCase):
-    def test_main_loading(self):
+    def test_main_loading_1(self):
         sampling = 1
         main_loading(sampling=sampling)
         df = pd.read_csv(folder_paths['data'] + 'gg_13_5_otus_rep_set_complete.csv'.format(
@@ -26,11 +26,25 @@ class MyTestCase(unittest.TestCase):
         for col_id in range(len(target_columns)):
             self.assertEqual(df.columns[col_id], target_columns[col_id])
         self.assertIn(len(df), [391467])
+
+    def test_main_loading_2(self):
         sampling = 0.01
         main_loading(sampling=sampling)
         df = pd.read_csv(folder_paths['data'] + 'gg_13_5_otus_rep_set_sampled_{}_percent.csv'.format(
             int(sampling * 100)))
         self.assertIn(len(df), [int(386957 * sampling) - 1, int(386957 * sampling), int(386957 * sampling) + 1])
+
+    def test_read_saved_file(self):
+        df = read_saved_file(type_to_read='Sequence', sampling=1)
+        target_columns = ['reference', 'sequence', 'sequence_size', 'file_num']
+        self.assertEqual(len(df.columns), len(target_columns))
+
+    def test_load_primers(self):
+        df1 = load_primers(start_or_end='start')
+        self.assertEqual(len(df1), 14)
+        df2 = load_primers(start_or_end='end')
+        self.assertEqual(len(df2), 14)
+
 
 
 
