@@ -7,10 +7,7 @@ from os.path import isfile, join
 
 import pandas as pd
 
-# Constant - Folder paths
-folder_paths = {'Sequence': 'D:\\0 - Boulot\\5 - X4\\16. Research Paper\\data\\gg_13_5_otus\\rep_set\\',
-                'Taxonomy': 'D:\\0 - Boulot\\5 - X4\\16. Research Paper\\data\\gg_13_5_otus\\taxonomy\\',
-                'data': 'D:\\0 - Boulot\\5 - X4\\16. Research Paper\\data\\'}
+from utils.utils import folder_paths
 
 
 # Main Function
@@ -61,27 +58,6 @@ def read_saved_file(type_to_read: str = '', sampling: float = 1) -> pd.DataFrame
         return df
     except FileNotFoundError:
         FileNotFoundError('File not loaded yet, create the desired file with the main_loading function first')
-
-
-# Load primers fasta data already saved
-def load_primers(start_or_end: str = '') -> pd.DataFrame:
-    """
-    Load primers from data fasta file
-    :param start_or_end: string telling if start or end primers are to be loaded
-    :return:
-    """
-    seq_file = open(folder_paths['data'] + '{}_primers.fasta'.format(start_or_end))
-    line_to_read = True
-    list_of_reads = []
-    while line_to_read:
-        hvr = seq_file.readline()[1:-1]
-        seq = seq_file.readline()[:-2]
-        if hvr == '':
-            line_to_read = False
-        else:
-            list_of_reads.append([hvr, seq, start_or_end])
-    seq_file.close()
-    return pd.DataFrame(list_of_reads, columns=['hvr', 'sequence', 'start_or_end'])
 
 
 # Functions
