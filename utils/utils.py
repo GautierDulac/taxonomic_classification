@@ -25,11 +25,32 @@ nomenclature_dict = {
     'X': ['A', 'T', 'C', 'G'],
 }
 
+nomenclature_dict_large = {
+    'A': ['A'],
+    'T': ['T'],
+    'C': ['C'],
+    'G': ['G'],
+    'U': ['U', 'T'],
+    'R': ['R', 'A', 'G'],
+    'Y': ['Y', 'C', 'T'],
+    'K': ['K', 'G', 'T'],
+    'M': ['M', 'A', 'C'],
+    'S': ['S', 'C', 'G'],
+    'W': ['W', 'A', 'T'],
+    'B': ['B', 'T', 'C', 'G'],
+    'D': ['D', 'A', 'T', 'G'],
+    'H': ['H', 'A', 'T', 'C'],
+    'V': ['V', 'A', 'C', 'G'],
+    'N': ['N', 'A', 'T', 'C', 'G'],
+    'X': ['X', 'A', 'T', 'C', 'G'],
+}
+
 
 # Getting the list of primers in ATCG format given an original primer in the usual nomenclature format
-def get_list_of_atcg_primers(primer: str):
+def get_list_of_related_primers(primer: str):
     """
     Getting the list of primers in ATCG format given an original primer in the usual nomenclature format
+    We still give the primer with the wrong character in the list of result, as they can also be used in real db
     :param primer: nomenclatured primer with potential ATCG + RYKMS...
     :return: List of str with all potential primers
     """
@@ -37,13 +58,12 @@ def get_list_of_atcg_primers(primer: str):
     # for all letters in the given primers
     for letter in primer:
         new_list_of_primers = []
-        list_of_letter = nomenclature_dict[letter]
+        list_of_letter = nomenclature_dict_large[letter]
         # for all potential ATCG letter related to the given one
         for substitution_letter in list_of_letter:
             # for all the current primers reconstructed
             for current_primers in list_of_primers:
                 # We create all the new potential ones
-                new_list_of_primers.append(current_primers+substitution_letter)
+                new_list_of_primers.append(current_primers + substitution_letter)
         list_of_primers = new_list_of_primers
     return list_of_primers
-
