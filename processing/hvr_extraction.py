@@ -1,5 +1,5 @@
 """
-Loading functions to retrieve HVR sequences from GreenGene loaded data
+Loading functions to retrieve HVR sequences from loaded data
 """
 # Package
 from typing import List, Dict, Union, Tuple
