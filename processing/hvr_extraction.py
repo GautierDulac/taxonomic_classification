@@ -3,20 +3,35 @@ Loading functions to retrieve HVR sequences from GreenGene loaded data
 """
 # Package
 from re import finditer
-from typing import List
+from typing import List, Dict, Union
 
 import pandas as pd
 
 from loading.loading_primers import get_dict_of_primers
 
 # Constant
-dict_of_primers = get_dict_of_primers()
+dict_of_primers = get_dict_of_primers(article='Chaudhary')
 
 
 # Main Function
+def get_all_hvr(sequence_df):
+    """
+
+    :return:
+    """
+    hvr_df = pd.DataFrame()
+    for index in sequence_df.index:
+        current_seq = sequence_df.sequence[index]
+        current_hvr_dict = get_all_hvr_by_sequence(current_seq)
+        current_hvr_dict["index"] = index
+        hvr_df = pd.concat([pd.DataFrame.from_dict(current_hvr_dict), hvr_df])
+    return hvr_df
 
 
 # Functions
+def get_all_hvr_by_sequence(current_seq) -> Dict[str, Union[(int, int), None]]:
+    pass
+
 
 def get_all_occurences(sequence_df: pd.DataFrame = None) -> pd.DataFrame:
     """
@@ -42,7 +57,8 @@ def get_occurences_hvr_by_sequence(seq: str = '') -> List[List[int]]:
 
     list_of_occurences = []
     for hvr in dict_of_primers.keys():
-        occurences_of_start = [m.start() + len(dict_of_primers[hvr]['forward']) for m in finditer(dict_of_primers[hvr]['forward'], seq)]
+        occurences_of_start = [m.start() + len(dict_of_primers[hvr]['forward']) for m in
+                               finditer(dict_of_primers[hvr]['forward'], seq)]
         occurences_of_end = [m.start() for m in finditer(dict_of_primers[hvr]['reverse'][::-1], seq)]
         list_of_occurences.append(occurences_of_start)
         list_of_occurences.append(occurences_of_end)
