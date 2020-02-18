@@ -11,45 +11,32 @@ from utils.utils import folder_paths
 
 
 # Main Function
-def main_loading(sampling: float = 1) -> None:
+def main_loading() -> None:
     """
     Load all required files and save them in 'data' folder above github project.
     :return:
     """
     sequence_df = get_complete_df(type_to_extract='Sequence')
     taxonomy_df = get_complete_df(type_to_extract='Taxonomy')
-    if sampling != 1:
-        sampled_sequences = sequence_df.sample(frac=sampling)
-        sampled_sequences.to_csv(folder_paths['data'] + 'gg_13_5_otus_rep_set_sampled_{}_percent.csv'.format(
-            int(sampling * 100)), index=False)
-        ref_for_taxonomy = sampled_sequences.reference.unique()
-        sampled_taxonomy = taxonomy_df.loc[taxonomy_df.reference.isin(ref_for_taxonomy)]
-        sampled_taxonomy.to_csv(folder_paths['data'] + 'gg_13_5_taxonomy_sampled_{}_percent.csv'.format(
-            int(sampling * 100)), index=False)
-    else:
-        sequence_df.to_csv(folder_paths['data'] + 'gg_13_5_otus_rep_set_complete.csv', index=False)
-        taxonomy_df.to_csv(folder_paths['data'] + 'gg_13_5_taxonomy_complete.csv', index=False)
+    joined_df = pd.merge(sequence_df, taxonomy_df, on=['reference', 'file_num'], how='left')
+
+    sequence_df.to_csv(folder_paths['data'] + 'gg_13_5_otus_rep_set_complete.csv', index=False)
+    taxonomy_df.to_csv(folder_paths['data'] + 'gg_13_5_taxonomy_complete.csv', index=False)
+    joined_df.to_csv(folder_paths['data'] + 'gg_13_5_joined_complete.csv', index=False)
     return
 
 
 # Read saved file main function
-def read_saved_file(type_to_read: str = '', sampling: float = 1) -> pd.DataFrame:
+def read_saved_file(type_to_read: str = '') -> pd.DataFrame:
     """
     Give access to the saved dataframe
     :param type_to_read: desired file to retrieve (Sequence or Taxonomy)
-    :param sampling: desired sampling frac
     :return: pd.DataFrame object
     """
     if type_to_read == 'Sequence':
-        if sampling == 1:
-            path = folder_paths['data'] + 'gg_13_5_otus_rep_set_complete.csv'
-        else:
-            path = folder_paths['data'] + 'gg_13_5_otus_rep_set_sampled_{}_percent.csv'.format(int(sampling * 100))
+        path = folder_paths['data'] + 'gg_13_5_otus_rep_set_complete.csv'
     elif type_to_read == 'Taxonomy':
-        if sampling == 1:
-            path = folder_paths['data'] + 'gg_13_5_taxonomy_complete.csv'
-        else:
-            path = folder_paths['data'] + 'gg_13_5_taxonomy_sampled_{}_percent.csv'.format(int(sampling * 100))
+        path = folder_paths['data'] + 'gg_13_5_taxonomy_complete.csv'
     else:
         ValueError('Asked type does not exist, check type_to_read argument')
         path = ''
@@ -69,8 +56,8 @@ def get_complete_df(type_to_extract: str = '') -> pd.DataFrame:
     """
     if not (type_to_extract in list(folder_paths.keys())):
         raise ValueError('type_to_extract should refer to a folder_paths key.')
-    files_to_load = get_files_to_load(type_to_extract)
-    number_to_load = [int(file_name.split('_')[0]) for file_name in files_to_load]
+    # files_to_load = get_files_to_load(type_to_extract)
+    # number_to_load = [int(file_name.split('_')[0]) for file_name in files_to_load]
     # TODO Understand if necessary to work only with files 97 and 99 ?
     number_to_load = [97, 99]
     final_df = pd.DataFrame()

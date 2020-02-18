@@ -2,7 +2,7 @@
 from typing import Union, List
 
 # Constants
-folder_paths = {'Sequence': 'D:\\0 - Boulot\\5 - X4\\16. Research Paper\\data\\gg_13_5_otus\\rep_set_aligned\\',
+folder_paths = {'Sequence': 'D:\\0 - Boulot\\5 - X4\\16. Research Paper\\data\\gg_13_5_otus\\rep_set\\',
                 'Taxonomy': 'D:\\0 - Boulot\\5 - X4\\16. Research Paper\\data\\gg_13_5_otus\\taxonomy\\',
                 'data': 'D:\\0 - Boulot\\5 - X4\\16. Research Paper\\data\\',
                 'Chaudhary': 'D:\\0 - Boulot\\5 - X4\\16. Research Paper\\data\\primers\\Chaudhary\\',
