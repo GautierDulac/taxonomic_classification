@@ -6,7 +6,8 @@ folder_paths = {'Sequence': 'D:\\0 - Boulot\\5 - X4\\16. Research Paper\\data\\g
                 'Taxonomy': 'D:\\0 - Boulot\\5 - X4\\16. Research Paper\\data\\gg_13_5_otus\\taxonomy\\',
                 'data': 'D:\\0 - Boulot\\5 - X4\\16. Research Paper\\data\\',
                 'Chaudhary': 'D:\\0 - Boulot\\5 - X4\\16. Research Paper\\data\\primers\\Chaudhary\\',
-                'DairyDB': 'D:\\0 - Boulot\\5 - X4\\16. Research Paper\\data\\primers\\DairyDB\\'}
+                'DairyDB': 'D:\\0 - Boulot\\5 - X4\\16. Research Paper\\data\\primers\\DairyDB\\',
+                'stats_results': 'D:\\0 - Boulot\\5 - X4\\16. Research Paper\\taxonomic_classification\\results\\statistics\\'}
 
 target_alphabet = 'ATCG'
 
