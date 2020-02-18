@@ -16,7 +16,7 @@ def extract_data_from_dairydb() -> pd.DataFrame:
     line_to_read = True
     list_of_reads = []
     while line_to_read:
-        taxo = seq_file.readline()[1:-2].split(';')
+        taxo = seq_file.readline()[1:-2].upper().split(';')
         seq = seq_file.readline()[:-2]
         if seq == '':
             line_to_read = False
