@@ -10,7 +10,7 @@ project_directory = os.path.dirname(os.path.dirname(os.getcwd()))
 
 
 class MyTestCase(unittest.TestCase):
-    def test_main_loading_greengenes_1(self):
+    def test_loading_greengenes_1(self):
         main_loading()
         df = pd.read_csv(folder_paths['data'] + 'gg_13_5_otus_rep_set_complete.csv')
         target_columns = ['reference', 'sequence', 'sequence_size', 'file_num']
