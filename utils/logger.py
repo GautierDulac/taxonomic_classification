@@ -34,11 +34,12 @@ class StatLogger(object):
                 self.csv_file.write(first_line)
             self.csv_file.flush()
 
-    def log(self, text: str, title: str = None) -> None:
+    def log(self, text: str = None, title: str = None, subtitle :str = None) -> None:
         """
         Write the text to log file then print it.
         :param text: text(string): text to log
         :param title: title name to put into brackets in the txt file
+        :param subtitle: lower highlighted title
         :return: None
         """
         if title is not None:
@@ -48,11 +49,20 @@ class StatLogger(object):
             self.log_file.write('\n')
             self.log_file.write('-' * self.title_size + '\n')
             self.log_file.write('-' * left_hashtag_nb + ' ' + title.upper() + ' ' + '-' * right_hashtag_nb + '\n')
+            print('-' * left_hashtag_nb + ' ' + title.upper() + ' ' + '-' * right_hashtag_nb)
             self.log_file.write('-' * self.title_size + '\n')
             self.log_file.write('\n')
-        self.log_file.write(text + '\n')
+        if subtitle is not None:
+            asked_title_size = len(subtitle)
+            left_hashtag_nb = (self.title_size - asked_title_size - 2) // 2
+            right_hashtag_nb = self.title_size - asked_title_size - 2 - left_hashtag_nb
+            self.log_file.write('\n')
+            self.log_file.write('-' * left_hashtag_nb + ' ' + subtitle.upper() + ' ' + '-' * right_hashtag_nb + '\n')
+            print('-' * left_hashtag_nb + ' ' + subtitle.upper() + ' ' + '-' * right_hashtag_nb)
+        if text is not None:
+            self.log_file.write(text + '\n')
+            print(text)
         self.log_file.flush()
-        print(text)
 
     def add_point(self, write_list=None) -> None:
         """
