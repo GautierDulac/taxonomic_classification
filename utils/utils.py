@@ -1,7 +1,12 @@
+# Packages
+from typing import Union, List
+
 # Constants
-folder_paths = {'Sequence': 'D:\\0 - Boulot\\5 - X4\\16. Research Paper\\data\\gg_13_5_otus\\rep_set\\',
+folder_paths = {'Sequence': 'D:\\0 - Boulot\\5 - X4\\16. Research Paper\\data\\gg_13_5_otus\\rep_set_aligned\\',
                 'Taxonomy': 'D:\\0 - Boulot\\5 - X4\\16. Research Paper\\data\\gg_13_5_otus\\taxonomy\\',
-                'data': 'D:\\0 - Boulot\\5 - X4\\16. Research Paper\\data\\'}
+                'data': 'D:\\0 - Boulot\\5 - X4\\16. Research Paper\\data\\',
+                'Chaudhary': 'D:\\0 - Boulot\\5 - X4\\16. Research Paper\\data\\primers\\Chaudhary\\',
+                'DairyDB': 'D:\\0 - Boulot\\5 - X4\\16. Research Paper\\data\\primers\\DairyDB\\'}
 
 target_alphabet = 'ATCG'
 
@@ -45,9 +50,29 @@ nomenclature_dict_large = {
     'X': ['X', 'A', 'T', 'C', 'G'],
 }
 
+complementary_dict = {
+    'A': 'T',
+    'T': 'A',
+    'C': 'G',
+    'G': 'C',
+    'U': 'A',
+    'R': 'Y',
+    'Y': 'R',
+    'K': 'M',
+    'M': 'K',
+    'S': 'W',
+    'W': 'S',
+    'B': 'V',
+    'D': 'H',
+    'H': 'D',
+    'V': 'A',
+    'N': 'N',
+    'X': 'X'
+}
+
 
 # Getting the list of primers in ATCG format given an original primer in the usual nomenclature format
-def get_list_of_related_primers(primer: str):
+def get_list_of_related_primers(primer: str) -> List[str]:
     """
     Getting the list of primers in ATCG format given an original primer in the usual nomenclature format
     We still give the primer with the wrong character in the list of result, as they can also be used in real db
@@ -67,3 +92,23 @@ def get_list_of_related_primers(primer: str):
                 new_list_of_primers.append(current_primers + substitution_letter)
         list_of_primers = new_list_of_primers
     return list_of_primers
+
+
+# Getting complementary reverse in the good order
+def get_searchable_reverse_primer(rev_prim: Union[str, List]) -> Union[str, List]:
+    """
+
+    :param rev_prim: eather a rev prime or a list of potential rev_prime
+    :return: the correspondant complementary versions
+    """
+    if isinstance(rev_prim, str):
+        re_ordered = rev_prim[::-1]
+        complementary = ''
+        for letter in re_ordered:
+            complementary += complementary_dict[letter]
+        return complementary
+    elif isinstance(rev_prim, list):
+        list_of_complementary = []
+        for potential_reverse in rev_prim:
+            list_of_complementary.append(get_searchable_reverse_primer(potential_reverse))
+        return list_of_complementary
