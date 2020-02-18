@@ -71,6 +71,8 @@ def get_complete_df(type_to_extract: str = '') -> pd.DataFrame:
         raise ValueError('type_to_extract should refer to a folder_paths key.')
     files_to_load = get_files_to_load(type_to_extract)
     number_to_load = [int(file_name.split('_')[0]) for file_name in files_to_load]
+    # TODO Understand if necessary to work only with files 97 and 99 ?
+    number_to_load = [97, 99]
     final_df = pd.DataFrame()
     for num_file in number_to_load:
         print('Reading {} file {}'.format(type_to_extract, num_file))
