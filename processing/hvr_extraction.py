@@ -4,24 +4,29 @@ Loading functions to retrieve HVR sequences from loaded data
 # Package
 from typing import List, Dict, Union, Tuple
 
+import numpy as np
 import pandas as pd
 
 from loading.loading_primers import get_dict_of_primers
-from utils.utils import get_list_of_related_primers, get_searchable_reverse_primer
+from utils.utils import get_list_of_related_primers, get_searchable_reverse_primer, folder_paths
 
 # Constant
 dict_of_primers = get_dict_of_primers(article='DairyDB')
 
 
 # Main Function
-def get_all_hvr(sequence_df: pd.DataFrame) -> pd.DataFrame:
+def get_all_hvr(sequence_df: pd.DataFrame, save_name: str = None) -> pd.DataFrame:
     """
     for a given dataframe of sequences, extract all hvr defined by primers in dict_of_primers above.
     :return: a dataframe with column being hvr and values being subsequences of hvr or None, an index column is kept as
     the one in the sequence_df
     """
     hvr_df = pd.DataFrame()
+    work_size = len(sequence_df)
+    percent = work_size // 100
     for index in sequence_df.index:
+        if index % percent == 0:
+            print('Achieved extraction: {}%'.format(np.round(index // percent, 2)), end='\r')
         current_seq = sequence_df.sequence[index]
         positions_dict = get_all_hvr_positions_by_sequence(current_seq)
         current_hvr_dict = {"index": [index]}
@@ -31,6 +36,9 @@ def get_all_hvr(sequence_df: pd.DataFrame) -> pd.DataFrame:
             else:
                 current_hvr_dict[key] = current_seq[value[0][0]:value[0][1]]
         hvr_df = pd.concat([hvr_df, pd.DataFrame.from_dict(current_hvr_dict)])
+    if save_name is not None:
+        hvr_df.to_csv(folder_paths['data'] + save_name + '.csv', index=False)
+
     return hvr_df
 
 
