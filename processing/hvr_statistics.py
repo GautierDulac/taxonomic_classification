@@ -120,15 +120,15 @@ def get_basics_hvr(hvr_df: pd.DataFrame, analysis_path: str = '') -> None:
         if presents[hvr] > 0:
             percents = np.round(presents[hvr] * 100 / num_seq, 2)
             logger.log(
-                text='{} found hvr - {}% of total potential'.format(presents[hvr], percents))
+                text='{} found {} - {}% of total potential'.format(presents[hvr], hvr, percents))
             list_of_hvrs = list(hvr_df[hvr].dropna())
             list_of_sizes = [len(list_of_hvrs[i]) for i in range(len(list_of_hvrs))]
             avg_size = np.round(np.mean(list_of_sizes), 2)
-            logger.log(text='Average size of HVR: {}'.format(avg_size))
+            logger.log(text='Average size of {}: {}'.format(hvr, avg_size))
             min_size = np.min(list_of_sizes)
-            logger.log(text='Minimal size of HVR: {}'.format(min_size))
+            logger.log(text='Minimal size of {}: {}'.format(hvr, min_size))
             max_size = np.max(list_of_sizes)
-            logger.log(text='Maximal size of HVR: {}'.format(max_size))
+            logger.log(text='Maximal size of {}: {}'.format(hvr, max_size))
             logger.add_point(write_list=[hvr, presents[hvr], percents, avg_size, min_size, max_size])
         else:
             logger.log(text='No {} found in this database'.format(hvr))
