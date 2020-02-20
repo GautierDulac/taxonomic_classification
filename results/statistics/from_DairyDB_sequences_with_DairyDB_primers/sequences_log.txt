@@ -1,0 +1,75 @@
+########################################################################################################################
+------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------- GLOBAL INFORMATION --------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------
+
+Total number of observations: 10389
+Average sequence size: 1446.56
+Standard deviation: 67.53
+Minimal size: 933
+Maximal size: 2229
+
+------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------- TAROXOMY INFORMATION -------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------
+
+
+------------------------------------------------------- KINGDOM --------------------------------------------------------
+Total number of unique kingdom: 2
+Rank 1 in kingdom: BACTERIA with 10282 occurences
+Rank 2 in kingdom: ARCHAEA with 107 occurences
+0 missing values
+
+-------------------------------------------------------- PHYLUM --------------------------------------------------------
+Total number of unique phylum: 46
+Rank 1 in phylum: FIRMICUTES with 3917 occurences
+Rank 2 in phylum: PROTEOBACTERIA with 2310 occurences
+Rank 3 in phylum: BACTEROIDETES with 1473 occurences
+Rank 4 in phylum: ACTINOBACTERIA with 935 occurences
+Rank 5 in phylum: CHLOROFLEXI with 256 occurences
+0 missing values
+
+-------------------------------------------------------- CLASS ---------------------------------------------------------
+Total number of unique class: 133
+Rank 1 in class: CLOSTRIDIA with 2774 occurences
+Rank 2 in class: BACILLI with 844 occurences
+Rank 3 in class: BACTEROIDIA with 755 occurences
+Rank 4 in class: ALPHAPROTEOBACTERIA with 749 occurences
+Rank 5 in class: GAMMAPROTEOBACTERIA with 716 occurences
+0 missing values
+
+-------------------------------------------------------- ORDER ---------------------------------------------------------
+Total number of unique order: 244
+Rank 1 in order: CLOSTRIDIALES with 2728 occurences
+Rank 2 in order: BACTEROIDALES with 743 occurences
+Rank 3 in order: BACILLALES with 446 occurences
+Rank 4 in order: LACTOBACILLALES with 397 occurences
+Rank 5 in order: RHIZOBIALES with 342 occurences
+0 missing values
+
+-------------------------------------------------------- FAMILY --------------------------------------------------------
+Total number of unique family: 462
+Rank 1 in family: RUMINOCOCCACEAE with 978 occurences
+Rank 2 in family: LACHNOSPIRACEAE with 780 occurences
+Rank 3 in family: PORPHYROMONADACEAE with 230 occurences
+Rank 4 in family: CHRISTENSENELLACEAE with 219 occurences
+Rank 5 in family: PREVOTELLACEAE with 214 occurences
+0 missing values
+
+-------------------------------------------------------- GENUS ---------------------------------------------------------
+Total number of unique genus: 1754
+Rank 1 in genus: RUMINOCOCCACEAE_GENUS with 354 occurences
+Rank 2 in genus: CHRISTENSENELLACEAE_R-7_GROUP with 193 occurences
+Rank 3 in genus: LACHNOSPIRACEAE_GENUS with 188 occurences
+Rank 4 in genus: PREVOTELLA with 167 occurences
+Rank 5 in genus: LACTOBACILLUS with 149 occurences
+0 missing values
+
+------------------------------------------------------- SPECIES --------------------------------------------------------
+Total number of unique species: 4025
+Rank 1 in species: RUMINOCOCCACEAE_SPECIE with 354 occurences
+Rank 2 in species: CHRISTENSENELLACEAE_R-7_GROUP_SPECIE with 193 occurences
+Rank 3 in species: LACHNOSPIRACEAE_SPECIE with 186 occurences
+Rank 4 in species: ANAEROBACTERIUM_CHARTISOLVEN with 129 occurences
+Rank 5 in species: SACCHARIBACTERIA_SPECIE with 108 occurences
+0 missing values

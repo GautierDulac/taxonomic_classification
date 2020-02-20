@@ -1,0 +1,152 @@
+########################################################################################################################
+------------------------------------------------------------------------------------------------------------------------
+--------------------------------- ANALYSIS OF HYPERVARIABLE REGIONS BY TAXONOMIC RANK ----------------------------------
+------------------------------------------------------------------------------------------------------------------------
+
+
+------------------------------------------------------- KINGDOM --------------------------------------------------------
+Total number of unique kingdom: 2
+0 missing values - 0.0% of total
+Total number of remaining kingdom with at least one V1 found: 1 - 50.0% of total number of groups
+Total number of remaining kingdom with at least one V2 found: 1 - 50.0% of total number of groups
+Total number of remaining kingdom with at least one V3 found: 1 - 50.0% of total number of groups
+Total number of remaining kingdom with at least one V4 found: 2 - 100.0% of total number of groups
+Total number of remaining kingdom with at least one V5 found: 1 - 50.0% of total number of groups
+Total number of remaining kingdom with at least one V6 found: 1 - 50.0% of total number of groups
+Total number of remaining kingdom with at least one V7 found: 1 - 50.0% of total number of groups
+Total number of remaining kingdom with at least one V8 found: 1 - 50.0% of total number of groups
+Total number of remaining kingdom with at least one V9 found: 2 - 100.0% of total number of groups
+Total number of remaining kingdom with at least one V12 found: 1 - 50.0% of total number of groups
+Total number of remaining kingdom with at least one V23 found: 1 - 50.0% of total number of groups
+Total number of remaining kingdom with at least one V34 found: 1 - 50.0% of total number of groups
+Total number of remaining kingdom with at least one V45 found: 1 - 50.0% of total number of groups
+Total number of remaining kingdom with at least one V56 found: 2 - 100.0% of total number of groups
+Total number of remaining kingdom with at least one V67 found: 1 - 50.0% of total number of groups
+Total number of remaining kingdom with at least one V78 found: 2 - 100.0% of total number of groups
+Total number of remaining kingdom with at least one V89 found: 1 - 50.0% of total number of groups
+
+-------------------------------------------------------- PHYLUM --------------------------------------------------------
+Total number of unique phylum: 46
+0 missing values - 0.0% of total
+Total number of remaining phylum with at least one V1 found: 28 - 61.0% of total number of groups
+Total number of remaining phylum with at least one V2 found: 30 - 65.0% of total number of groups
+Total number of remaining phylum with at least one V3 found: 35 - 76.0% of total number of groups
+Total number of remaining phylum with at least one V4 found: 44 - 96.0% of total number of groups
+Total number of remaining phylum with at least one V5 found: 37 - 80.0% of total number of groups
+Total number of remaining phylum with at least one V6 found: 39 - 85.0% of total number of groups
+Total number of remaining phylum with at least one V7 found: 35 - 76.0% of total number of groups
+Total number of remaining phylum with at least one V8 found: 36 - 78.0% of total number of groups
+Total number of remaining phylum with at least one V9 found: 38 - 83.0% of total number of groups
+Total number of remaining phylum with at least one V12 found: 36 - 78.0% of total number of groups
+Total number of remaining phylum with at least one V23 found: 27 - 59.0% of total number of groups
+Total number of remaining phylum with at least one V34 found: 38 - 83.0% of total number of groups
+Total number of remaining phylum with at least one V45 found: 37 - 80.0% of total number of groups
+Total number of remaining phylum with at least one V56 found: 39 - 85.0% of total number of groups
+Total number of remaining phylum with at least one V67 found: 36 - 78.0% of total number of groups
+Total number of remaining phylum with at least one V78 found: 42 - 91.0% of total number of groups
+Total number of remaining phylum with at least one V89 found: 31 - 67.0% of total number of groups
+
+-------------------------------------------------------- CLASS ---------------------------------------------------------
+Total number of unique class: 133
+0 missing values - 0.0% of total
+Total number of remaining class with at least one V1 found: 65 - 49.0% of total number of groups
+Total number of remaining class with at least one V2 found: 70 - 53.0% of total number of groups
+Total number of remaining class with at least one V3 found: 92 - 69.0% of total number of groups
+Total number of remaining class with at least one V4 found: 118 - 89.0% of total number of groups
+Total number of remaining class with at least one V5 found: 96 - 72.0% of total number of groups
+Total number of remaining class with at least one V6 found: 105 - 79.0% of total number of groups
+Total number of remaining class with at least one V7 found: 99 - 74.0% of total number of groups
+Total number of remaining class with at least one V8 found: 102 - 77.0% of total number of groups
+Total number of remaining class with at least one V9 found: 99 - 74.0% of total number of groups
+Total number of remaining class with at least one V12 found: 89 - 67.0% of total number of groups
+Total number of remaining class with at least one V23 found: 65 - 49.0% of total number of groups
+Total number of remaining class with at least one V34 found: 96 - 72.0% of total number of groups
+Total number of remaining class with at least one V45 found: 102 - 77.0% of total number of groups
+Total number of remaining class with at least one V56 found: 98 - 74.0% of total number of groups
+Total number of remaining class with at least one V67 found: 100 - 75.0% of total number of groups
+Total number of remaining class with at least one V78 found: 112 - 84.0% of total number of groups
+Total number of remaining class with at least one V89 found: 82 - 62.0% of total number of groups
+
+-------------------------------------------------------- ORDER ---------------------------------------------------------
+Total number of unique order: 244
+0 missing values - 0.0% of total
+Total number of remaining order with at least one V1 found: 132 - 54.0% of total number of groups
+Total number of remaining order with at least one V2 found: 156 - 64.0% of total number of groups
+Total number of remaining order with at least one V3 found: 183 - 75.0% of total number of groups
+Total number of remaining order with at least one V4 found: 226 - 93.0% of total number of groups
+Total number of remaining order with at least one V5 found: 190 - 78.0% of total number of groups
+Total number of remaining order with at least one V6 found: 199 - 82.0% of total number of groups
+Total number of remaining order with at least one V7 found: 197 - 81.0% of total number of groups
+Total number of remaining order with at least one V8 found: 198 - 81.0% of total number of groups
+Total number of remaining order with at least one V9 found: 181 - 74.0% of total number of groups
+Total number of remaining order with at least one V12 found: 167 - 68.0% of total number of groups
+Total number of remaining order with at least one V23 found: 143 - 59.0% of total number of groups
+Total number of remaining order with at least one V34 found: 195 - 80.0% of total number of groups
+Total number of remaining order with at least one V45 found: 197 - 81.0% of total number of groups
+Total number of remaining order with at least one V56 found: 199 - 82.0% of total number of groups
+Total number of remaining order with at least one V67 found: 191 - 78.0% of total number of groups
+Total number of remaining order with at least one V78 found: 213 - 87.0% of total number of groups
+Total number of remaining order with at least one V89 found: 159 - 65.0% of total number of groups
+
+-------------------------------------------------------- FAMILY --------------------------------------------------------
+Total number of unique family: 462
+0 missing values - 0.0% of total
+Total number of remaining family with at least one V1 found: 246 - 53.0% of total number of groups
+Total number of remaining family with at least one V2 found: 314 - 68.0% of total number of groups
+Total number of remaining family with at least one V3 found: 372 - 81.0% of total number of groups
+Total number of remaining family with at least one V4 found: 436 - 94.0% of total number of groups
+Total number of remaining family with at least one V5 found: 370 - 80.0% of total number of groups
+Total number of remaining family with at least one V6 found: 382 - 83.0% of total number of groups
+Total number of remaining family with at least one V7 found: 401 - 87.0% of total number of groups
+Total number of remaining family with at least one V8 found: 395 - 85.0% of total number of groups
+Total number of remaining family with at least one V9 found: 345 - 75.0% of total number of groups
+Total number of remaining family with at least one V12 found: 322 - 70.0% of total number of groups
+Total number of remaining family with at least one V23 found: 295 - 64.0% of total number of groups
+Total number of remaining family with at least one V34 found: 396 - 86.0% of total number of groups
+Total number of remaining family with at least one V45 found: 377 - 82.0% of total number of groups
+Total number of remaining family with at least one V56 found: 401 - 87.0% of total number of groups
+Total number of remaining family with at least one V67 found: 374 - 81.0% of total number of groups
+Total number of remaining family with at least one V78 found: 420 - 91.0% of total number of groups
+Total number of remaining family with at least one V89 found: 312 - 68.0% of total number of groups
+
+-------------------------------------------------------- GENUS ---------------------------------------------------------
+Total number of unique genus: 1754
+0 missing values - 0.0% of total
+Total number of remaining genus with at least one V1 found: 648 - 37.0% of total number of groups
+Total number of remaining genus with at least one V2 found: 1167 - 67.0% of total number of groups
+Total number of remaining genus with at least one V3 found: 1528 - 87.0% of total number of groups
+Total number of remaining genus with at least one V4 found: 1669 - 95.0% of total number of groups
+Total number of remaining genus with at least one V5 found: 1471 - 84.0% of total number of groups
+Total number of remaining genus with at least one V6 found: 1515 - 86.0% of total number of groups
+Total number of remaining genus with at least one V7 found: 1598 - 91.0% of total number of groups
+Total number of remaining genus with at least one V8 found: 1560 - 89.0% of total number of groups
+Total number of remaining genus with at least one V9 found: 1043 - 59.0% of total number of groups
+Total number of remaining genus with at least one V12 found: 903 - 51.0% of total number of groups
+Total number of remaining genus with at least one V23 found: 1089 - 62.0% of total number of groups
+Total number of remaining genus with at least one V34 found: 1605 - 92.0% of total number of groups
+Total number of remaining genus with at least one V45 found: 1505 - 86.0% of total number of groups
+Total number of remaining genus with at least one V56 found: 1595 - 91.0% of total number of groups
+Total number of remaining genus with at least one V67 found: 1477 - 84.0% of total number of groups
+Total number of remaining genus with at least one V78 found: 1628 - 93.0% of total number of groups
+Total number of remaining genus with at least one V89 found: 974 - 56.0% of total number of groups
+
+------------------------------------------------------- SPECIES --------------------------------------------------------
+Total number of unique species: 4025
+0 missing values - 0.0% of total
+Total number of remaining species with at least one V1 found: 990 - 25.0% of total number of groups
+Total number of remaining species with at least one V2 found: 2600 - 65.0% of total number of groups
+Total number of remaining species with at least one V3 found: 3564 - 89.0% of total number of groups
+Total number of remaining species with at least one V4 found: 3852 - 96.0% of total number of groups
+Total number of remaining species with at least one V5 found: 3380 - 84.0% of total number of groups
+Total number of remaining species with at least one V6 found: 3453 - 86.0% of total number of groups
+Total number of remaining species with at least one V7 found: 3706 - 92.0% of total number of groups
+Total number of remaining species with at least one V8 found: 3541 - 88.0% of total number of groups
+Total number of remaining species with at least one V9 found: 1907 - 47.0% of total number of groups
+Total number of remaining species with at least one V12 found: 1455 - 36.0% of total number of groups
+Total number of remaining species with at least one V23 found: 2473 - 61.0% of total number of groups
+Total number of remaining species with at least one V34 found: 3742 - 93.0% of total number of groups
+Total number of remaining species with at least one V45 found: 3424 - 85.0% of total number of groups
+Total number of remaining species with at least one V56 found: 3758 - 93.0% of total number of groups
+Total number of remaining species with at least one V67 found: 3342 - 83.0% of total number of groups
+Total number of remaining species with at least one V78 found: 3720 - 92.0% of total number of groups
+Total number of remaining species with at least one V89 found: 1784 - 44.0% of total number of groups
