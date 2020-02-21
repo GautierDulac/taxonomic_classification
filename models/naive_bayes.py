@@ -39,6 +39,7 @@ def ETL_NB(sequence_origin='DairyDB', primers_origin='DairyDB', taxonomy_level: 
                                                                taxonomy_level=taxonomy_level,
                                                                selected_primer=selected_primer,
                                                                test_size=test_size)
+
     folder_number = get_saved_folder_number(sequence_origin=sequence_origin,
                                             primers_origin=primers_origin,
                                             taxonomy_level=taxonomy_level,
@@ -56,22 +57,25 @@ def ETL_NB(sequence_origin='DairyDB', primers_origin='DairyDB', taxonomy_level: 
         processed_y_test = pd.read_csv(preprocessed_folder_path + 'processed_y_test.csv')
 
     else:
-        # Not already preprocessed data
-        makedirs(preprocessed_folder_path)
+
         # Processing X_train
         processed_train_list = []
-        for seq in X_train[selected_primer]:
+        for i, seq in enumerate(X_train[selected_primer]):
+            print('Train set: Processing seq {} / {} - size {}'.format(i, len(X_train), len(seq)), end='\r')
             processed_train_list.append(get_ATCG_proportion_in_seq(seq))
         processed_X_train = pd.DataFrame(processed_train_list)
         # Processing X_test
         processed_test_list = []
-        for seq in X_test[selected_primer]:
+        for i, seq in enumerate(X_test[selected_primer]):
+            print('Test set: Processing seq {} / {} - size {}'.format(i, len(X_test), len(seq)), end='\r')
             processed_test_list.append(get_ATCG_proportion_in_seq(seq))
         processed_X_test = pd.DataFrame(processed_test_list)
         # Keeping only relevant columns for y
-        processed_y_train = y_train[taxonomy_levels[taxonomy_level]]
-        processed_y_test = y_test[taxonomy_levels[taxonomy_level]]
+        processed_y_train = y_train[[taxonomy_levels[taxonomy_level]]]
+        processed_y_test = y_test[[taxonomy_levels[taxonomy_level]]]
+        # Not already preprocessed data
         # Saving to relevant folder
+        makedirs(preprocessed_folder_path)
         processed_X_train.to_csv(preprocessed_folder_path + 'processed_X_train.csv', index=False)
         processed_X_test.to_csv(preprocessed_folder_path + 'processed_X_test.csv', index=False)
         processed_y_train.to_csv(preprocessed_folder_path + 'processed_y_train.csv', index=False)
