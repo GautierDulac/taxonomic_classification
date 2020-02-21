@@ -11,7 +11,7 @@ folder_paths = {'Sequence': 'D:\\0 - Boulot\\5 - X4\\16. Research Paper\\data\\g
                 'stats_results': 'D:\\0 - Boulot\\5 - X4\\16. Research Paper\\taxonomic_classification\\results\\statistics\\'}
 
 target_alphabet = 'ATCG'
-
+taxonomy_levels = ['kingdom', 'phylum', 'class', 'order', 'family', 'genus', 'species']
 nomenclature_dict = {
     'A': ['A'],
     'T': ['T'],
