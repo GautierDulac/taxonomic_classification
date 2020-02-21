@@ -11,7 +11,7 @@ import pandas as pd
 
 from loading.main_sequence_loading import main_sequence_loading
 from processings.hvr_loading.main_hvr_loading import main_hvr_loading
-from utils.utils import folder_paths
+from utils.utils import folder_paths, taxonomy_levels
 
 
 # Main function
@@ -50,7 +50,6 @@ def main_loading_model_data(force_rewrite: bool = False, test_size: float = 0.2,
         y_test = pd.read_csv(folder_path + 'y_test.csv')
     else:
         sequence_df = main_sequence_loading(desired_df=sequence_origin)
-        taxonomy_levels = ['kingdom', 'phylum', 'class', 'order', 'family', 'genus', 'species']
         hvr_df = main_hvr_loading(desired_sequences=sequence_origin, desired_primers=primers_origin)
         hvr_columns = hvr_df.columns[1:]
 
@@ -67,7 +66,7 @@ def main_loading_model_data(force_rewrite: bool = False, test_size: float = 0.2,
 
         # Managing y_columns
         if isinstance(taxonomy_level, int):
-            y_columns = taxonomy_levels[taxonomy_level]
+            y_columns = [taxonomy_levels[taxonomy_level]]
         else:
             y_columns = [taxonomy_levels[taxonomy_level[i]] for i in range(len(taxonomy_level))]
 
@@ -99,7 +98,7 @@ def main_loading_model_data(force_rewrite: bool = False, test_size: float = 0.2,
 
 
 # Functions
-def get_folder_number() -> int:
+def get_new_folder_number() -> int:
     """
     Extract folders already used in model_data folder, to give the new folder_number
     :return: (int) folder number
@@ -108,6 +107,25 @@ def get_folder_number() -> int:
     folder_numbers = [int(f.split('_')[0]) for f in current_folders]
 
     return max(folder_numbers) + 1
+
+
+def get_saved_folder_number(sequence_origin: str, primers_origin: str, taxonomy_level: Union[List[int], int],
+                            selected_primer: Union[List[str], str, None],
+                            test_size: float) -> int:
+    """
+    Only working if the given configuration has been saved
+    :return:
+    """
+    csv_path = folder_paths['model_data'] + 'loaded_data_parameters.csv'
+    loaded_data = pd.read_csv(csv_path)
+    asked_parameter_df = loaded_data \
+        .loc[loaded_data.sequence_origin == sequence_origin] \
+        .loc[loaded_data.primers_origin == primers_origin] \
+        .loc[loaded_data.taxonomy_level == str(taxonomy_level)] \
+        .loc[loaded_data.selected_primer == str(selected_primer)] \
+        .loc[loaded_data.test_size == test_size]
+    if len(asked_parameter_df) > 0:
+        return int(asked_parameter_df.iloc[0]['folder_number'])
 
 
 def update_loaded_data(sequence_origin: str, primers_origin: str, taxonomy_level: Union[List[int], int],
@@ -131,7 +149,7 @@ def update_loaded_data(sequence_origin: str, primers_origin: str, taxonomy_level
         if len(asked_parameter_df) > 0:
             return True, int(asked_parameter_df.iloc[0]['folder_number'])
         else:
-            folder_number = get_folder_number()
+            folder_number = get_new_folder_number()
             new_loaded_data = pd.DataFrame(
                 [[folder_number, sequence_origin, primers_origin, taxonomy_level, selected_primer, test_size]],
                 columns=['folder_number', 'sequence_origin', 'primers_origin',
