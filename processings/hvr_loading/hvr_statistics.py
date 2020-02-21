@@ -12,8 +12,8 @@ from utils.utils import folder_paths
 
 
 # Main function
-def main_stats(sequence_df: pd.DataFrame, hvr_df: pd.DataFrame, sequence_origin: str = '',
-               primers_origin: str = '') -> None:
+def main_stats_hvr(sequence_df: pd.DataFrame, hvr_df: pd.DataFrame, sequence_origin: str = '',
+                   primers_origin: str = '') -> None:
     """
     Compute relevant statistical analysis on HVR results
     :param sequence_df: sequence on which hvr are retrieved

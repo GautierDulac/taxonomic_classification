@@ -8,7 +8,8 @@ folder_paths = {'Sequence': 'D:\\0 - Boulot\\5 - X4\\16. Research Paper\\data\\g
                 'model_data': 'D:\\0 - Boulot\\5 - X4\\16. Research Paper\\model_data\\',
                 'Chaudhary': 'D:\\0 - Boulot\\5 - X4\\16. Research Paper\\data\\primers\\Chaudhary\\',
                 'DairyDB': 'D:\\0 - Boulot\\5 - X4\\16. Research Paper\\data\\primers\\DairyDB\\',
-                'stats_results': 'D:\\0 - Boulot\\5 - X4\\16. Research Paper\\taxonomic_classification\\results\\statistics\\'}
+                'stats_results': 'D:\\0 - Boulot\\5 - X4\\16. Research Paper\\taxonomic_classification\\results\\statistics\\',
+                'model_results': 'D:\\0 - Boulot\\5 - X4\\16. Research Paper\\taxonomic_classification\\results\\models\\'}
 
 target_alphabet = 'ATCG'
 taxonomy_levels = ['kingdom', 'phylum', 'class', 'order', 'family', 'genus', 'species']

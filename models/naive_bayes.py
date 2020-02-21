@@ -14,17 +14,19 @@ from utils.utils import taxonomy_levels, folder_paths
 
 
 # Main function
-def naive_bayes():
+def naive_bayes(sequence_origin='DairyDB', primers_origin='DairyDB', taxonomy_level: int = 1, selected_primer: str = 'V4'):
     """
     Apply Naive Bayes model on a set of sequence preprocessed data.
     :return:
     """
-    X_train, X_test, y_train, y_test = ETL_NB()
+    X_train, X_test, y_train, y_test = ETL_NB(sequence_origin=sequence_origin,
+                                              primers_origin=primers_origin,
+                                              taxonomy_level=taxonomy_level,
+                                              selected_primer=selected_primer)
     GNB = GaussianNB()
     y_pred = GNB.fit(X_train, y_train).predict(X_test)
-    num_test = X_test.shape[0]
-    bad_predictions = sum([y_test[i] != y_pred[i] for i in range(y_test)])
-    print("Number of mislabeled points out of a total %d points : %d" % (num_test, bad_predictions))
+
+    return y_pred
 
 
 # Function
