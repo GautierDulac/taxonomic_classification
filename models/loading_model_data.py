@@ -27,9 +27,9 @@ def main_loading_model_data(force_rewrite: bool = False, test_size: float = 0.2,
     X part of the data is not preprocessed (sequences are complete with all hvrs), meaning only 1 + num hvr dimension in X.
     :param test_size: part of data that is left in test df
     :param force_rewrite: if True, data is rewritten if already existed for the given parameters
-    :param sequence_origin:
-    :param primers_origin:
-    :param taxonomy_level:
+    :param sequence_origin: GreenGenes or DairyDB
+    :param primers_origin: DairyDB or Chaudhary
+    :param taxonomy_level: list of int within 0 - 6
     :return:
     """
     model_data_folder = folder_paths['model_data']
