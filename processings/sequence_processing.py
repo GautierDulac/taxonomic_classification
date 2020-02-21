@@ -19,7 +19,7 @@ def get_ATCG_proportion_in_seq(seq):
     :param seq:
     :return: (dict) keys are 'A' etc. and values are float summing to 1
     """
-    l_seq = get_list_of_related_primers_strict_ATCG(seq)
+    l_seq = get_list_of_related_primers_strict_ATCG(seq.replace('N','').replace('X','').upper())
     counts = occurences_of_characters_in_list_of_sequence(l_seq)
     total_occurences = sum(counts.values())
     props = {}
@@ -33,7 +33,7 @@ def occurences_of_characters_in_sequence(seq: str) -> dict:
     """
     Counts characters in a sequence
     """
-    res = {i: seq.upper().count(i) for i in set(seq)}
+    res = {i: seq.count(i) for i in set(seq)}
     return res
 
 
