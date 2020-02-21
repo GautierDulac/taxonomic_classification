@@ -33,7 +33,7 @@ def occurences_of_characters_in_sequence(seq: str) -> dict:
     """
     Counts characters in a sequence
     """
-    res = {i: seq.count(i) for i in set(seq)}
+    res = {i: seq.upper().count(i) for i in set(seq)}
     return res
 
 
