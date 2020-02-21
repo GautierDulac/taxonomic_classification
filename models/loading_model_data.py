@@ -118,14 +118,20 @@ def get_saved_folder_number(sequence_origin: str, primers_origin: str, taxonomy_
     """
     csv_path = folder_paths['model_data'] + 'loaded_data_parameters.csv'
     loaded_data = pd.read_csv(csv_path)
+    if isinstance(taxonomy_level, list):
+        taxonomy_level = str(taxonomy_level)
+    if isinstance(selected_primer, list):
+        selected_primer = str(selected_primer)
     asked_parameter_df = loaded_data \
         .loc[loaded_data.sequence_origin == sequence_origin] \
         .loc[loaded_data.primers_origin == primers_origin] \
-        .loc[loaded_data.taxonomy_level == str(taxonomy_level)] \
-        .loc[loaded_data.selected_primer == str(selected_primer)] \
+        .loc[loaded_data.taxonomy_level == taxonomy_level] \
+        .loc[loaded_data.selected_primer == selected_primer] \
         .loc[loaded_data.test_size == test_size]
     if len(asked_parameter_df) > 0:
         return int(asked_parameter_df.iloc[0]['folder_number'])
+    else:
+        raise ValueError('Looking for a saved model that does not exist')
 
 
 def update_loaded_data(sequence_origin: str, primers_origin: str, taxonomy_level: Union[List[int], int],
@@ -138,13 +144,18 @@ def update_loaded_data(sequence_origin: str, primers_origin: str, taxonomy_level
     where to write the data
     """
     csv_path = folder_paths['model_data'] + 'loaded_data_parameters.csv'
+    if isinstance(taxonomy_level, list):
+        taxonomy_level = str(taxonomy_level)
+    if isinstance(selected_primer, list):
+        selected_primer = str(selected_primer)
     if isfile(csv_path):
         loaded_data = pd.read_csv(csv_path)
+
         asked_parameter_df = loaded_data \
             .loc[loaded_data.sequence_origin == sequence_origin] \
             .loc[loaded_data.primers_origin == primers_origin] \
-            .loc[loaded_data.taxonomy_level == str(taxonomy_level)] \
-            .loc[loaded_data.selected_primer == str(selected_primer)] \
+            .loc[loaded_data.taxonomy_level == taxonomy_level] \
+            .loc[loaded_data.selected_primer == selected_primer] \
             .loc[loaded_data.test_size == test_size]
         if len(asked_parameter_df) > 0:
             return True, int(asked_parameter_df.iloc[0]['folder_number'])
