@@ -5,7 +5,6 @@ Naive Bayes implementation to classify using a given HVR and a given taxonomic r
 from os import makedirs
 from os.path import isdir
 
-import numpy as np
 import pandas as pd
 from sklearn.naive_bayes import GaussianNB
 
