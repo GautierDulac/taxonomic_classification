@@ -11,7 +11,7 @@ from utils.utils import folder_paths
 
 
 # Main Function
-def main_loading() -> None:
+def main_loading_greengenes() -> None:
     """
     Load all required files and save them in 'data' folder above github project.
     :return:

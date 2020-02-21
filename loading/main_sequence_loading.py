@@ -8,7 +8,7 @@ from utils.utils import folder_paths
 
 
 # Main function
-def main_loading(desired_df: str = '') -> pd.DataFrame:
+def main_sequence_loading(desired_df: str = '') -> pd.DataFrame:
     """
     Depending on the desired df, return the complete data (seq and taxonomy available)
     :return: pd.DataFrame
