@@ -107,7 +107,7 @@ Total number of remaining family with at least one V45 found: 377 - 82.0% of tot
 Total number of remaining family with at least one V56 found: 401 - 87.0% of total number of groups
 Total number of remaining family with at least one V67 found: 374 - 81.0% of total number of groups
 Total number of remaining family with at least one V78 found: 420 - 91.0% of total number of groups
-Total number of remaining family with at least one V89 found: 312 - 68.0% of total number of groups
+Total number of remaining family with at least one V89 found: 311 - 67.0% of total number of groups
 
 -------------------------------------------------------- GENUS ---------------------------------------------------------
 Total number of unique genus: 1754
@@ -120,7 +120,7 @@ Total number of remaining genus with at least one V5 found: 1471 - 84.0% of tota
 Total number of remaining genus with at least one V6 found: 1515 - 86.0% of total number of groups
 Total number of remaining genus with at least one V7 found: 1598 - 91.0% of total number of groups
 Total number of remaining genus with at least one V8 found: 1560 - 89.0% of total number of groups
-Total number of remaining genus with at least one V9 found: 1043 - 59.0% of total number of groups
+Total number of remaining genus with at least one V9 found: 1041 - 59.0% of total number of groups
 Total number of remaining genus with at least one V12 found: 903 - 51.0% of total number of groups
 Total number of remaining genus with at least one V23 found: 1089 - 62.0% of total number of groups
 Total number of remaining genus with at least one V34 found: 1605 - 92.0% of total number of groups
@@ -128,7 +128,7 @@ Total number of remaining genus with at least one V45 found: 1505 - 86.0% of tot
 Total number of remaining genus with at least one V56 found: 1595 - 91.0% of total number of groups
 Total number of remaining genus with at least one V67 found: 1477 - 84.0% of total number of groups
 Total number of remaining genus with at least one V78 found: 1628 - 93.0% of total number of groups
-Total number of remaining genus with at least one V89 found: 974 - 56.0% of total number of groups
+Total number of remaining genus with at least one V89 found: 971 - 55.0% of total number of groups
 
 ------------------------------------------------------- SPECIES --------------------------------------------------------
 Total number of unique species: 4025
@@ -141,7 +141,7 @@ Total number of remaining species with at least one V5 found: 3380 - 84.0% of to
 Total number of remaining species with at least one V6 found: 3453 - 86.0% of total number of groups
 Total number of remaining species with at least one V7 found: 3706 - 92.0% of total number of groups
 Total number of remaining species with at least one V8 found: 3541 - 88.0% of total number of groups
-Total number of remaining species with at least one V9 found: 1907 - 47.0% of total number of groups
+Total number of remaining species with at least one V9 found: 1904 - 47.0% of total number of groups
 Total number of remaining species with at least one V12 found: 1455 - 36.0% of total number of groups
 Total number of remaining species with at least one V23 found: 2473 - 61.0% of total number of groups
 Total number of remaining species with at least one V34 found: 3742 - 93.0% of total number of groups
@@ -149,4 +149,4 @@ Total number of remaining species with at least one V45 found: 3424 - 85.0% of t
 Total number of remaining species with at least one V56 found: 3758 - 93.0% of total number of groups
 Total number of remaining species with at least one V67 found: 3342 - 83.0% of total number of groups
 Total number of remaining species with at least one V78 found: 3720 - 92.0% of total number of groups
-Total number of remaining species with at least one V89 found: 1784 - 44.0% of total number of groups
+Total number of remaining species with at least one V89 found: 1780 - 44.0% of total number of groups

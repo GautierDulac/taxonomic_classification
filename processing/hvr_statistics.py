@@ -95,7 +95,7 @@ def get_basics_hvr(hvr_df: pd.DataFrame, analysis_path: str = '') -> None:
     for hvr in hvr_df.columns[1:]:
         missings = sum(hvr_df[hvr].isna())
         presents[hvr] = num_seq - missings
-        number_of_found_hvr += missings
+        number_of_found_hvr += num_seq - missings
         if presents[hvr] < lower_hvr_value:
             lower_hvr_value = presents[hvr]
             lower_hvr = hvr

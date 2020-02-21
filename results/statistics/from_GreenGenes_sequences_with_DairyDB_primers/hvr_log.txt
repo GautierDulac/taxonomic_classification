@@ -5,9 +5,9 @@
 
 Total number of sequence analyzed: 299499
 Number of HyperVariable regions tested: 17
-Number of found HVR: 2220085 - 43.6% of total potential
+Number of found HVR: 3125727 - 61.39% of total potential
 Most represented HVR: V7 - 258108 occurences - 86.18% of potential
-Less represented HVR: V8 - 0 occurences - 0.0% of potential
+Less represented HVR: V89 - 44324 occurences - 14.8% of potential
 
 ------------------------------------------------------------------------------------------------------------------------
 -------------------------------------- HYPERVARIABLE REGIONS SPECIFIC INFORMATION --------------------------------------
@@ -21,9 +21,9 @@ Minimal size of V1: 26
 Maximal size of V1: 266
 
 ---------------------------------------------------------- V2 ----------------------------------------------------------
-161268 found V2 - 53.85% of total potential
+161266 found V2 - 53.85% of total potential
 Average size of V2: 222.32
-Minimal size of V2: 0
+Minimal size of V2: 147
 Maximal size of V2: 501
 
 ---------------------------------------------------------- V3 ----------------------------------------------------------
@@ -57,24 +57,27 @@ Minimal size of V7: 51
 Maximal size of V7: 784
 
 ---------------------------------------------------------- V8 ----------------------------------------------------------
-No V8 found in this database
+210019 found V8 - 70.12% of total potential
+Average size of V8: 192.65
+Minimal size of V8: 143
+Maximal size of V8: 587
 
 ---------------------------------------------------------- V9 ----------------------------------------------------------
-48280 found V9 - 16.12% of total potential
-Average size of V9: 85.38
-Minimal size of V9: 0
+48274 found V9 - 16.12% of total potential
+Average size of V9: 85.39
+Minimal size of V9: 27
 Maximal size of V9: 264
 
 --------------------------------------------------------- V12 ----------------------------------------------------------
-95468 found V12 - 31.88% of total potential
-Average size of V12: 313.09
-Minimal size of V12: 0
+95466 found V12 - 31.88% of total potential
+Average size of V12: 313.1
+Minimal size of V12: 228
 Maximal size of V12: 516
 
 --------------------------------------------------------- V23 ----------------------------------------------------------
-148488 found V23 - 49.58% of total potential
-Average size of V23: 390.09
-Minimal size of V23: 0
+148486 found V23 - 49.58% of total potential
+Average size of V23: 390.1
+Minimal size of V23: 302
 Maximal size of V23: 807
 
 --------------------------------------------------------- V34 ----------------------------------------------------------
@@ -102,10 +105,13 @@ Minimal size of V67: 184
 Maximal size of V67: 1169
 
 --------------------------------------------------------- V78 ----------------------------------------------------------
-214388 found V78 - 71.58% of total potential
+214386 found V78 - 71.58% of total potential
 Average size of V78: 278.31
-Minimal size of V78: 0
+Minimal size of V78: 228
 Maximal size of V78: 990
 
 --------------------------------------------------------- V89 ----------------------------------------------------------
-No V89 found in this database
+44324 found V89 - 14.8% of total potential
+Average size of V89: 294.2
+Minimal size of V89: 139
+Maximal size of V89: 1152
