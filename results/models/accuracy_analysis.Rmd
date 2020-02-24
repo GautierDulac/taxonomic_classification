@@ -5,26 +5,147 @@ date: "24 février 2020"
 output: html_document
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+# Comparing HVR for Taxo Classification on all Naive Bayes results
+
+The graphs are made based on the initial work of the DairyDB team (https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6615214/bin/12864_2019_5914_MOESM4_ESM.html) to compare quality of models depending on taxonomy levels and choice of hypervariable region.
+
+## Libraries
+
+```{r}
+library(readr)
+library(ggplot2)
+library(tidyverse)
 ```
 
-## R Markdown
+## Reading data - extracted manually from different saved files with all NB results
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+```{r}
+NB_results <- read_delim("Naive Bayes - ALL NB - DB - DB.csv", 
+                      ";", 
+                      escape_double = FALSE, 
+                      trim_ws = TRUE)
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
 
-```{r cars}
-summary(cars)
+colnames(NB_results) <- c('HVR', 'TAXO_rank', 'test_size', 'main_class_prop', 'NB_4', 'NB_3', 'NB_2', 'NB_1')
 ```
 
-## Including Plots
+## Changing db shape and taxo values
 
-You can also embed plots, for example:
+```{r}
+NB_gathered_results <- NB_results %>% 
+  gather('NB_k', 'Accuracy', NB_4, NB_3, NB_2, NB_1) %>% 
+  select(HVR, TAXO_rank, NB_k, Accuracy)
 
-```{r pressure, echo=FALSE}
-plot(pressure)
+NB_gathered_results <- NB_gathered_results %>% mutate(TAXO = case_when(
+  TAXO_rank==0 ~ '1-Kingdom',
+  TAXO_rank==1 ~ '2-Phylum', 
+  TAXO_rank==2 ~ '3-Class',
+  TAXO_rank==3 ~ '4-Order', 
+  TAXO_rank==4 ~ '5-Family',
+  TAXO_rank==5 ~ '6-Genus',
+  TAXO_rank==6 ~ '7-Species'
+)) %>% 
+  select(HVR, TAXO, NB_k, Accuracy)
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+## Ploting the comparison of different NB(k) results for a given HVR (V4) 
+
+```{r}
+meth <- 'Naive_Bayes_up_to_4'
+```
+
+```{r}
+ONE_HVR <- c('V1', 'V2', 'V3', 'V4', 'V5', 'V6', 'V7', 'V8', 'V9')
+
+
+p <- ggplot(data=NB_gathered_results %>% filter(HVR %in% ONE_HVR), 
+            aes(x=TAXO,y=Accuracy, fill=HVR)) + 
+  geom_boxplot() + 
+  theme_bw() + 
+  labs(x = "Taxonomic rank", y = "Accuracy %") + 
+  coord_cartesian(ylim=c(0, 1)) + 
+  theme(axis.text=element_text(size=12), 
+        axis.title=element_text(size=14,face="bold"), 
+        plot.title=element_text(size = 14, face="bold"), 
+        legend.position = "bottom",
+        legend.text = element_text(size = 12), 
+        legend.title = element_text(size = 12)) +
+  ggtitle('Accuracy of Naive Bayes model\ndepending on Taxonomy Rank and used HVR')
+
+p
+
+ggsave(paste("boxplot_",meth,"_with_single_hvr",".png",sep=""), width=21, height=21, units="cm")
+```
+
+```{r}
+p <- ggplot(data=NB_gathered_results %>% filter(!(HVR %in% ONE_HVR)), 
+            aes(x=TAXO,y=Accuracy, fill=HVR)) + 
+  geom_boxplot() + 
+  theme_bw() + 
+  labs(x = "Taxonomic rank", y = "Accuracy %") + 
+  coord_cartesian(ylim=c(0, 1)) + 
+  theme(axis.text=element_text(size=12), 
+        axis.title=element_text(size=14,face="bold"), 
+        plot.title=element_text(size = 14, face="bold"), 
+        legend.position = "bottom",
+        legend.text = element_text(size = 12), 
+        legend.title = element_text(size = 12)) +
+  ggtitle('Accuracy of Naive Bayes model\ndepending on Taxonomy Rank and used HVR')
+
+p
+
+ggsave(paste("boxplot_",meth,"_with_double_hvr",".png",sep=""), width=21, height=21, units="cm")
+```
+
+# Chosing the best Model by TAXO RANK
+
+# Reformat Data
+
+```{r}
+NB_gathered_results <- NB_results %>% 
+  gather('NB_k', 'Accuracy', NB_4, NB_3, NB_2, NB_1, main_class_prop) %>% 
+  select(HVR, TAXO_rank, NB_k, Accuracy, test_size)
+
+NB_gathered_results <- NB_gathered_results %>% mutate(TAXO = case_when(
+  TAXO_rank==0 ~ '1-Kingdom',
+  TAXO_rank==1 ~ '2-Phylum', 
+  TAXO_rank==2 ~ '3-Class',
+  TAXO_rank==3 ~ '4-Order', 
+  TAXO_rank==4 ~ '5-Family',
+  TAXO_rank==5 ~ '6-Genus',
+  TAXO_rank==6 ~ '7-Species'
+)) %>% 
+  select(HVR, TAXO, NB_k, Accuracy, test_size)
+```
+
+
+
+```{r}
+all_chosen_taxo <- NB_gathered_results %>% select(TAXO) %>% unique()
+
+for (chosen_taxo in all_chosen_taxo[[1]]) {
+  
+  p <- ggplot(data=NB_gathered_results %>% filter(TAXO==chosen_taxo), 
+              aes(x=HVR,y=Accuracy, color=NB_k, size=test_size)) + 
+    geom_point() +
+    theme_bw() + 
+    labs(x = "HyperVariable Region", y = "Accuracy %") + 
+    coord_cartesian(ylim=c(0, 1)) + 
+    theme(axis.text=element_text(size=14), 
+          axis.title=element_text(size=16,face="bold"), 
+          plot.title=element_text(size=16, face="bold"), 
+          legend.position = "bottom",
+          legend.text = element_text(size=12), 
+          legend.title = element_text(size=12)) +
+    guides(colour = guide_legend(override.aes = list(size=5))) +
+    ggtitle(paste('Accuracy of Naive Bayes model to predict ',chosen_taxo, '\ndepending on the used HVR', sep=''))
+  
+  
+  ggsave(paste("boxplot_",meth,"_for_",chosen_taxo,".png",sep=""), width=24, height=21, units="cm")
+}
+
+```
+
+
+
