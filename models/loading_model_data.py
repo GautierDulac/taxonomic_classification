@@ -57,12 +57,12 @@ def main_loading_model_data(force_rewrite: bool = False, test_size: float = 0.2,
 
         # Managing X_columns
         if selected_primer is not None:
+            #if selected_primer == 'Complete':
+            #    X_columns = ['index', 'sequence']
             if isinstance(selected_primer, str):
                 X_columns = ['index'] + [selected_primer]
             else:
                 X_columns = ['index'] + selected_primer
-        elif selected_primer == 'Complete':
-            X_columns = ['index', 'sequence']
         else:
             X_columns = ['index', 'sequence'] + list(hvr_columns)
 
