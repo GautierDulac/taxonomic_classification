@@ -61,6 +61,8 @@ def main_loading_model_data(force_rewrite: bool = False, test_size: float = 0.2,
                 X_columns = ['index'] + [selected_primer]
             else:
                 X_columns = ['index'] + selected_primer
+        elif selected_primer == 'Complete':
+            X_columns = ['index', 'sequence']
         else:
             X_columns = ['index', 'sequence'] + list(hvr_columns)
 
