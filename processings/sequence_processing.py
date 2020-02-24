@@ -6,7 +6,7 @@ and values as preprocessed metrics
 # Packages
 from typing import List
 
-from utils.utils import get_list_of_related_primers_strict_ATCG
+from utils.utils import get_list_of_related_primers_strict_ATCG, nomenclature_dict, target_alphabet
 
 
 # Global Main
@@ -19,8 +19,14 @@ def get_ATCG_proportion_in_seq(seq):
     :param seq:
     :return: (dict) keys are 'A' etc. and values are float summing to 1
     """
-    l_seq = get_list_of_related_primers_strict_ATCG(seq.replace('N','').replace('X','').upper())
-    counts = occurences_of_characters_in_list_of_sequence(l_seq)
+    # Clean sequence or there would be exponential results in memory and time
+    seq = seq.upper()
+    for letter in nomenclature_dict.keys():
+        if letter not in target_alphabet:
+            seq = seq.replace(letter, '')
+    # Not looking for all related primers for complexity reasons
+    # l_seq = get_list_of_related_primers_strict_ATCG(seq)
+    counts = occurences_of_characters_in_list_of_sequence([seq])
     total_occurences = sum(counts.values())
     props = {}
     for key, value in counts.items():

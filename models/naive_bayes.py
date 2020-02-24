@@ -9,12 +9,15 @@ import pandas as pd
 from sklearn.naive_bayes import GaussianNB
 
 from models.loading_model_data import main_loading_model_data, get_saved_folder_number
+from models.model_statistics import main_stats_model
 from processings.sequence_processing import get_ATCG_proportion_in_seq
 from utils.utils import taxonomy_levels, folder_paths
 
 
 # Main function
-def naive_bayes(sequence_origin='DairyDB', primers_origin='DairyDB', taxonomy_level: int = 1, selected_primer: str = 'V4'):
+def naive_bayes(sequence_origin='DairyDB', primers_origin='DairyDB', taxonomy_level: int = 1,
+                selected_primer: str = 'V4',
+                model_preprocessing='Computing frequency of 1-mer (ATCG) in every sequence', test_size=0.2):
     """
     Apply Naive Bayes model on a set of sequence preprocessed data.
     :return:
@@ -25,6 +28,18 @@ def naive_bayes(sequence_origin='DairyDB', primers_origin='DairyDB', taxonomy_le
                                               selected_primer=selected_primer)
     GNB = GaussianNB()
     y_pred = GNB.fit(X_train, y_train).predict(X_test)
+
+    main_stats_model(y_train=y_train,
+                     y_test=y_test,
+                     y_pred=y_pred,
+                     model_name='Naive Bayes - NB(0)',
+                     model_parameters=GNB.get_params(),
+                     model_preprocessing=model_preprocessing,
+                     sequence_origin=sequence_origin,
+                     primers_origin=primers_origin,
+                     taxonomy_level=taxonomy_level,
+                     selected_primer=selected_primer,
+                     test_size=test_size)
 
     return y_pred
 
