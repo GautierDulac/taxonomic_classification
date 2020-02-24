@@ -14,6 +14,7 @@ from processings.sequence_processing import get_ATCG_proportion_in_seq
 from utils.utils import taxonomy_levels, folder_paths
 
 
+
 # Main function
 def naive_bayes(sequence_origin='DairyDB', primers_origin='DairyDB', taxonomy_level: int = 1,
                 selected_primer: str = 'V4',
