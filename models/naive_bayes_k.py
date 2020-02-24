@@ -10,29 +10,31 @@ from sklearn.naive_bayes import GaussianNB
 
 from models.loading_model_data import main_loading_model_data, get_saved_folder_number
 from models.model_statistics import main_stats_model
-from processings.sequence_processing import get_ATCG_proportion_in_seq
+from processings.sequence_processing import get_ATCG_k_mer_proportion_in_seq
 from utils.utils import taxonomy_levels, folder_paths
 
 
 # Main function
-def naive_bayes(sequence_origin='DairyDB', primers_origin='DairyDB', taxonomy_level: int = 1,
-                selected_primer: str = 'V4',
-                model_preprocessing='Computing frequency of 1-mer (ATCG) in every sequence', test_size=0.2):
+def naive_bayes_k(k=2, sequence_origin='DairyDB', primers_origin='DairyDB', taxonomy_level: int = 1,
+                  selected_primer: str = 'V4',
+                  model_preprocessing='Computing frequency of {}-mer (ATCG) in every sequence', test_size=0.2):
     """
     Apply Naive Bayes model on a set of sequence preprocessed data.
     :return:
     """
-    X_train, X_test, y_train, y_test = ETL_NB(sequence_origin=sequence_origin,
-                                              primers_origin=primers_origin,
-                                              taxonomy_level=taxonomy_level,
-                                              selected_primer=selected_primer)
+    model_preprocessing = model_preprocessing.format(k)
+    X_train, X_test, y_train, y_test = ETL_NB_k_mer(k=k,
+                                                    sequence_origin=sequence_origin,
+                                                    primers_origin=primers_origin,
+                                                    taxonomy_level=taxonomy_level,
+                                                    selected_primer=selected_primer)
     GNB = GaussianNB()
     y_pred = GNB.fit(X_train, y_train).predict(X_test)
 
     test_size, prop_main_class, accuracy = main_stats_model(y_train=y_train,
                                                             y_test=y_test,
                                                             y_pred=y_pred,
-                                                            model_name='Naive Bayes - NB(0)',
+                                                            model_name='Naive Bayes - NB({})'.format(k),
                                                             model_parameters=GNB.get_params(),
                                                             model_preprocessing=model_preprocessing,
                                                             sequence_origin=sequence_origin,
@@ -45,8 +47,8 @@ def naive_bayes(sequence_origin='DairyDB', primers_origin='DairyDB', taxonomy_le
 
 
 # Function
-def ETL_NB(sequence_origin='DairyDB', primers_origin='DairyDB', taxonomy_level: int = 1, selected_primer: str = 'V4',
-           test_size: float = 0.2):
+def ETL_NB_k_mer(k, sequence_origin='DairyDB', primers_origin='DairyDB', taxonomy_level: int = 1,
+                 selected_primer: str = 'V4', test_size: float = 0.2):
     """
     Extract Load and Transform data for NB usage
     :return:
@@ -64,7 +66,7 @@ def ETL_NB(sequence_origin='DairyDB', primers_origin='DairyDB', taxonomy_level: 
                                             test_size=test_size)
 
     folder_name = '{:0>3d}_data\\'.format(folder_number)
-    preprocessed_folder_path = folder_paths['model_data'] + folder_name + 'preprocessed_NB\\'
+    preprocessed_folder_path = folder_paths['model_data'] + folder_name + 'preprocessed_NB_{}\\'.format(k)
 
     if isdir(preprocessed_folder_path):
         # Already preprocessed data
@@ -74,18 +76,17 @@ def ETL_NB(sequence_origin='DairyDB', primers_origin='DairyDB', taxonomy_level: 
         processed_y_test = pd.read_csv(preprocessed_folder_path + 'processed_y_test.csv')
 
     else:
-
         # Processing X_train
         processed_train_list = []
         for i, seq in enumerate(X_train[selected_primer]):
             # print('Train set: Processing seq {} / {} - size {}'.format(i, len(X_train), len(seq)), end='\r')
-            processed_train_list.append(get_ATCG_proportion_in_seq(seq))
+            processed_train_list.append(get_ATCG_k_mer_proportion_in_seq(seq, k))
         processed_X_train = pd.DataFrame(processed_train_list)
         # Processing X_test
         processed_test_list = []
         for i, seq in enumerate(X_test[selected_primer]):
             # print('Test set: Processing seq {} / {} - size {}'.format(i, len(X_test), len(seq)), end='\r')
-            processed_test_list.append(get_ATCG_proportion_in_seq(seq))
+            processed_test_list.append(get_ATCG_k_mer_proportion_in_seq(seq, k))
         processed_X_test = pd.DataFrame(processed_test_list)
         # Keeping only relevant columns for y
         processed_y_train = y_train[[taxonomy_levels[taxonomy_level]]]

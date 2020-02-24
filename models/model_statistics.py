@@ -21,7 +21,7 @@ def main_stats_model(y_train: pd.DataFrame, y_test: pd.DataFrame, y_pred: np.nda
                      primers_origin: str = '',
                      taxonomy_level: Union[List[int], int] = '',
                      selected_primer: Union[List[str], str] = '',
-                     test_size: float = 0.2) -> None:
+                     test_size: float = 0.2):
     """
     Compute relevant statistical analysis on classification model
     :param y_train: trained class
@@ -42,24 +42,28 @@ def main_stats_model(y_train: pd.DataFrame, y_test: pd.DataFrame, y_pred: np.nda
         os.makedirs(model_path)
 
     folder_number = get_new_model_folder_number(model_name=model_name)
-    analysis_path = model_path + '{:0>5d}_analysis\\'.format(folder_number)
+    analysis_path = model_path + '{:0>5d}_analysis_{}_{}\\'.format(folder_number, selected_primer, taxonomy_level)
     os.makedirs(analysis_path)
 
+    log_path = analysis_path + 'model_results.txt'
+    logger = StatLogger(log_path=log_path)
+
     # Basic information on configuration
-    get_model_info(y_test, model_name, model_parameters, model_preprocessing, sequence_origin, primers_origin,
-                   taxonomy_level, selected_primer, test_size, analysis_path=analysis_path)
+    test_size = get_model_info(y_test, model_name, model_parameters, model_preprocessing, sequence_origin,
+                               primers_origin, taxonomy_level, selected_primer, test_size, logger)
 
     # Metrics of model results
-    get_metrics_model(y_train, y_test, y_pred, analysis_path=analysis_path)
+    main_class_prop, accuracy = get_metrics_model(y_train, y_test, y_pred, logger, analysis_path=analysis_path)
 
-    return
+    return test_size, main_class_prop, accuracy
 
 
 # Stats functions
 def get_model_info(y_test, model_name, model_parameters, model_preprocessing, sequence_origin, primers_origin,
-                   taxonomy_level, selected_primer, test_size, analysis_path: str = '') -> None:
+                   taxonomy_level, selected_primer, test_size, logger) -> int:
     """
     Save basics stats on the model parameters and info
+    :param logger:
     :param y_test:
     :param model_name:
     :param model_parameters:
@@ -69,11 +73,9 @@ def get_model_info(y_test, model_name, model_parameters, model_preprocessing, se
     :param taxonomy_level:
     :param selected_primer:
     :param test_size:
-    :param analysis_path:
     :return:
     """
-    log_path = analysis_path + 'model_parameters.txt'
-    logger = StatLogger(log_path=log_path)
+
     # Global information on the model
     logger.log(title='Parameter information for {}'.format(model_name))
     # Data Origins
@@ -93,20 +95,19 @@ def get_model_info(y_test, model_name, model_parameters, model_preprocessing, se
     logger.log(text='Size of test set: {}'.format(len(y_test)))
     logger.log(text='Part of test size compared to total: {}'.format(test_size))
 
-    return
+    return len(y_test)
 
 
-def get_metrics_model(y_train, y_test, y_pred, analysis_path: str = ''):
+def get_metrics_model(y_train, y_test, y_pred, logger, analysis_path=''):
     """
 
+    :param analysis_path:
+    :param logger:
     :param y_train:
     :param y_test:
     :param y_pred:
-    :param analysis_path:
     :return:
     """
-    log_path = analysis_path + 'model_metrics.txt'
-    logger = StatLogger(log_path=log_path)
     # Results on the model
     logger.log(title='Results')
     taxo_column = y_test.columns[0]
@@ -115,7 +116,8 @@ def get_metrics_model(y_train, y_test, y_pred, analysis_path: str = ''):
     logger.log(text='Number of predicted classes in pred: {}'.format(len(np.unique(y_pred))))
     logger.log(text='Number of classes waited in test: {}'.format(len(y_test[taxo_column].value_counts())))
     logger.log(text='Number of wrong prediction: {} over {}'.format(bad_predictions, len(y_test)))
-    logger.log(text='Model Accuracy: {:0.2f}%'.format((1 - (bad_predictions / len(y_test))) * 100))
+    accuracy = (1 - (bad_predictions / len(y_test)))
+    logger.log(text='Model Accuracy: {:0.2f}%'.format(accuracy*100))
 
     # Saving CSV files
     y_test.to_csv(analysis_path + 'y_test.csv', index=False)
@@ -126,6 +128,7 @@ def get_metrics_model(y_train, y_test, y_pred, analysis_path: str = ''):
     logger.log(subtitle='Main classes in train set')
     value_counts = y_train[taxo_column].value_counts()
     local_size = len(y_train)
+    main_class_prop = value_counts[0] / local_size
     for rank in range(min(len(value_counts), 5)):
         logger.log(text='Train - Rank {} - {:0.2f}%: {} with {} occurences'.format(rank + 1,
                                                                                    value_counts[
@@ -145,10 +148,12 @@ def get_metrics_model(y_train, y_test, y_pred, analysis_path: str = ''):
     local_size = len(pred_df)
     for rank in range(min(len(value_counts), 5)):
         logger.log(text='Predictions - Rank {} - {:0.2f}%: {} with {} occurences'.format(rank + 1,
-                                                                                         value_counts[rank] / local_size * 100,
+                                                                                         value_counts[
+                                                                                             rank] / local_size * 100,
                                                                                          value_counts.index[rank],
                                                                                          value_counts[rank]))
-    return
+
+    return main_class_prop, accuracy
 
 
 # Utils
