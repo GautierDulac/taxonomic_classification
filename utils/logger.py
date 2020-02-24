@@ -49,7 +49,7 @@ class StatLogger(object):
             self.log_file.write('\n')
             self.log_file.write('-' * self.title_size + '\n')
             self.log_file.write('-' * left_hashtag_nb + ' ' + title.upper() + ' ' + '-' * right_hashtag_nb + '\n')
-            print('-' * left_hashtag_nb + ' ' + title.upper() + ' ' + '-' * right_hashtag_nb)
+            # print('-' * left_hashtag_nb + ' ' + title.upper() + ' ' + '-' * right_hashtag_nb)
             self.log_file.write('-' * self.title_size + '\n')
             self.log_file.write('\n')
         if subtitle is not None:
@@ -58,10 +58,10 @@ class StatLogger(object):
             right_hashtag_nb = self.title_size - asked_title_size - 2 - left_hashtag_nb
             self.log_file.write('\n')
             self.log_file.write('-' * left_hashtag_nb + ' ' + subtitle.upper() + ' ' + '-' * right_hashtag_nb + '\n')
-            print('-' * left_hashtag_nb + ' ' + subtitle.upper() + ' ' + '-' * right_hashtag_nb)
+            # print('-' * left_hashtag_nb + ' ' + subtitle.upper() + ' ' + '-' * right_hashtag_nb)
         if text is not None:
             self.log_file.write(text + '\n')
-            print(text)
+            # print(text)
         self.log_file.flush()
 
     def add_point(self, write_list=None) -> None:
