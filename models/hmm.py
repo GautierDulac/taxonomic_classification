@@ -3,6 +3,7 @@
 
 import numpy as np
 
+# TODO DEBUG AND ADAPT USING REFERENCE PAPER
 
 class HMM:
 
