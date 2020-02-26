@@ -192,7 +192,7 @@ def add_optimal_model_params(folder_number, selected_primer, taxonomy_level, acc
 
     if os.path.exists(csv_path):
         saved_optimal_parameters_df = pd.read_csv(csv_path)
-        saved_optimal_parameters_df = pd.concat(saved_optimal_parameters_df, new_optimal_paramter_df)
+        saved_optimal_parameters_df = pd.concat([saved_optimal_parameters_df, new_optimal_paramter_df])
         saved_optimal_parameters_df.to_csv(csv_path, index=False)
     else:
         new_optimal_paramter_df.to_csv(csv_path, index=False)
@@ -207,7 +207,7 @@ def get_new_model_folder_number(model_name: str = '') -> int:
     :return: (int) folder number
     """
     current_folders = [f for f in os.listdir(folder_paths['model_results'] + model_name + '\\')]
-    folder_numbers = [int(f.split('_')[0]) for f in current_folders]
+    folder_numbers = [int(f.split('_')[0]) for f in current_folders if isinstance(f.split('_')[0], int)]
     if len(folder_numbers) == 0:
         return 0
     else:
