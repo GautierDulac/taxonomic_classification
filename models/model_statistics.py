@@ -21,7 +21,9 @@ def main_stats_model(y_train: pd.DataFrame, y_test: pd.DataFrame, y_pred: np.nda
                      primers_origin: str = '',
                      taxonomy_level: Union[List[int], int] = '',
                      selected_primer: Union[List[str], str] = '',
-                     test_size: float = 0.2):
+                     test_size: float = 0.2,
+                     feature_importances: np.ndarray = None,
+                     save_csv: bool = False):
     """
     Compute relevant statistical analysis on classification model
     :param y_train: trained class
@@ -35,6 +37,8 @@ def main_stats_model(y_train: pd.DataFrame, y_test: pd.DataFrame, y_pred: np.nda
     :param taxonomy_level:
     :param selected_primer:
     :param test_size:
+    :param feature_importances: For RF models, save in text format the feature_importances
+    :param save_csv: For RF models with Cross Validation and Grid Search, save in csv format the optimal parameters
     :return: No return, only save analysis in results/models folder
     """
     model_path = folder_paths['model_results'] + model_name + '\\'
@@ -53,7 +57,12 @@ def main_stats_model(y_train: pd.DataFrame, y_test: pd.DataFrame, y_pred: np.nda
                                primers_origin, taxonomy_level, selected_primer, test_size, logger)
 
     # Metrics of model results
-    main_class_prop, accuracy = get_metrics_model(y_train, y_test, y_pred, logger, analysis_path=analysis_path)
+    main_class_prop, accuracy = get_metrics_model(y_train, y_test, y_pred, logger, feature_importances,
+                                                  analysis_path=analysis_path)
+
+    if save_csv:
+        add_optimal_model_params(folder_number, selected_primer, taxonomy_level, accuracy, model_parameters,
+                                 model_path=model_path)
 
     return test_size, main_class_prop, accuracy
 
@@ -98,7 +107,7 @@ def get_model_info(y_test, model_name, model_parameters, model_preprocessing, se
     return len(y_test)
 
 
-def get_metrics_model(y_train, y_test, y_pred, logger, analysis_path=''):
+def get_metrics_model(y_train, y_test, y_pred, logger, feature_importances, analysis_path=''):
     """
 
     :param analysis_path:
@@ -117,7 +126,7 @@ def get_metrics_model(y_train, y_test, y_pred, logger, analysis_path=''):
     logger.log(text='Number of classes waited in test: {}'.format(len(y_test[taxo_column].value_counts())))
     logger.log(text='Number of wrong prediction: {} over {}'.format(bad_predictions, len(y_test)))
     accuracy = (1 - (bad_predictions / len(y_test)))
-    logger.log(text='Model Accuracy: {:0.2f}%'.format(accuracy*100))
+    logger.log(text='Model Accuracy: {:0.2f}%'.format(accuracy * 100))
 
     # Saving CSV files
     y_test.to_csv(analysis_path + 'y_test.csv', index=False)
@@ -153,7 +162,42 @@ def get_metrics_model(y_train, y_test, y_pred, logger, analysis_path=''):
                                                                                          value_counts.index[rank],
                                                                                          value_counts[rank]))
 
+    if feature_importances is not None:
+        logger.log(subtitle='Feature importances')
+        logger.log(text=str(feature_importances))
+
     return main_class_prop, accuracy
+
+
+# Add a checkpoint for optimal model when gridsearch
+def add_optimal_model_params(folder_number, selected_primer, taxonomy_level, accuracy, model_parameters, model_path):
+    """
+
+    :param folder_number:
+    :param selected_primer:
+    :param taxonomy_level:
+    :param accuracy:
+    :param model_parameters:
+    :param model_path:
+    :return:
+    """
+    csv_path = model_path + "optimal_model_parameters.csv"
+    columns = ['folder_number', 'selected_primer', 'taxonomy_level', 'accuracy']
+    list_of_new_params = [folder_number, str(selected_primer), str(taxonomy_level), accuracy]
+    for key, value in model_parameters.items():
+        columns.append(key)
+        list_of_new_params.append(str(value))
+
+    new_optimal_paramter_df = pd.DataFrame([list_of_new_params], columns=columns)
+
+    if os.path.exists(csv_path):
+        saved_optimal_parameters_df = pd.read_csv(csv_path)
+        saved_optimal_parameters_df = pd.concat(saved_optimal_parameters_df, new_optimal_paramter_df)
+        saved_optimal_parameters_df.to_csv(csv_path, index=False)
+    else:
+        new_optimal_paramter_df.to_csv(csv_path, index=False)
+
+    return
 
 
 # Utils
