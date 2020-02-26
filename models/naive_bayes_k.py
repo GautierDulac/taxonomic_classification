@@ -15,7 +15,7 @@ from utils.utils import taxonomy_levels, folder_paths
 
 
 # Main function
-def naive_bayes_k(k=2, sequence_origin='DairyDB', primers_origin='DairyDB', taxonomy_level: int = 1,
+def naive_bayes_k(k, sequence_origin='DairyDB', primers_origin='DairyDB', taxonomy_level: int = 1,
                   selected_primer: str = 'V4',
                   model_preprocessing='Computing frequency of {}-mer (ATCG) in every sequence', test_size=0.2):
     """
