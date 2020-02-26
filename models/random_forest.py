@@ -5,7 +5,6 @@ Naive Bayes implementation to classify using a given HVR and a given taxonomic r
 from os import makedirs
 from os.path import isdir
 
-import numpy as np
 import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import GridSearchCV
@@ -27,31 +26,31 @@ def random_forest_k_grid_search_cv(k=4, sequence_origin='DairyDB', primers_origi
     model_preprocessing = model_preprocessing.format(k)
 
     # Number of trees in random forest
-    n_estimators = [int(x) for x in np.linspace(start=20, stop=200, num=5)]
+    # n_estimators = [200]  # Checked as often the best option
     # Number of features to consider at every split
-    max_features = ['auto', 'sqrt']
+    # max_features = ['auto']  # Checked as best option
     # Maximum number of levels in tree
-    max_depth = [None] + [int(x) for x in np.linspace(10, 110, num=5)]
+    # max_depth = [None]  # Checked as best option
     # Minimum number of samples required to split a node
-    min_samples_split = [2]  # Instead of 2, 5, 10 because of unbalanced classes
+    # min_samples_split = [2]  # Instead of 2, 5, 10 because of unbalanced classes
     # Minimum number of samples required at each leaf node
-    min_samples_leaf = [1]  # Instead of 1, 2, 4 because of unbalanced classes
+    # min_samples_leaf = [1]  # Instead of 1, 2, 4 because of unbalanced classes
     # Method of selecting samples for training each tree
-    bootstrap = [True, False]
+    # bootstrap = [False]  # Checked as best option
     # Create the random grid
-    param_grid = {'n_estimators': n_estimators,
-                  'max_features': max_features,
-                  'max_depth': max_depth,
-                  'min_samples_split': min_samples_split,
-                  'min_samples_leaf': min_samples_leaf,
-                  'bootstrap': bootstrap}
+    param_grid = {}
 
     X_train, X_test, y_train, y_test = ETL_RF_k_mer(k=k,
                                                     sequence_origin=sequence_origin,
                                                     primers_origin=primers_origin,
                                                     taxonomy_level=taxonomy_level,
                                                     selected_primer=selected_primer)
-    RF = RandomForestClassifier()
+    if taxonomy_level == 0:
+        bootstrap = True
+    else:
+        bootstrap = False
+    RF = RandomForestClassifier(bootstrap=bootstrap, min_samples_leaf=1, min_samples_split=2, max_features='auto',
+                                n_estimators=200, max_depth=None)
     grid_search = GridSearchCV(estimator=RF, param_grid=param_grid, cv=3, n_jobs=-1, verbose=1)
     grid_search.fit(X_train, y_train)
     RF_opt = grid_search.best_estimator_
@@ -74,7 +73,7 @@ def random_forest_k_grid_search_cv(k=4, sequence_origin='DairyDB', primers_origi
     return RF_opt, test_size, prop_main_class, accuracy
 
 
-# Main function without CV and Grid search
+# Main function without CV and Grid search - Now parameters are chosen thanks to previous function
 def random_forest_k_default(k=4, sequence_origin='DairyDB', primers_origin='DairyDB', taxonomy_level: int = 1,
                             selected_primer: str = 'V4',
                             model_preprocessing='Computing frequency of {}-mer (ATCG) in every sequence',
@@ -89,7 +88,12 @@ def random_forest_k_default(k=4, sequence_origin='DairyDB', primers_origin='Dair
                                                     primers_origin=primers_origin,
                                                     taxonomy_level=taxonomy_level,
                                                     selected_primer=selected_primer)
-    RF = RandomForestClassifier()
+    if taxonomy_level == 0:
+        bootstrap = True
+    else:
+        bootstrap = False
+    RF = RandomForestClassifier(bootstrap=bootstrap, min_samples_leaf=1, min_samples_split=2, max_features='auto',
+                                n_estimators=200, max_depth=None)
     y_pred = RF.fit(X_train, y_train).predict(X_test)
 
     test_size, prop_main_class, accuracy = main_stats_model(y_train=y_train,
