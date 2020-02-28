@@ -124,6 +124,10 @@ def get_saved_folder_number(sequence_origin: str, primers_origin: str, taxonomy_
         taxonomy_level = str(taxonomy_level)
     if isinstance(selected_primer, list):
         selected_primer = str(selected_primer)
+    if sequence_origin == '':
+        sequence_origin = 'all'
+    if primers_origin == '':
+        primers_origin = 'all'
     asked_parameter_df = loaded_data \
         .loc[loaded_data.sequence_origin == sequence_origin] \
         .loc[loaded_data.primers_origin == primers_origin] \
@@ -150,6 +154,10 @@ def update_loaded_data(sequence_origin: str, primers_origin: str, taxonomy_level
         taxonomy_level = str(taxonomy_level)
     if isinstance(selected_primer, list):
         selected_primer = str(selected_primer)
+    if sequence_origin == '':
+        sequence_origin = 'all'
+    if primers_origin == '':
+        primers_origin = 'all'
     if isfile(csv_path):
         loaded_data = pd.read_csv(csv_path)
 

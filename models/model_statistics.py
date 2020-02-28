@@ -7,7 +7,9 @@ from typing import Union, List
 
 import numpy as np
 import pandas as pd
+import matplotlib.pyplot as plt
 
+from processings.sequence_processing import get_all_kmers
 from utils.logger import StatLogger
 from utils.utils import folder_paths
 
@@ -23,6 +25,7 @@ def main_stats_model(y_train: pd.DataFrame, y_test: pd.DataFrame, y_pred: np.nda
                      selected_primer: Union[List[str], str] = '',
                      test_size: float = 0.2,
                      feature_importances: np.ndarray = None,
+                     k: int = 4,
                      save_csv: bool = False):
     """
     Compute relevant statistical analysis on classification model
@@ -38,6 +41,7 @@ def main_stats_model(y_train: pd.DataFrame, y_test: pd.DataFrame, y_pred: np.nda
     :param selected_primer:
     :param test_size:
     :param feature_importances: For RF models, save in text format the feature_importances
+    :param k: Value of k for preprocessing
     :param save_csv: For RF models with Cross Validation and Grid Search, save in csv format the optimal parameters
     :return: No return, only save analysis in results/models folder
     """
@@ -57,7 +61,7 @@ def main_stats_model(y_train: pd.DataFrame, y_test: pd.DataFrame, y_pred: np.nda
                                primers_origin, taxonomy_level, selected_primer, test_size, logger)
 
     # Metrics of model results
-    main_class_prop, accuracy = get_metrics_model(y_train, y_test, y_pred, logger, feature_importances,
+    main_class_prop, accuracy = get_metrics_model(y_train, y_test, y_pred, logger, feature_importances, k,
                                                   analysis_path=analysis_path)
 
     if save_csv:
@@ -107,7 +111,7 @@ def get_model_info(y_test, model_name, model_parameters, model_preprocessing, se
     return len(y_test)
 
 
-def get_metrics_model(y_train, y_test, y_pred, logger, feature_importances, analysis_path=''):
+def get_metrics_model(y_train, y_test, y_pred, logger, feature_importances, k, analysis_path=''):
     """
 
     :param analysis_path:
@@ -115,6 +119,8 @@ def get_metrics_model(y_train, y_test, y_pred, logger, feature_importances, anal
     :param y_train:
     :param y_test:
     :param y_pred:
+    :param feature_importances:
+    :param k:
     :return:
     """
     # Results on the model
@@ -165,6 +171,19 @@ def get_metrics_model(y_train, y_test, y_pred, logger, feature_importances, anal
     if feature_importances is not None:
         logger.log(subtitle='Feature importances')
         logger.log(text=str(feature_importances))
+        feature_plot_path = analysis_path + 'feature_importances_plot.png'
+        indices = np.argsort(feature_importances)[-15:]
+        features = get_all_kmers(k)
+        # Plot the feature importances of the forest
+        plt.figure()
+        plt.title("Feature importances")
+        plt.barh(range(len(indices)), feature_importances[indices], color="r", align="center")
+        # If you want to define your own labels,
+        # change indices to a list of labels on the following line.
+        plt.yticks(range(len(indices)), [features[indices_i] for indices_i in indices])
+        plt.ylim([-1, len(indices)])
+        plt.savefig(feature_plot_path)
+        plt.close()
 
     return main_class_prop, accuracy
 
@@ -207,7 +226,7 @@ def get_new_model_folder_number(model_name: str = '') -> int:
     :return: (int) folder number
     """
     current_folders = [f for f in os.listdir(folder_paths['model_results'] + model_name + '\\')]
-    folder_numbers = [int(f.split('_')[0]) for f in current_folders if isinstance(f.split('_')[0], int)]
+    folder_numbers = [int(f.split('_')[0]) for f in current_folders if f.split('_')[0] != 'optimal']
     if len(folder_numbers) == 0:
         return 0
     else:

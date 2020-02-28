@@ -30,7 +30,7 @@ def random_forest_k_grid_search_cv(k=4, sequence_origin='DairyDB', primers_origi
     # Number of features to consider at every split
     # max_features = ['auto']  # Checked as best option
     # Maximum number of levels in tree
-    # max_depth = [None]  # Checked as best option
+    # max_depth = [None]  # Checked as best option -> Due to memory errors, limiting at 30
     # Minimum number of samples required to split a node
     # min_samples_split = [2]  # Instead of 2, 5, 10 because of unbalanced classes
     # Minimum number of samples required at each leaf node
@@ -50,7 +50,7 @@ def random_forest_k_grid_search_cv(k=4, sequence_origin='DairyDB', primers_origi
     else:
         bootstrap = False
     RF = RandomForestClassifier(bootstrap=bootstrap, min_samples_leaf=1, min_samples_split=2, max_features='auto',
-                                n_estimators=200, max_depth=None)
+                                n_estimators=200, max_depth=30)
     grid_search = GridSearchCV(estimator=RF, param_grid=param_grid, cv=3, n_jobs=-1, verbose=1)
     grid_search.fit(X_train, y_train)
     RF_opt = grid_search.best_estimator_
@@ -68,6 +68,7 @@ def random_forest_k_grid_search_cv(k=4, sequence_origin='DairyDB', primers_origi
                                                             selected_primer=selected_primer,
                                                             test_size=test_size,
                                                             feature_importances=RF_opt.feature_importances_,
+                                                            k=k,
                                                             save_csv=True)
 
     return RF_opt, test_size, prop_main_class, accuracy
@@ -88,12 +89,15 @@ def random_forest_k_default(k=4, sequence_origin='DairyDB', primers_origin='Dair
                                                     primers_origin=primers_origin,
                                                     taxonomy_level=taxonomy_level,
                                                     selected_primer=selected_primer)
-    if taxonomy_level == 0:
-        bootstrap = True
+        
+    if taxonomy_level >= 5:
+        max_depth = 10
+    elif taxonomy_level >= 3 and selected_primer == 'sequence' and sequence_origin == '':
+        max_depth = 20
     else:
-        bootstrap = False
-    RF = RandomForestClassifier(bootstrap=bootstrap, min_samples_leaf=1, min_samples_split=2, max_features='auto',
-                                n_estimators=200, max_depth=None)
+        max_depth = 30
+    RF = RandomForestClassifier(bootstrap=False, min_samples_leaf=1, min_samples_split=2, max_features=min(50, 4**k),
+                                n_estimators=200, max_depth=max_depth, n_jobs=-1)  # 30 for max_depth is not backed-up
     y_pred = RF.fit(X_train, y_train).predict(X_test)
 
     test_size, prop_main_class, accuracy = main_stats_model(y_train=y_train,
@@ -107,6 +111,7 @@ def random_forest_k_default(k=4, sequence_origin='DairyDB', primers_origin='Dair
                                                             taxonomy_level=taxonomy_level,
                                                             selected_primer=selected_primer,
                                                             test_size=test_size,
+                                                            k=k,
                                                             feature_importances=RF.feature_importances_)
 
     return test_size, prop_main_class, accuracy

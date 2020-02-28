@@ -21,7 +21,7 @@ def main_hvr_loading(desired_sequences: str = '', desired_primers: str = 'DairyD
         else:
             hvr_df_GG_DB = pd.read_csv(folder_paths['data'] + 'hvr_DB_sequences_DB_primers.csv')
             hvr_df_DB_DB = pd.read_csv(folder_paths['data'] + 'hvr_DB_sequences_DB_primers.csv')
-            hvr_df = pd.concat(hvr_df_DB_DB, hvr_df_GG_DB)
+            hvr_df = pd.concat([hvr_df_DB_DB, hvr_df_GG_DB])
         return hvr_df
     elif desired_primers == 'Chaudhary':
         if desired_sequences == 'DairyDB':
@@ -31,5 +31,5 @@ def main_hvr_loading(desired_sequences: str = '', desired_primers: str = 'DairyD
         else:
             hvr_df_GG_CH = pd.read_csv(folder_paths['data'] + 'hvr_DB_sequences_CH_primers.csv')
             hvr_df_DB_CH = pd.read_csv(folder_paths['data'] + 'hvr_DB_sequences_CH_primers.csv')
-            hvr_df = pd.concat(hvr_df_DB_CH, hvr_df_GG_CH)
+            hvr_df = pd.concat([hvr_df_DB_CH, hvr_df_GG_CH])
         return hvr_df

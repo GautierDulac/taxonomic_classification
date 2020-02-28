@@ -4,18 +4,18 @@ author: "Gautier DULAC"
 date: "24 février 2020"
 output: html_document
 ---
-
-# Comparing HVR for Taxo Classification on all Naive Bayes results
-
-The graphs are made based on the initial work of the DairyDB team (https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6615214/bin/12864_2019_5914_MOESM4_ESM.html) to compare quality of models depending on taxonomy levels and choice of hypervariable region.
-
-## Libraries
+# Libraries
 
 ```{r}
 library(readr)
 library(ggplot2)
 library(tidyverse)
 ```
+
+
+# Comparing HVR for Taxo Classification on all Naive Bayes results
+
+The graphs are made based on the initial work of the DairyDB team (https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6615214/bin/12864_2019_5914_MOESM4_ESM.html) to compare quality of models depending on taxonomy levels and choice of hypervariable region.
 
 ## Reading data - extracted manually from different saved files with all NB results
 
@@ -98,9 +98,37 @@ p
 ggsave(paste("boxplot_",meth,"_with_double_hvr",".png",sep=""), width=21, height=21, units="cm")
 ```
 
-# Chosing the best Model by TAXO RANK
+## MAX Plots
 
-# Reformat Data
+```{r}
+NB_max_results <- NB_gathered_results %>% filter(HVR!='sequence') %>% 
+  group_by(TAXO, HVR) %>% 
+  summarise(max_Accuracy=max(Accuracy), optimal_k=NB_k[which.max(Accuracy)]) %>% 
+  group_by(TAXO) %>% 
+  summarise(Max_Accuracy=max(max_Accuracy),
+            Optimal_k=optimal_k[which.max(max_Accuracy)], 
+            Optimal_HVR=HVR[which.max(max_Accuracy)])
+
+p <- ggplot() + 
+  geom_point(data=NB_max_results, 
+            aes(x=TAXO,y=Max_Accuracy, color=Optimal_HVR, shape=Optimal_k), size=4) + 
+  theme_bw() + 
+  labs(x = "Taxonomic rank", y = "Accuracy %") + 
+  coord_cartesian(ylim=c(0, 1)) + 
+  theme(axis.text=element_text(size=12), 
+        axis.title=element_text(size=14,face="bold"), 
+        plot.title=element_text(size = 14, face="bold"), 
+        legend.position = "bottom",
+        legend.text = element_text(size = 12), 
+        legend.title = element_text(size = 12)) +
+  ggtitle('Maximal Accuracy of Naive Bayes model - DB sequences')
+
+p
+
+ggsave(paste("maxplot_",meth,".png",sep=""), width=21, height=21, units="cm")
+```
+
+## Chosing the best Model by TAXO RANK
 
 ```{r}
 NB_gathered_results <- NB_results %>% 
@@ -149,5 +177,495 @@ for (chosen_taxo in all_chosen_taxo[[1]]) {
 
 ```
 
+# Comparing HVR for Taxo Classification on all RANDOM Forest results
+
+The graphs are made based on the initial work of the DairyDB team (https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6615214/bin/12864_2019_5914_MOESM4_ESM.html) to compare quality of models depending on taxonomy levels and choice of hypervariable region.
+
+## Reading data - extracted from saved files with all RF results
+
+```{r}
+RF_results <- read_delim("Random Forest - ALL RF - DB - DB.csv", 
+                      ",", 
+                      escape_double = FALSE, 
+                      trim_ws = TRUE)
+
+
+colnames(RF_results) <- c('HVR', 'TAXO_rank', 'test_size', 'main_class_prop', 'RF_1', 'RF_2', 'RF_3', 'RF_4', 'RF_5')
+```
+
+## Changing db shape and taxo values
+
+```{r}
+RF_gathered_results <- RF_results %>% 
+  gather('RF_k', 'Accuracy', RF_1, RF_2, RF_3, RF_4, RF_5) %>% 
+  select(HVR, TAXO_rank, RF_k, Accuracy)
+
+RF_gathered_results <- RF_gathered_results %>% mutate(TAXO = case_when(
+  TAXO_rank==0 ~ '1-Kingdom',
+  TAXO_rank==1 ~ '2-Phylum', 
+  TAXO_rank==2 ~ '3-Class',
+  TAXO_rank==3 ~ '4-Order', 
+  TAXO_rank==4 ~ '5-Family',
+  TAXO_rank==5 ~ '6-Genus',
+  TAXO_rank==6 ~ '7-Species'
+)) %>% 
+  select(HVR, TAXO, RF_k, Accuracy)
+```
+
+
+## Ploting the comparison of different NB(k) for all HVR and taxo
+
+```{r}
+meth <- 'Random_Forest_up_to_5'
+```
+
+```{r}
+ONE_HVR <- c('V1', 'V2', 'V3', 'V4', 'V5', 'V6', 'V7', 'V8', 'V9')#, 'sequence')
+
+
+p <- ggplot(data=RF_gathered_results %>% filter(HVR %in% ONE_HVR), 
+            aes(x=TAXO,y=Accuracy, fill=HVR)) + 
+  geom_boxplot() + 
+  theme_bw() + 
+  labs(x = "Taxonomic rank", y = "Accuracy %") + 
+  coord_cartesian(ylim=c(0, 1)) + 
+  theme(axis.text=element_text(size=12), 
+        axis.title=element_text(size=14,face="bold"), 
+        plot.title=element_text(size = 14, face="bold"), 
+        legend.position = "bottom",
+        legend.text = element_text(size = 12), 
+        legend.title = element_text(size = 12)) +
+  ggtitle('Accuracy of Random Forest model\ndepending on Taxonomy Rank and used HVR')
+
+p
+
+ggsave(paste("boxplot_",meth,"_with_single_hvr",".png",sep=""), width=21, height=21, units="cm")
+```
+
+```{r}
+p <- ggplot(data=RF_gathered_results %>% filter(!(HVR %in% ONE_HVR) ), 
+            aes(x=TAXO,y=Accuracy, fill=HVR)) + 
+  geom_boxplot() + 
+  theme_bw() + 
+  labs(x = "Taxonomic rank", y = "Accuracy %") + 
+  coord_cartesian(ylim=c(0, 1)) + 
+  theme(axis.text=element_text(size=12), 
+        axis.title=element_text(size=14,face="bold"), 
+        plot.title=element_text(size = 14, face="bold"), 
+        legend.position = "bottom",
+        legend.text = element_text(size = 12), 
+        legend.title = element_text(size = 12)) +
+  ggtitle('Accuracy of Random Forest model\ndepending on Taxonomy Rank and used HVR')
+
+p
+
+ggsave(paste("boxplot_",meth,"_with_double_hvr",".png",sep=""), width=21, height=21, units="cm")
+```
+
+## MAX Plots
+
+```{r}
+RF_max_results <- RF_gathered_results %>% 
+  group_by(TAXO, HVR) %>% 
+  summarise(max_Accuracy=max(Accuracy), optimal_k=RF_k[which.max(Accuracy)]) %>% 
+  group_by(TAXO) %>% 
+  summarise(Max_Accuracy=max(max_Accuracy),
+            Optimal_k=optimal_k[which.max(max_Accuracy)], 
+            Optimal_HVR=HVR[which.max(max_Accuracy)])
+
+p <- ggplot() + 
+  geom_point(data=RF_max_results, 
+            aes(x=TAXO,y=Max_Accuracy, color=Optimal_HVR, shape=Optimal_k), size=4) + 
+  theme_bw() + 
+  labs(x = "Taxonomic rank", y = "Accuracy %") + 
+  coord_cartesian(ylim=c(0, 1)) + 
+  theme(axis.text=element_text(size=12), 
+        axis.title=element_text(size=14,face="bold"), 
+        plot.title=element_text(size = 14, face="bold"), 
+        legend.position = "bottom",
+        legend.text = element_text(size = 12), 
+        legend.title = element_text(size = 12)) +
+  ggtitle('Maximal Accuracy of Random Forest model - DB sequences')
+
+p
+
+ggsave(paste("maxplot_",meth,".png",sep=""), width=21, height=21, units="cm")
+```
+
+## Chosing the best Model by TAXO RANK
+
+```{r}
+RF_gathered_results <- RF_results %>% 
+  gather('RF_k', 'Accuracy', RF_1, RF_2, RF_3, RF_4, RF_5, main_class_prop) %>% 
+  select(HVR, TAXO_rank, RF_k, Accuracy, test_size)
+
+RF_gathered_results <- RF_gathered_results %>% mutate(TAXO = case_when(
+  TAXO_rank==0 ~ '1-Kingdom',
+  TAXO_rank==1 ~ '2-Phylum', 
+  TAXO_rank==2 ~ '3-Class',
+  TAXO_rank==3 ~ '4-Order', 
+  TAXO_rank==4 ~ '5-Family',
+  TAXO_rank==5 ~ '6-Genus',
+  TAXO_rank==6 ~ '7-Species'
+)) %>% 
+  select(HVR, TAXO, RF_k, Accuracy, test_size)
+
+RF_gathered_results <- RF_gathered_results %>% mutate(HVR=replace(HVR, HVR=='sequence', 'Seq'))
+```
+
+
+
+```{r}
+all_chosen_taxo <- RF_gathered_results %>% select(TAXO) %>% unique()
+
+for (chosen_taxo in all_chosen_taxo[[1]]) {
+  
+  p <- ggplot(data=RF_gathered_results %>% filter(TAXO==chosen_taxo), 
+              aes(x=HVR,y=Accuracy, color=RF_k, size=test_size)) + 
+    geom_point() +
+    theme_bw() + 
+    labs(x = "HyperVariable Region", y = "Accuracy %") + 
+    coord_cartesian(ylim=c(0, 1)) + 
+    theme(axis.text=element_text(size=14), 
+          axis.title=element_text(size=16,face="bold"), 
+          plot.title=element_text(size=16, face="bold"), 
+          legend.position = "bottom",
+          legend.text = element_text(size=12), 
+          legend.title = element_text(size=12)) +
+    guides(colour = guide_legend(override.aes = list(size=5))) +
+    ggtitle(paste('Accuracy of Random Forest model to predict ',chosen_taxo, '\ndepending on the used HVR', sep=''))
+  
+  
+  ggsave(paste("boxplot_",meth,"_for_",chosen_taxo,".png",sep=""), width=24, height=21, units="cm")
+}
+
+```
+
+
+# Comparing HVR for Taxo Classification on all Naive Bayes results
+
+The graphs are made based on the initial work of the DairyDB team (https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6615214/bin/12864_2019_5914_MOESM4_ESM.html) to compare quality of models depending on taxonomy levels and choice of hypervariable region.
+
+## Reading data - extracted manually from different saved files with all NB results with all sequences
+
+```{r}
+NB_results <- read_delim("Naive Bayes - ALL NB - DB and GG - DB.csv", 
+                      ",", 
+                      escape_double = FALSE, 
+                      trim_ws = TRUE)
+
+
+colnames(NB_results) <- c('HVR', 'TAXO_rank', 'test_size', 'main_class_prop', 'NB_1', 'NB_2', 'NB_3', 'NB_4', 'NB_5')
+```
+
+## Changing db shape and taxo values
+
+```{r}
+NB_gathered_results <- NB_results %>% 
+  gather('NB_k', 'Accuracy', NB_5, NB_4, NB_3, NB_2, NB_1) %>% 
+  select(HVR, TAXO_rank, NB_k, Accuracy)
+
+NB_gathered_results <- NB_gathered_results %>% mutate(TAXO = case_when(
+  TAXO_rank==0 ~ '1-Kingdom',
+  TAXO_rank==1 ~ '2-Phylum', 
+  TAXO_rank==2 ~ '3-Class',
+  TAXO_rank==3 ~ '4-Order', 
+  TAXO_rank==4 ~ '5-Family',
+  TAXO_rank==5 ~ '6-Genus',
+  TAXO_rank==6 ~ '7-Species'
+)) %>% 
+  select(HVR, TAXO, NB_k, Accuracy)
+```
+
+
+## Ploting the comparison of different NB(k) for all HVR and taxo
+
+```{r}
+meth <- 'Naive_Bayes_up_to_5_DB_AND_GG'
+```
+
+```{r}
+ONE_HVR <- c('V1', 'V2', 'V3', 'V4', 'V5', 'V6', 'V7', 'V8', 'V9')#, 'sequence')
+
+
+p <- ggplot(data=NB_gathered_results %>% filter(HVR %in% ONE_HVR), 
+            aes(x=TAXO,y=Accuracy, fill=HVR)) + 
+  geom_boxplot() + 
+  theme_bw() + 
+  labs(x = "Taxonomic rank", y = "Accuracy %") + 
+  coord_cartesian(ylim=c(0, 1)) + 
+  theme(axis.text=element_text(size=12), 
+        axis.title=element_text(size=14,face="bold"), 
+        plot.title=element_text(size = 14, face="bold"), 
+        legend.position = "bottom",
+        legend.text = element_text(size = 12), 
+        legend.title = element_text(size = 12)) +
+  ggtitle('Accuracy of Naive Bayes model\ndepending on Taxonomy Rank and used HVR')
+
+p
+
+ggsave(paste("boxplot_",meth,"_with_single_hvr",".png",sep=""), width=21, height=21, units="cm")
+```
+
+```{r}
+p <- ggplot(data=NB_gathered_results %>% filter(!(HVR %in% ONE_HVR) ), 
+            aes(x=TAXO,y=Accuracy, fill=HVR)) + 
+  geom_boxplot() + 
+  theme_bw() + 
+  labs(x = "Taxonomic rank", y = "Accuracy %") + 
+  coord_cartesian(ylim=c(0, 1)) + 
+  theme(axis.text=element_text(size=12), 
+        axis.title=element_text(size=14,face="bold"), 
+        plot.title=element_text(size = 14, face="bold"), 
+        legend.position = "bottom",
+        legend.text = element_text(size = 12), 
+        legend.title = element_text(size = 12)) +
+  ggtitle('Accuracy of Naive Bayes model\ndepending on Taxonomy Rank and used HVR')
+
+p
+
+ggsave(paste("boxplot_",meth,"_with_double_hvr",".png",sep=""), width=21, height=21, units="cm")
+```
+
+## MAX Plots
+
+```{r}
+NB_max_results <- NB_gathered_results %>% 
+  group_by(TAXO, HVR) %>% 
+  summarise(max_Accuracy=max(Accuracy), optimal_k=NB_k[which.max(Accuracy)]) %>% 
+  group_by(TAXO) %>% 
+  summarise(Max_Accuracy=max(max_Accuracy),
+            Optimal_k=optimal_k[which.max(max_Accuracy)], 
+            Optimal_HVR=HVR[which.max(max_Accuracy)])
+
+p <- ggplot() + 
+  geom_point(data=NB_max_results, 
+            aes(x=TAXO,y=Max_Accuracy, color=Optimal_HVR, shape=Optimal_k), size=4) + 
+  theme_bw() + 
+  labs(x = "Taxonomic rank", y = "Accuracy %") + 
+  coord_cartesian(ylim=c(0, 1)) + 
+  theme(axis.text=element_text(size=12), 
+        axis.title=element_text(size=14,face="bold"), 
+        plot.title=element_text(size = 14, face="bold"), 
+        legend.position = "bottom",
+        legend.text = element_text(size = 12), 
+        legend.title = element_text(size = 12)) +
+  ggtitle('Maximal Accuracy of Naive Bayes model - DB and GG sequences')
+
+p
+
+ggsave(paste("maxplot_",meth,".png",sep=""), width=21, height=21, units="cm")
+```
+
+
+## Chosing the best Model by TAXO RANK
+
+```{r}
+NB_gathered_results <- NB_results %>% 
+  gather('NB_k', 'Accuracy', NB_5, NB_4, NB_3, NB_2, NB_1, main_class_prop) %>% 
+  select(HVR, TAXO_rank, NB_k, Accuracy, test_size)
+
+NB_gathered_results <- NB_gathered_results %>% mutate(TAXO = case_when(
+  TAXO_rank==0 ~ '1-Kingdom',
+  TAXO_rank==1 ~ '2-Phylum', 
+  TAXO_rank==2 ~ '3-Class',
+  TAXO_rank==3 ~ '4-Order', 
+  TAXO_rank==4 ~ '5-Family',
+  TAXO_rank==5 ~ '6-Genus',
+  TAXO_rank==6 ~ '7-Species'
+)) %>% 
+  select(HVR, TAXO, NB_k, Accuracy, test_size)
+
+NB_gathered_results <- NB_gathered_results %>% mutate(HVR=replace(HVR, HVR=='sequence', 'Seq'))
+```
+
+```{r}
+all_chosen_taxo <- NB_gathered_results %>% select(TAXO) %>% unique()
+
+for (chosen_taxo in all_chosen_taxo[[1]]) {
+  
+  p <- ggplot(data=NB_gathered_results %>% filter(TAXO==chosen_taxo), 
+              aes(x=HVR,y=Accuracy, color=NB_k, size=test_size)) + 
+    geom_point() +
+    theme_bw() + 
+    labs(x = "HyperVariable Region", y = "Accuracy %") + 
+    coord_cartesian(ylim=c(0, 1)) + 
+    theme(axis.text=element_text(size=14), 
+          axis.title=element_text(size=16,face="bold"), 
+          plot.title=element_text(size=16, face="bold"), 
+          legend.position = "bottom",
+          legend.text = element_text(size=12), 
+          legend.title = element_text(size=12)) +
+    guides(colour = guide_legend(override.aes = list(size=5))) +
+    ggtitle(paste('Accuracy of Naive Bayes model to predict ',chosen_taxo, '\ndepending on the used HVR', sep=''))
+  
+  
+  ggsave(paste("boxplot_",meth,"_for_",chosen_taxo,".png",sep=""), width=24, height=21, units="cm")
+}
+
+```
+
+
+# Comparing HVR for Taxo Classification on all RANDOM Forest results
+
+The graphs are made based on the initial work of the DairyDB team (https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6615214/bin/12864_2019_5914_MOESM4_ESM.html) to compare quality of models depending on taxonomy levels and choice of hypervariable region.
+
+## Reading data - extracted from saved files with all RF results
+
+```{r}
+RF_results <- read_delim("Random Forest - RF 4 & 5 - DB and GG - DB.csv", 
+                      ",", 
+                      escape_double = FALSE, 
+                      trim_ws = TRUE)
+
+
+colnames(RF_results) <- c('HVR', 'TAXO_rank', 'test_size', 'main_class_prop', 'RF_4', 'RF_5')
+```
+
+## Changing db shape and taxo values
+
+```{r}
+RF_gathered_results <- RF_results %>% 
+  gather('RF_k', 'Accuracy', RF_4, RF_5) %>% 
+  select(HVR, TAXO_rank, RF_k, Accuracy)
+
+RF_gathered_results <- RF_gathered_results %>% mutate(TAXO = case_when(
+  TAXO_rank==0 ~ '1-Kingdom',
+  TAXO_rank==1 ~ '2-Phylum', 
+  TAXO_rank==2 ~ '3-Class',
+  TAXO_rank==3 ~ '4-Order', 
+  TAXO_rank==4 ~ '5-Family',
+  TAXO_rank==5 ~ '6-Genus',
+  TAXO_rank==6 ~ '7-Species'
+)) %>% 
+  select(HVR, TAXO, RF_k, Accuracy)
+```
+
+
+## Ploting the comparison of different NB(k) for all HVR and taxo
+
+```{r}
+meth <- 'Random_Forest_4_to_5_DB_AND_GG'
+```
+
+```{r}
+ONE_HVR <- c('V1', 'V2', 'V3', 'V4', 'V5', 'V6', 'V7', 'V8', 'V9')#, 'sequence')
+
+
+p <- ggplot(data=RF_gathered_results %>% filter(HVR %in% ONE_HVR), 
+            aes(x=TAXO,y=Accuracy, fill=HVR)) + 
+  geom_boxplot() + 
+  theme_bw() + 
+  labs(x = "Taxonomic rank", y = "Accuracy %") + 
+  coord_cartesian(ylim=c(0, 1)) + 
+  theme(axis.text=element_text(size=12), 
+        axis.title=element_text(size=14,face="bold"), 
+        plot.title=element_text(size = 14, face="bold"), 
+        legend.position = "bottom",
+        legend.text = element_text(size = 12), 
+        legend.title = element_text(size = 12)) +
+  ggtitle('Accuracy of Random Forest model\ndepending on Taxonomy Rank and used HVR')
+
+p
+
+ggsave(paste("boxplot_",meth,"_with_single_hvr",".png",sep=""), width=21, height=21, units="cm")
+```
+
+```{r}
+p <- ggplot(data=RF_gathered_results %>% filter(!(HVR %in% ONE_HVR) ), 
+            aes(x=TAXO,y=Accuracy, fill=HVR)) + 
+  geom_boxplot() + 
+  theme_bw() + 
+  labs(x = "Taxonomic rank", y = "Accuracy %") + 
+  coord_cartesian(ylim=c(0, 1)) + 
+  theme(axis.text=element_text(size=12), 
+        axis.title=element_text(size=14,face="bold"), 
+        plot.title=element_text(size = 14, face="bold"), 
+        legend.position = "bottom",
+        legend.text = element_text(size = 12), 
+        legend.title = element_text(size = 12)) +
+  ggtitle('Accuracy of Random Forest model\ndepending on Taxonomy Rank and used HVR')
+
+p
+
+ggsave(paste("boxplot_",meth,"_with_double_hvr",".png",sep=""), width=21, height=21, units="cm")
+```
+## MAX Plots
+
+```{r}
+RF_max_results <- RF_gathered_results %>% 
+  group_by(TAXO, HVR) %>% 
+  summarise(max_Accuracy=max(Accuracy), optimal_k=RF_k[which.max(Accuracy)]) %>% 
+  group_by(TAXO) %>% 
+  summarise(Max_Accuracy=max(max_Accuracy),
+            Optimal_k=optimal_k[which.max(max_Accuracy)], 
+            Optimal_HVR=HVR[which.max(max_Accuracy)])
+
+p <- ggplot() + 
+  geom_point(data=RF_max_results, 
+            aes(x=TAXO,y=Max_Accuracy, color=Optimal_HVR, shape=Optimal_k), size=4) + 
+  theme_bw() + 
+  labs(x = "Taxonomic rank", y = "Accuracy %") + 
+  coord_cartesian(ylim=c(0, 1)) + 
+  theme(axis.text=element_text(size=12), 
+        axis.title=element_text(size=14,face="bold"), 
+        plot.title=element_text(size = 14, face="bold"), 
+        legend.position = "bottom",
+        legend.text = element_text(size = 12), 
+        legend.title = element_text(size = 12)) +
+  ggtitle('Maximal Accuracy of Random Forest model - DB and GG sequences')
+
+p
+
+ggsave(paste("maxplot_",meth,".png",sep=""), width=21, height=21, units="cm")
+```
+
+
+## Chosing the best Model by TAXO RANK
+
+```{r}
+RF_gathered_results <- RF_results %>% 
+  gather('RF_k', 'Accuracy', RF_4, RF_5, main_class_prop) %>% 
+  select(HVR, TAXO_rank, RF_k, Accuracy, test_size)
+
+RF_gathered_results <- RF_gathered_results %>% mutate(TAXO = case_when(
+  TAXO_rank==0 ~ '1-Kingdom',
+  TAXO_rank==1 ~ '2-Phylum', 
+  TAXO_rank==2 ~ '3-Class',
+  TAXO_rank==3 ~ '4-Order', 
+  TAXO_rank==4 ~ '5-Family',
+  TAXO_rank==5 ~ '6-Genus',
+  TAXO_rank==6 ~ '7-Species'
+)) %>% 
+  select(HVR, TAXO, RF_k, Accuracy, test_size)
+
+RF_gathered_results <- RF_gathered_results %>% mutate(HVR=replace(HVR, HVR=='sequence', 'Seq'))
+```
+
+```{r}
+all_chosen_taxo <- RF_gathered_results %>% select(TAXO) %>% unique()
+
+for (chosen_taxo in all_chosen_taxo[[1]]) {
+  
+  p <- ggplot(data=RF_gathered_results %>% filter(TAXO==chosen_taxo), 
+              aes(x=HVR,y=Accuracy, color=RF_k, size=test_size)) + 
+    geom_point() +
+    theme_bw() + 
+    labs(x = "HyperVariable Region", y = "Accuracy %") + 
+    coord_cartesian(ylim=c(0, 1)) + 
+    theme(axis.text=element_text(size=14), 
+          axis.title=element_text(size=16,face="bold"), 
+          plot.title=element_text(size=16, face="bold"), 
+          legend.position = "bottom",
+          legend.text = element_text(size=12), 
+          legend.title = element_text(size=12)) +
+    guides(colour = guide_legend(override.aes = list(size=5))) +
+    ggtitle(paste('Accuracy of Random Forest model to predict ',chosen_taxo, '\ndepending on the used HVR', sep=''))
+  
+  
+  ggsave(paste("boxplot_",meth,"_for_",chosen_taxo,".png",sep=""), width=24, height=21, units="cm")
+}
+
+```
 
 
