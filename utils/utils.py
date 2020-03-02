@@ -1,5 +1,9 @@
 # Packages
+import os
 from typing import Union, List
+
+import pandas as pd
+from IPython.display import display_html
 
 # Constants
 folder_paths = {'Sequence': 'D:\\0 - Boulot\\5 - X4\\16. Research Paper\\data\\gg_13_5_otus\\rep_set\\',
@@ -201,3 +205,31 @@ def time_difference_good_format(t1: float, t2: float) -> str:
         else:
             minutes_s = 's'
         return '{} day{}, {} hour{} and {} minute{}'.format(days, days_s, hours, hours_s, minutes, minutes_s)
+
+
+def save_update(file_path, k, selected_primer, taxonomy_level, test_size, main_class_prop, accuracy):
+    """
+
+    :param file_path: where results are stored during the handling of a model for all situations
+    :param selected_primer:
+    :param taxonomy_level:
+    :param test_size:
+    :param main_class_prop:
+    :param accuracy:
+    :return: None, only update the file
+    """
+    if not os.path.exists(file_path):
+        pd.DataFrame(columns=['HyperVariable Region', 'Taxonomy Rank to be classified', 'Test Size',
+                              'Main Class prop', 'XGBoost - XGB({})'.format(k)]) \
+            .to_csv(file_path, index=False)
+
+    saving_df = pd.read_csv(file_path)
+    saving_df = pd.concat([saving_df,
+                           pd.DataFrame([[selected_primer, taxonomy_level, test_size, main_class_prop, accuracy]],
+                                        columns=['HyperVariable Region', 'Taxonomy Rank to be classified', 'Test Size',
+                                                 'Main Class prop', 'XGBoost - XGB({})'.format(k)])])
+    saving_df.to_csv(file_path, index=False)
+
+
+def restartkernel():
+    display_html("<script>Jupyter.notebook.kernel.restart()</script>", raw=True)

@@ -3,11 +3,13 @@ functions to Analyse a model and save results
 """
 # Package
 import os
+import random
 from typing import Union, List
 
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
+from xgboost import plot_tree
 
 from processings.sequence_processing import get_all_kmers
 from utils.logger import StatLogger
@@ -26,7 +28,9 @@ def main_stats_model(y_train: pd.DataFrame, y_test: pd.DataFrame, y_pred: np.nda
                      test_size: float = 0.2,
                      feature_importances: np.ndarray = None,
                      k: int = 4,
-                     save_csv: bool = False):
+                     save_csv: bool = False,
+                     xgb_model=None,
+                     save_tree: int = 0):
     """
     Compute relevant statistical analysis on classification model
     :param y_train: trained class
@@ -43,6 +47,8 @@ def main_stats_model(y_train: pd.DataFrame, y_test: pd.DataFrame, y_pred: np.nda
     :param feature_importances: For RF models, save in text format the feature_importances
     :param k: Value of k for preprocessing
     :param save_csv: For RF models with Cross Validation and Grid Search, save in csv format the optimal parameters
+    :param xgb_model: Model from XGB when saving the first tree
+    :param save_tree: Number of random tree to save
     :return: No return, only save analysis in results/models folder
     """
     model_path = folder_paths['model_results'] + model_name + '\\'
@@ -61,12 +67,15 @@ def main_stats_model(y_train: pd.DataFrame, y_test: pd.DataFrame, y_pred: np.nda
                                primers_origin, taxonomy_level, selected_primer, test_size, logger)
 
     # Metrics of model results
-    main_class_prop, accuracy = get_metrics_model(y_train, y_test, y_pred, logger, feature_importances, k,
+    main_class_prop, accuracy = get_metrics_model(y_train, y_test, y_pred, logger, feature_importances, k, save_tree,
+                                                  xgb_model,
                                                   analysis_path=analysis_path)
 
     if save_csv:
         add_optimal_model_params(folder_number, selected_primer, taxonomy_level, accuracy, model_parameters,
                                  model_path=model_path)
+
+    logger.close_file()
 
     return test_size, main_class_prop, accuracy
 
@@ -111,7 +120,7 @@ def get_model_info(y_test, model_name, model_parameters, model_preprocessing, se
     return len(y_test)
 
 
-def get_metrics_model(y_train, y_test, y_pred, logger, feature_importances, k, analysis_path=''):
+def get_metrics_model(y_train, y_test, y_pred, logger, feature_importances, k, save_tree, xgb_model, analysis_path=''):
     """
 
     :param analysis_path:
@@ -121,6 +130,8 @@ def get_metrics_model(y_train, y_test, y_pred, logger, feature_importances, k, a
     :param y_pred:
     :param feature_importances:
     :param k:
+    :param save_tree:
+    :param xgb_model:
     :return:
     """
     # Results on the model
@@ -135,9 +146,9 @@ def get_metrics_model(y_train, y_test, y_pred, logger, feature_importances, k, a
     logger.log(text='Model Accuracy: {:0.2f}%'.format(accuracy * 100))
 
     # Saving CSV files
-    y_test.to_csv(analysis_path + 'y_test.csv', index=False)
+    # y_test.to_csv(analysis_path + 'y_test.csv', index=False)
     pred_df = pd.DataFrame(y_pred, columns=[taxo_column])
-    pred_df.to_csv(analysis_path + 'preds.csv', index=False)
+    # pred_df.to_csv(analysis_path + 'preds.csv', index=False)
 
     # Details on classes
     logger.log(subtitle='Main classes in train set')
@@ -184,6 +195,22 @@ def get_metrics_model(y_train, y_test, y_pred, logger, feature_importances, k, a
         plt.ylim([-1, len(indices)])
         plt.savefig(feature_plot_path)
         plt.close()
+
+    if xgb_model is not None:
+        tree_plot_folder = analysis_path + 'tree_plots\\'
+        if not os.path.exists(tree_plot_folder):
+            os.makedirs(tree_plot_folder)
+        train_classes = np.unique(y_train)
+        ids = random.choices(range(len(train_classes)), k=save_tree)
+        for index in ids:
+            plot_tree(xgb_model, num_trees=index, rankdir='LR')
+            fig = plt.gcf()
+            fig.set_size_inches(150, 100)
+            fig.suptitle("Predicting 'probability' of class {}".format(train_classes[index]), size=200)
+            tree_plot_path = tree_plot_folder + 'tree_0_' + train_classes[index] + '.png'
+
+            fig.savefig(tree_plot_path)
+            plt.close()
 
     return main_class_prop, accuracy
 
