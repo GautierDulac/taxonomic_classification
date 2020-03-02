@@ -1,5 +1,5 @@
 """
-Naive Bayes implementation to classify using a given HVR and a given taxonomic rank
+Random Forest implementation to classify using a given HVR and a given taxonomic rank
 """
 # Packages
 from os import makedirs
