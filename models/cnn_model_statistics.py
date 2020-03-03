@@ -213,12 +213,12 @@ def add_cnn_plot(folder_number, selected_primer, taxonomy_level, accuracy, loss_
     ax2.set_ylim(0, 1)
 
     ax1.set_title(
-        "Experiments number: {} - Final accuracy: {:.4f}\nEvolution over {} epochs to classify {} with {}".format(
-            folder_number, accuracy, n_epochs, taxonomy_levels[taxonomy_level], selected_primer), fontsize=22)
+        "Experiments number: {} - Final accuracy: {:.2f}\nEvolution over {} epochs to classify {} with {}".format(
+            folder_number, accuracy*100, n_epochs, taxonomy_levels[taxonomy_level], selected_primer), fontsize=22)
 
     lns = ln1 + ln2 + ln3 + ln4
     labs = [l.get_label() for l in lns]
-    ax1.legend(lns, labs, loc=0, fontsize=16)
+    ax1.legend(lns, labs, loc='center right', fontsize=16)
 
     fig.tight_layout()
 
