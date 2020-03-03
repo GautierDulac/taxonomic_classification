@@ -3,6 +3,7 @@ import os
 from typing import Union, List
 
 import pandas as pd
+import numpy as np
 from IPython.display import display_html
 
 # Constants
@@ -228,6 +229,27 @@ def save_update(file_path, k, selected_primer, taxonomy_level, test_size, main_c
                            pd.DataFrame([[selected_primer, taxonomy_level, test_size, main_class_prop, accuracy]],
                                         columns=['HyperVariable Region', 'Taxonomy Rank to be classified', 'Test Size',
                                                  'Main Class prop', 'XGBoost - XGB({})'.format(k)])])
+    saving_df.to_csv(file_path, index=False)
+
+
+def save_update_cnn(file_path, colnames, saving_list):
+    """
+
+    :param colnames:
+    :param saving_list:
+    :param file_path: where results are stored during the handling of a model for all situations
+    :return: None, only update the file
+    """
+    if not os.path.exists(file_path):
+        pd.DataFrame(columns=colnames) \
+            .to_csv(file_path, index=False)
+
+    saving_df = pd.read_csv(file_path)
+    if (len(list(saving_df.columns)) != len(list(colnames))) or (np.array(list(saving_df.columns)) != np.array(list(colnames))).any():
+        raise ValueError('Remove deprecated csv saving file - different columns used now')
+    saving_df = pd.concat([saving_df,
+                           pd.DataFrame([saving_list],
+                                        columns=colnames)])
     saving_df.to_csv(file_path, index=False)
 
 
