@@ -7,7 +7,6 @@ import torch.nn.functional as F
 # Class and functions
 """
 class classifier_basic(nn.Module):
-    # Observed accuracy on test set with V4 and taxonomy level 1 is around 33%
 
     def __init__(self, n_out_features: int):
         super(classifier_basic, self).__init__()
@@ -28,7 +27,6 @@ class classifier_basic(nn.Module):
 
 
 class classifier_basic_2(nn.Module):
-    # Observed accuracy on test set with V4 and taxonomy level 1 is around 33% too
 
     def __init__(self, n_out_features: int):
         super(classifier_basic_2, self).__init__()
@@ -48,7 +46,6 @@ class classifier_basic_2(nn.Module):
         return F.log_softmax(x, dim=1)
 
 
-# We observe that those two classifiers overfit largely the train set, let's give less parameters to optimize
 
 class classifier_less_parameters(nn.Module):
     # Observed accuracy on test set with V4 and taxonomy level 1 is around 33% too
@@ -71,11 +68,7 @@ class classifier_less_parameters(nn.Module):
         return F.log_softmax(x, dim=1)
 
 
-# We observe that those three classifiers overfit largely the train set, let's test models from
-# "Convolutional neural networks for classification of alignments of non-coding RNA sequences" paper
-
 class classifier_Aoki_1(nn.Module):
-    # Observed accuracy on test set with V4 and taxonomy level 1 is around 35% with minimal parameters
 
     def __init__(self, n_out_features: int):
         super(classifier_Aoki_1, self).__init__()
@@ -155,9 +148,6 @@ class classifier_Aoki_1(nn.Module):
 
 
 class classifier_Aoki_2(nn.Module):
-    # Observed accuracy on test set with V4 and taxonomy level 1 is around 35% with second minimal parameters
-    # Observed accuracy on test set with V3 and taxonomy level 1 is around 25% with second minimal parameters
-    # Observed accuracy on test set with V4 and taxonomy level 0 is 100% with second minimal parameters
 
     def __init__(self, n_out_features: int):
         super(classifier_Aoki_2, self).__init__()
@@ -238,7 +228,6 @@ class classifier_Aoki_2(nn.Module):
 
 
 class classifier_GD_1(nn.Module):
-    # Observed accuracy on test set with V4 and taxonomy level 1 is around 35% with these parameters
 
     def __init__(self, n_out_features: int):
         super(classifier_GD_1, self).__init__()
@@ -306,6 +295,113 @@ class classifier_GD_1(nn.Module):
         # Hidden layers
         # A first fully connected one
         x = x.view(-1, self.out_channel_2 * self.L_out_max_pool_2)
+        # print(x.size())
+        x = self.fc1(x)
+        # print(x.size())
+        # x.size() = [64, self.L_out_fc_1 = int(self.out_channel_2 * self.L_out_max_pool_2 * self.ratio_fc_1)]
+        # RELU
+        x = self.ReLU3(x)
+        # Add a dropout layer to prevent co-adaptation of neurons
+        x = F.dropout(x, p=0.5)
+        # x.size() = [64, self.L_out_fc_1]
+        x = self.fc2(x)
+        # print(x.size())
+        # x.size() = [64, n_out_features]
+        return x  # With CrossEntropyLoss directly
+
+
+class classifier_GD_2(nn.Module):
+    # Observed accuracy on test set with V4 and taxonomy level 1 is around 35% with these parameters
+
+    def __init__(self, n_out_features: int):
+        super(classifier_GD_2, self).__init__()
+        # PARAMETERS
+        self.out_channel_1 = 10  # 10
+        self.out_channel_2 = 20  # 20
+        self.kernel_size_1_W = 7  # 7
+        self.kernel_size_2_W = self.kernel_size_1_W  # 7
+        self.ratio_fc_1 = 1 / 2  # 1 / 2
+        # FIXED PARAMETERS
+        self.kernel_size_1_H = 4
+        self.padding_conv_1_H = 0
+        self.padding_conv_1_W = 0
+        self.kernel_size_max_pool_1_H = 1
+        self.max_pool_stride_1_H = 1
+        self.max_pool_stride_1_W = 8
+        self.kernel_size_2_H = 1
+        self.padding_conv_2_H = 0
+        self.padding_conv_2_W = 0
+        self.kernel_size_max_pool_2_H = 1
+        self.max_pool_stride_2_H = 1
+        self.max_pool_stride_2_W = 8
+        # COPIED PARAMETERS
+        self.kernel_size_max_pool_1_W = self.kernel_size_1_W  # 7
+        self.kernel_size_max_pool_2_W = self.kernel_size_2_W  # 7
+        # SIZE COMPUTATION
+        self.L_out_conv_1_H = 4 - self.kernel_size_1_H + 2 * self.padding_conv_1_H + 1  # 1
+        self.L_out_conv_1_W = 300 - self.kernel_size_1_W + 2 * self.padding_conv_1_W + 1  # 294
+        self.L_out_max_pool_1_H = int((self.L_out_conv_1_H - self.kernel_size_max_pool_1_H) // self.max_pool_stride_1_H) + 1  # 1
+        self.L_out_max_pool_1_W = int((self.L_out_conv_1_W - self.kernel_size_max_pool_1_W) // self.max_pool_stride_1_W) + 1  # 36
+        self.L_out_conv_2_H = self.L_out_max_pool_1_H - self.kernel_size_2_H + 2 * self.padding_conv_2_H + 1  # 1
+        self.L_out_conv_2_W = self.L_out_max_pool_1_W - self.kernel_size_2_W + 2 * self.padding_conv_2_W + 1  # 30
+        self.L_out_max_pool_2_H = int((self.L_out_conv_2_H - self.kernel_size_max_pool_2_H) // self.max_pool_stride_2_H) + 1  # 1
+        self.L_out_max_pool_2_W = int((self.L_out_conv_2_W - self.kernel_size_max_pool_2_W) // self.max_pool_stride_2_W) + 1  # 4
+        self.L_in_fc_1 = int(self.out_channel_2 * self.L_out_max_pool_2_H * self.L_out_max_pool_2_W)  # 80
+        self.L_out_fc_1 = int(self.out_channel_2 * self.L_out_max_pool_2_H * self.L_out_max_pool_2_W * self.ratio_fc_1)  # 40
+
+        # Layers
+        self.conv1 = nn.Conv2d(in_channels=1, out_channels=self.out_channel_1,
+                               kernel_size=(self.kernel_size_1_H, self.kernel_size_1_W),
+                               padding=(self.padding_conv_1_H, self.padding_conv_1_W))
+        self.bn1 = nn.BatchNorm2d(self.out_channel_1)
+        self.ReLU1 = nn.ReLU()
+        # Layers
+        self.conv2 = nn.Conv2d(in_channels=self.out_channel_1, out_channels=self.out_channel_2,
+                               kernel_size=(self.kernel_size_2_H, self.kernel_size_2_W),
+                               padding=(self.padding_conv_2_H, self.padding_conv_2_W))
+        self.bn2 = nn.BatchNorm2d(self.out_channel_2)
+        self.ReLU2 = nn.ReLU()
+
+        # Hidden part
+        self.fc1 = nn.Linear(in_features=self.L_in_fc_1,
+                             out_features=self.L_out_fc_1)
+        self.ReLU3 = nn.ReLU()
+        self.fc2 = nn.Linear(in_features=self.L_out_fc_1,
+                             out_features=n_out_features)
+
+    def forward(self, x):
+        # CONVOLUTION 1
+        # x.size() = [64, 4, 300]
+        x = self.conv1(x)
+        # print(x.size())
+        # x.size() = [64, out_chanel_1, L_out_conv_1_H, L_out_conv_1_W]
+        # Add a trainable BatchNormalization and a simple RELU layer
+        x = self.bn1(x)
+        x = self.ReLU1(x)
+        # x.size() = same
+        x = F.max_pool2d(x,
+                         kernel_size=(self.kernel_size_max_pool_1_H, self.kernel_size_max_pool_1_W),
+                         stride=(self.max_pool_stride_1_H, self.max_pool_stride_1_W))
+        # print(x.size())
+        # x.size() = [64, out_chanel_1, L_out_max_pool_1_H, L_out_max_pool_1_W]
+
+        # CONVOLUTION 2
+        x = self.conv2(x)
+        # # print(x.size())
+        # x.size() = [64, out_chanel_2, L_out_conv_2_H, L_out_conv_2_W]
+        # Add a trainable BatchNormalization and a simple RELU layer
+        x = self.bn2(x)
+        x = self.ReLU2(x)
+        # x.size() = same
+        x = F.max_pool2d(x,
+                         kernel_size=(self.kernel_size_max_pool_2_H, self.kernel_size_max_pool_2_W),
+                         stride=(self.max_pool_stride_2_H, self.max_pool_stride_2_W))
+        # print(x.size())
+        # x.size() = [64, out_chanel_2, L_out_max_pool_2_H, L_out_max_pool_2_W]
+
+        # Hidden layers
+        # A first fully connected one
+        x = x.view(-1, self.L_in_fc_1)
         # print(x.size())
         x = self.fc1(x)
         # print(x.size())
