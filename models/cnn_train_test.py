@@ -13,6 +13,7 @@ def train(model, train_loader, test_loader, loss_fn, optimizer, n_epochs=1):
     loss_test = np.zeros(n_epochs)
     acc_test = np.zeros(n_epochs)
     for epoch_num in range(n_epochs):
+        print('Epoch {} over {}'.format(epoch_num+1, n_epochs))
         running_corrects = 0.0
         running_loss = 0.0
         size = 0
