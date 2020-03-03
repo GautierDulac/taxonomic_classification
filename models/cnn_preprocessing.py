@@ -54,34 +54,26 @@ def main_preprocessing_cnn(sequence_origin='DairyDB', primers_origin='DairyDB', 
     dict_id_to_class = {}
     for index, class_index in enumerate(all_classes):
         dict_class_to_id[class_index] = index
-        dict_id_to_class[index] = [class_index]
+        dict_id_to_class[index] = class_index
 
     new_y_train = np.array([dict_class_to_id[class_index] for class_index in y_train_col])
     new_y_test = np.array([dict_class_to_id[class_index] for class_index in y_test_col])
 
-    new_X_train = np.array([get_homogenous_vector(X_train.iloc[i, 1], 300) for i in range(len(X_train))])
-    new_X_test = np.array([get_homogenous_vector(X_test.iloc[i, 1], 300) for i in range(len(X_test))])
+    new_X_train = np.array([get_homogenous_vector(X_train.iloc[i, 1], 300).transpose() for i in range(len(X_train))])
+    new_X_test = np.array([get_homogenous_vector(X_test.iloc[i, 1], 300).transpose() for i in range(len(X_test))])
 
+    train_dataset = [[torch.from_numpy(seq.astype(np.float32)),
+                      torch.from_numpy(np.array(new_y_train[index]).astype(np.int64))]
+                     for index, seq in enumerate(new_X_train)]
 
+    test_dataset = [[torch.from_numpy(seq.astype(np.float32)),
+                     torch.from_numpy(np.array(new_y_test[index]).astype(np.int64))]
+                    for index, seq in enumerate(new_X_test)]
 
+    train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=bs, shuffle=True)
+    test_loader = torch.utils.data.DataLoader(test_dataset, batch_size=bs, shuffle=True)
 
-
-l8 = np.array(0)
-eights_dataset = [[torch.from_numpy(e.astype(np.float32)).unsqueeze(0), torch.from_numpy(l8.astype(np.int64))] for e in
-                  eights]
-l1 = np.array(1)
-ones_dataset = [[torch.from_numpy(e.astype(np.float32)).unsqueeze(0), torch.from_numpy(l1.astype(np.int64))] for e in
-                ones]
-train_dataset = eights_dataset[1000:] + ones_dataset[1000:]
-test_dataset = eights_dataset[:1000] + ones_dataset[:1000]
-
-
-def train_loader_init():
-    return torch.utils.data.DataLoader(train_dataset, batch_size=bs, shuffle=True)
-
-
-def test_loader_init():
-    return torch.utils.data.DataLoader(test_dataset, batch_size=bs, shuffle=True)
+    return train_loader, test_loader, dict_class_to_id, dict_id_to_class
 
 
 def get_homogenous_vector(seq: str, max_size: int) -> np.ndarray:
