@@ -405,7 +405,7 @@ class classifier_GD_2(nn.Module):
         # print(x.size())
         x = self.fc1(x)
         # print(x.size())
-        # x.size() = [64, self.L_out_fc_1 = int(self.out_channel_2 * self.L_out_max_pool_2 * self.ratio_fc_1)]
+        # x.size() = [64, self.L_out_fc_1]
         # RELU
         x = self.ReLU3(x)
         # Add a dropout layer to prevent co-adaptation of neurons
