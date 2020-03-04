@@ -31,15 +31,16 @@ vectorized_dict = {
 }
 
 
-# TODO Copy pasta from Marc Lelarge notebook
-
-def main_preprocessing_cnn(sequence_origin='DairyDB', primers_origin='DairyDB', selected_primer='V4', taxonomy_level=3):
+def main_preprocessing_cnn(sequence_origin='DairyDB', primers_origin='DairyDB', selected_primer='V4', taxonomy_level=3,
+                           max_size=300, k_mer: int = 1):
     """
 
     :param sequence_origin: GreenGenes or DairyDB
     :param primers_origin: DairyDB or Chaudhary
     :param taxonomy_level: list of int within 0 - 6
     :param selected_primer: Chosen primer on which we want to classify, if None, all columns are returned
+    :param max_size: Size of vectors after processing (must be closed to the max size of sequence)
+    :param k_mer: What is the size of the vectorized k_mers - Only k=1 implemented for now # TODO IMPLEMENT k>1
     :return: two DataLoaders for train and test, and the mapping dicts for classes
     """
     X_train, X_test, y_train, y_test = main_loading_model_data(sequence_origin=sequence_origin,
@@ -59,8 +60,8 @@ def main_preprocessing_cnn(sequence_origin='DairyDB', primers_origin='DairyDB', 
     new_y_train = np.array([dict_class_to_id[class_index] for class_index in y_train_col])
     new_y_test = np.array([dict_class_to_id[class_index] for class_index in y_test_col])
 
-    new_X_train = np.array([get_homogenous_vector(X_train.iloc[i, 1], 300).transpose() for i in range(len(X_train))])
-    new_X_test = np.array([get_homogenous_vector(X_test.iloc[i, 1], 300).transpose() for i in range(len(X_test))])
+    new_X_train = np.array([get_homogenous_vector(X_train.iloc[i, 1], max_size).transpose() for i in range(len(X_train))])
+    new_X_test = np.array([get_homogenous_vector(X_test.iloc[i, 1], max_size).transpose() for i in range(len(X_test))])
 
     train_dataset = [[torch.from_numpy(seq.astype(np.float32)),
                       torch.from_numpy(np.array(new_y_train[index]).astype(np.int64))]
