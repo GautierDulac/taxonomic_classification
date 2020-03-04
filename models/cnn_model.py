@@ -229,7 +229,9 @@ class classifier_Aoki_2(nn.Module):
 
 class classifier_GD_1(nn.Module):
 
-    def __init__(self, n_out_features: int):
+    def __init__(self, n_out_features: int, k_mer: int = 1, max_size: int = 300):
+        self.k_mer = k_mer
+        self.max_size = max_size
         super(classifier_GD_1, self).__init__()
         # PARAMETERS
         self.out_channel_1 = 30
@@ -242,14 +244,14 @@ class classifier_GD_1(nn.Module):
         self.kernel_size_max_pool_1 = self.kernel_size_1
         self.kernel_size_2 = self.kernel_size_1
         # SIZE COMPUTATION
-        self.L_out_conv_1 = 300 - self.kernel_size_1 + 1
+        self.L_out_conv_1 = max_size - self.kernel_size_1 + 1
         self.L_out_max_pool_1 = int((self.L_out_conv_1 - self.kernel_size_1) // self.max_pool_stride_1) + 1
         self.L_out_conv_2 = self.L_out_max_pool_1 - self.kernel_size_2 + 1
         self.L_out_max_pool_2 = int((self.L_out_conv_2 - self.kernel_size_2) // self.max_pool_stride_2) + 1
         self.L_out_fc_1 = int(self.out_channel_2 * self.L_out_max_pool_2 * self.ratio_fc_1)
 
         # Layers
-        self.conv1 = nn.Conv1d(in_channels=4, out_channels=self.out_channel_1,
+        self.conv1 = nn.Conv1d(in_channels=4 ** k_mer, out_channels=self.out_channel_1,
                                kernel_size=self.kernel_size_1, padding=0)
         self.bn1 = nn.BatchNorm1d(self.out_channel_1)
         self.ReLU1 = nn.ReLU()
@@ -312,8 +314,10 @@ class classifier_GD_1(nn.Module):
 
 class classifier_GD_2(nn.Module):
 
-    def __init__(self, n_out_features: int):
+    def __init__(self, n_out_features: int, k_mer: int = 1, max_size: int = 300):
         super(classifier_GD_2, self).__init__()
+        self.k_mer = k_mer
+        self.max_size = max_size
         # PARAMETERS
         self.out_channel_1 = 10  # 10
         self.out_channel_2 = 20  # 20
@@ -321,7 +325,7 @@ class classifier_GD_2(nn.Module):
         self.kernel_size_2_W = self.kernel_size_1_W  # 7
         self.ratio_fc_1 = 1 / 2  # 1 / 2
         # FIXED PARAMETERS
-        self.kernel_size_1_H = 4
+        self.kernel_size_1_H = 4 ** k_mer
         self.padding_conv_1_H = 0
         self.padding_conv_1_W = 0
         self.kernel_size_max_pool_1_H = 1
@@ -337,16 +341,21 @@ class classifier_GD_2(nn.Module):
         self.kernel_size_max_pool_1_W = self.kernel_size_1_W  # 7
         self.kernel_size_max_pool_2_W = self.kernel_size_2_W  # 7
         # SIZE COMPUTATION
-        self.L_out_conv_1_H = 4 - self.kernel_size_1_H + 2 * self.padding_conv_1_H + 1  # 1
-        self.L_out_conv_1_W = 300 - self.kernel_size_1_W + 2 * self.padding_conv_1_W + 1  # 294
-        self.L_out_max_pool_1_H = int((self.L_out_conv_1_H - self.kernel_size_max_pool_1_H) // self.max_pool_stride_1_H) + 1  # 1
-        self.L_out_max_pool_1_W = int((self.L_out_conv_1_W - self.kernel_size_max_pool_1_W) // self.max_pool_stride_1_W) + 1  # 36
+        self.L_out_conv_1_H = 4 ** k_mer - self.kernel_size_1_H + 2 * self.padding_conv_1_H + 1  # 1
+        self.L_out_conv_1_W = max_size - self.kernel_size_1_W + 2 * self.padding_conv_1_W + 1  # 294
+        self.L_out_max_pool_1_H = int(
+            (self.L_out_conv_1_H - self.kernel_size_max_pool_1_H) // self.max_pool_stride_1_H) + 1  # 1
+        self.L_out_max_pool_1_W = int(
+            (self.L_out_conv_1_W - self.kernel_size_max_pool_1_W) // self.max_pool_stride_1_W) + 1  # 36
         self.L_out_conv_2_H = self.L_out_max_pool_1_H - self.kernel_size_2_H + 2 * self.padding_conv_2_H + 1  # 1
         self.L_out_conv_2_W = self.L_out_max_pool_1_W - self.kernel_size_2_W + 2 * self.padding_conv_2_W + 1  # 30
-        self.L_out_max_pool_2_H = int((self.L_out_conv_2_H - self.kernel_size_max_pool_2_H) // self.max_pool_stride_2_H) + 1  # 1
-        self.L_out_max_pool_2_W = int((self.L_out_conv_2_W - self.kernel_size_max_pool_2_W) // self.max_pool_stride_2_W) + 1  # 4
+        self.L_out_max_pool_2_H = int(
+            (self.L_out_conv_2_H - self.kernel_size_max_pool_2_H) // self.max_pool_stride_2_H) + 1  # 1
+        self.L_out_max_pool_2_W = int(
+            (self.L_out_conv_2_W - self.kernel_size_max_pool_2_W) // self.max_pool_stride_2_W) + 1  # 4
         self.L_in_fc_1 = int(self.out_channel_2 * self.L_out_max_pool_2_H * self.L_out_max_pool_2_W)  # 80
-        self.L_out_fc_1 = int(self.out_channel_2 * self.L_out_max_pool_2_H * self.L_out_max_pool_2_W * self.ratio_fc_1)  # 40
+        self.L_out_fc_1 = int(
+            self.out_channel_2 * self.L_out_max_pool_2_H * self.L_out_max_pool_2_W * self.ratio_fc_1)  # 40
 
         # Layers
         self.conv1 = nn.Conv2d(in_channels=1, out_channels=self.out_channel_1,
@@ -371,7 +380,7 @@ class classifier_GD_2(nn.Module):
     def forward(self, x):
         # CONVOLUTION 1
         # Create in_channel:
-        x = x.view(-1, 1, 4, 300)
+        x = x.view(-1, 1, 4 ** self.k_mer, self.max_size)
         # x.size() = [64, 4, 300]
         x = self.conv1(x)
         # print(x.size())
@@ -416,3 +425,96 @@ class classifier_GD_2(nn.Module):
         # print(x.size())
         # x.size() = [64, n_out_features]
         return x  # With CrossEntropyLoss directly
+
+
+class conv_module(nn.Module):
+    def __init__(self, k_mer: int = 1, max_size: int = 300, out_channel_2:int = 60):
+        super(conv_module, self).__init__()
+        self.k_mer = k_mer
+        self.max_size = max_size
+        # PARAMETERS
+        self.out_channel_1 = 30
+        self.out_channel_2 = out_channel_2
+        self.kernel_size_1_W = 7
+        self.kernel_size_2_W = 7
+        # FIXED PARAMETERS
+        self.kernel_size_1_H = 4 ** k_mer
+        self.padding_conv_1_H = 0
+        self.padding_conv_1_W = 0
+        self.kernel_size_max_pool_1_H = 1
+        self.max_pool_stride_1_H = 1
+        self.max_pool_stride_1_W = 8
+        self.kernel_size_2_H = 1
+        self.padding_conv_2_H = 0
+        self.padding_conv_2_W = 0
+        self.kernel_size_max_pool_2_H = 1
+        self.max_pool_stride_2_H = 1
+        self.max_pool_stride_2_W = 8
+        # COPIED PARAMETERS
+        self.kernel_size_max_pool_1_W = self.kernel_size_1_W
+        self.kernel_size_max_pool_2_W = self.kernel_size_2_W
+        # Layers
+        self.conv1 = nn.Conv2d(in_channels=1, out_channels=self.out_channel_1,
+                               kernel_size=(self.kernel_size_1_H, self.kernel_size_1_W),
+                               padding=(self.padding_conv_1_H, self.padding_conv_1_W))
+        self.bn1 = nn.BatchNorm2d(self.out_channel_1)
+        self.ReLU1 = nn.ReLU()
+        # Layers
+        self.conv2 = nn.Conv2d(in_channels=self.out_channel_1, out_channels=self.out_channel_2,
+                               kernel_size=(self.kernel_size_2_H, self.kernel_size_2_W),
+                               padding=(self.padding_conv_2_H, self.padding_conv_2_W))
+        self.bn2 = nn.BatchNorm2d(self.out_channel_2)
+        self.ReLU2 = nn.ReLU()
+
+    def forward(self, x):
+        x = x.view(-1, 1, 4 ** self.k_mer, self.max_size)
+        x = self.conv1(x)
+        x = self.bn1(x)
+        x = self.ReLU1(x)
+        x = F.max_pool2d(x,
+                         kernel_size=(self.kernel_size_max_pool_1_H, self.kernel_size_max_pool_1_W),
+                         stride=(self.max_pool_stride_1_H, self.max_pool_stride_1_W))
+        x = self.conv2(x)
+        x = self.bn2(x)
+        x = self.ReLU2(x)
+        x = F.max_pool2d(x,
+                         kernel_size=(self.kernel_size_max_pool_2_H, self.kernel_size_max_pool_2_W),
+                         stride=(self.max_pool_stride_2_H, self.max_pool_stride_2_W))
+        return x
+
+
+class fc_module(nn.Module):
+    def __init__(self, n_out_features: int, k_mer: int = 1, max_size: int = 300, out_channel_2:int = 60):
+        super(fc_module, self).__init__()
+        self.k_mer = k_mer
+        self.max_size = max_size
+        # PARAMETERS
+        self.out_channel_2 = out_channel_2
+        # SIZE COMPUTATION
+        self.L_in_fc_1 = self.out_channel_2
+        # FC part
+        self.avgpool = nn.AdaptiveAvgPool2d(output_size=(1, 1))
+        self.fc1 = nn.Linear(in_features=self.L_in_fc_1,
+                             out_features=n_out_features)
+
+    def forward(self, x):
+        x = F.dropout(x, p=0.5)
+        x = self.avgpool(x)
+        x = x.view(-1, self.L_in_fc_1)
+        x = self.fc1(x)
+        return x
+
+
+class classifier_GD_2_ACM(nn.Module):
+
+    def __init__(self, n_out_features: int, k_mer: int = 1, max_size: int = 300):
+        super(classifier_GD_2_ACM, self).__init__()
+        self.out_channel_2 = 60
+        self.conv = conv_module(k_mer=k_mer, max_size=max_size, out_channel_2=self.out_channel_2)
+        self.fully_connected = fc_module(n_out_features=n_out_features, k_mer=k_mer, max_size=max_size,
+                                         out_channel_2=self.out_channel_2)
+
+    def forward(self, x):
+        x = self.conv(x)
+        x = self.fully_connected(x)
+        return x
