@@ -311,7 +311,6 @@ class classifier_GD_1(nn.Module):
 
 
 class classifier_GD_2(nn.Module):
-    # Observed accuracy on test set with V4 and taxonomy level 1 is around 35% with these parameters
 
     def __init__(self, n_out_features: int):
         super(classifier_GD_2, self).__init__()
@@ -371,6 +370,8 @@ class classifier_GD_2(nn.Module):
 
     def forward(self, x):
         # CONVOLUTION 1
+        # Create in_channel:
+        x = x.view(-1, 1, 4, 300)
         # x.size() = [64, 4, 300]
         x = self.conv1(x)
         # print(x.size())
