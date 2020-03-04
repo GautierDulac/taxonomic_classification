@@ -8,6 +8,7 @@ from typing import Union, List
 import matplotlib.pyplot as plt
 import numpy as np
 import seaborn as sns
+import torch
 
 from models.model_statistics import get_new_model_folder_number
 from utils.logger import StatLogger
@@ -17,7 +18,8 @@ from utils.utils import folder_paths, taxonomy_levels
 # Main function
 def main_cnn_stats_model(y_train, y_test_torch, y_pred_torch, dict_id_to_class, loss_train, loss_test, acc_train,
                          acc_test,
-                         make_plot,
+                         make_plot: bool = False,
+                         save_model: bool = False,
                          model_name: str = '',
                          model_class=None,
                          model_preprocessing: str = '',
@@ -28,6 +30,7 @@ def main_cnn_stats_model(y_train, y_test_torch, y_pred_torch, dict_id_to_class, 
                          test_size: float = 0.2):
     """
     Compute relevant statistical analysis on classification model
+    :param save_model:
     :param y_pred_torch: real class for comparison in tensor format
     :param y_test_torch: result of model in tensor format
     :param make_plot:
@@ -54,6 +57,9 @@ def main_cnn_stats_model(y_train, y_test_torch, y_pred_torch, dict_id_to_class, 
     folder_number = get_new_model_folder_number(model_name=model_name)
     analysis_path = model_path + '{:0>5d}_analysis_{}_{}\\'.format(folder_number, selected_primer, taxonomy_level)
     os.makedirs(analysis_path)
+
+    if save_model:
+        torch.save(model_class.state_dict(), analysis_path + 'model.pt')
 
     log_path = analysis_path + 'model_results.txt'
     logger = StatLogger(log_path=log_path)
@@ -214,7 +220,7 @@ def add_cnn_plot(folder_number, selected_primer, taxonomy_level, accuracy, loss_
 
     ax1.set_title(
         "Experiments number: {} - Final accuracy: {:.2f}\nEvolution over {} epochs to classify {} with {}".format(
-            folder_number, accuracy*100, n_epochs, taxonomy_levels[taxonomy_level], selected_primer), fontsize=22)
+            folder_number, accuracy * 100, n_epochs, taxonomy_levels[taxonomy_level], selected_primer), fontsize=22)
 
     lns = ln1 + ln2 + ln3 + ln4
     labs = [l.get_label() for l in lns]
