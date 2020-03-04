@@ -10,6 +10,7 @@ import numpy as np
 import seaborn as sns
 import torch
 
+from models.cnn_acm import create_activation_map
 from models.model_statistics import get_new_model_folder_number
 from utils.logger import StatLogger
 from utils.utils import folder_paths, taxonomy_levels
@@ -22,6 +23,9 @@ def main_cnn_stats_model(y_train, y_test_torch, y_pred_torch, dict_id_to_class, 
                          save_model: bool = False,
                          model_name: str = '',
                          model_class=None,
+                         create_acm=False,
+                         acm_parameters=None,
+                         parameter_config=None,
                          model_preprocessing: str = '',
                          sequence_origin: str = '',
                          primers_origin: str = '',
@@ -30,6 +34,9 @@ def main_cnn_stats_model(y_train, y_test_torch, y_pred_torch, dict_id_to_class, 
                          test_size: float = 0.2):
     """
     Compute relevant statistical analysis on classification model
+    :param acm_parameters:
+    :param create_acm:
+    :param parameter_config:
     :param save_model:
     :param y_pred_torch: real class for comparison in tensor format
     :param y_test_torch: result of model in tensor format
@@ -69,7 +76,7 @@ def main_cnn_stats_model(y_train, y_test_torch, y_pred_torch, dict_id_to_class, 
     y_pred = [dict_id_to_class[index.item()] for index in y_pred_torch]
 
     # Basic information on configuration
-    _ = get_cnn_model_info(y_test, model_name, model_class, model_preprocessing, sequence_origin,
+    _ = get_cnn_model_info(y_test, model_name, model_class, parameter_config, model_preprocessing, sequence_origin,
                            primers_origin, taxonomy_level, selected_primer, test_size, logger)
 
     # Metrics of model results
@@ -80,13 +87,19 @@ def main_cnn_stats_model(y_train, y_test_torch, y_pred_torch, dict_id_to_class, 
         add_cnn_plot(folder_number, selected_primer, taxonomy_level, accuracy, loss_train, loss_test, acc_train,
                      acc_test, analysis_path=analysis_path)
 
+    if create_acm:
+        X_test = acm_parameters[0]
+        y_test = acm_parameters[1]
+        n = acm_parameters[2]
+        create_activation_map(X_test, y_test, dict_id_to_class, parameter_config, n=n, analysis_path=analysis_path)
+
     logger.close_file()
 
     return  # test_size, main_class_prop, accuracy
 
 
 # Stats functions
-def get_cnn_model_info(y_test, model_name, model_class, model_preprocessing, sequence_origin,
+def get_cnn_model_info(y_test, model_name, model_class, parameter_config, model_preprocessing, sequence_origin,
                        primers_origin, taxonomy_level, selected_primer, test_size, logger) -> int:
     """
     Save basics stats on the model parameters and info
@@ -109,6 +122,8 @@ def get_cnn_model_info(y_test, model_name, model_class, model_preprocessing, seq
     logger.log(subtitle='Model parameters')
     logger.log(text='Size of test set: {}'.format(len(y_test)))
     logger.log(text='Part of test size compared to total: {}'.format(test_size))
+    for attribute, value in parameter_config.items():
+        logger.log(text='Parameter config: {} = {}'.format(attribute, value))
     for attribute, value in model_class.__dict__.items():
         if attribute[0] != '_':
             logger.log(text='Parameter dict: {} = {}'.format(attribute, value))
