@@ -428,28 +428,30 @@ class classifier_GD_2(nn.Module):
 
 
 class conv_module(nn.Module):
-    def __init__(self, k_mer: int = 1, max_size: int = 300, out_channel_2:int = 60):
+    def __init__(self, k_mer: int = 1, max_size: int = 300,
+                 out_channel_1=32, out_channel_2=60, kernel_size_1_W=7,
+                 kernel_size_2_W=7, max_pool_stride_1_W=8, max_pool_stride_2_W=8):
         super(conv_module, self).__init__()
         self.k_mer = k_mer
         self.max_size = max_size
         # PARAMETERS
-        self.out_channel_1 = 30
+        self.out_channel_1 = out_channel_1
         self.out_channel_2 = out_channel_2
-        self.kernel_size_1_W = 7
-        self.kernel_size_2_W = 7
+        self.kernel_size_1_W = kernel_size_1_W
+        self.kernel_size_2_W = kernel_size_2_W
+        self.max_pool_stride_1_W = max_pool_stride_1_W
+        self.max_pool_stride_2_W = max_pool_stride_2_W
         # FIXED PARAMETERS
         self.kernel_size_1_H = 4 ** k_mer
         self.padding_conv_1_H = 0
         self.padding_conv_1_W = 0
         self.kernel_size_max_pool_1_H = 1
         self.max_pool_stride_1_H = 1
-        self.max_pool_stride_1_W = 8
         self.kernel_size_2_H = 1
         self.padding_conv_2_H = 0
         self.padding_conv_2_W = 0
         self.kernel_size_max_pool_2_H = 1
         self.max_pool_stride_2_H = 1
-        self.max_pool_stride_2_W = 8
         # COPIED PARAMETERS
         self.kernel_size_max_pool_1_W = self.kernel_size_1_W
         self.kernel_size_max_pool_2_W = self.kernel_size_2_W
@@ -484,7 +486,7 @@ class conv_module(nn.Module):
 
 
 class fc_module(nn.Module):
-    def __init__(self, n_out_features: int, k_mer: int = 1, max_size: int = 300, out_channel_2:int = 60):
+    def __init__(self, n_out_features: int, k_mer: int = 1, max_size: int = 300, out_channel_2: int = 60):
         super(fc_module, self).__init__()
         self.k_mer = k_mer
         self.max_size = max_size
@@ -507,12 +509,22 @@ class fc_module(nn.Module):
 
 class classifier_GD_2_ACM(nn.Module):
 
-    def __init__(self, n_out_features: int, k_mer: int = 1, max_size: int = 300):
+    def __init__(self, n_out_features: int, parameter_config=None):
+        k_mer = parameter_config['k_mer']
+        max_size = parameter_config['vector_max_size']
+        out_channel_1 = parameter_config['out_channel_1']
+        out_channel_2 = parameter_config['out_channel_2']
+        kernel_size_1_W = parameter_config['kernel_size_1_W']
+        kernel_size_2_W = parameter_config['kernel_size_2_W']
+        max_pool_stride_1_W = parameter_config['max_pool_stride_1_W']
+        max_pool_stride_2_W = parameter_config['max_pool_stride_2_W']
         super(classifier_GD_2_ACM, self).__init__()
-        self.out_channel_2 = 60
-        self.conv = conv_module(k_mer=k_mer, max_size=max_size, out_channel_2=self.out_channel_2)
+        self.conv = conv_module(k_mer=k_mer, max_size=max_size,
+                                out_channel_1=out_channel_1, out_channel_2=out_channel_2,
+                                kernel_size_1_W=kernel_size_1_W, kernel_size_2_W=kernel_size_2_W,
+                                max_pool_stride_1_W=max_pool_stride_1_W, max_pool_stride_2_W=max_pool_stride_2_W)
         self.fully_connected = fc_module(n_out_features=n_out_features, k_mer=k_mer, max_size=max_size,
-                                         out_channel_2=self.out_channel_2)
+                                         out_channel_2=out_channel_2)
 
     def forward(self, x):
         x = self.conv(x)
