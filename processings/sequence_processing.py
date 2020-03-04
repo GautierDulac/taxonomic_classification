@@ -43,6 +43,7 @@ def get_ATCG_k_mer_proportion_in_seq(seq, k):
     :param seq:
     :return: (dict) keys are 'AB' etc. and values are float summing to 1
     """
+    # TODO Manage letters in the nomenclature in a better way
     # Clean sequence or there would be exponential results in memory and time
     seq = seq.upper()
     for letter in nomenclature_dict.keys():
