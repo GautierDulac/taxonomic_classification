@@ -1,0 +1,7 @@
+sequence_origin,primers_origin,selected_primer,taxonomy_level,dimension,k_mer,vector_max_size,out_channel_1,out_channel_2,kernel_size_1,max_pool_stride_1,max_pool_stride_2,ratio_fc_1,n_epochs,learning_rate,accuracy
+DairyDB,DairyDB,V4,1,1,1,50,32,64,6,2,2,0.6666666666666666,50,0.001,0.9595744680851064
+DairyDB,DairyDB,V4,1,1,1,100,32,64,6,2,2,0.6666666666666666,50,0.001,0.975531914893617
+DairyDB,DairyDB,V4,1,1,1,150,32,64,6,2,2,0.6666666666666666,50,0.001,0.976063829787234
+DairyDB,DairyDB,V4,1,1,1,200,32,64,6,2,2,0.6666666666666666,50,0.001,0.9824468085106384
+DairyDB,DairyDB,V4,1,1,1,250,32,64,6,2,2,0.6666666666666666,50,0.001,0.9813829787234044
+DairyDB,DairyDB,V4,1,1,1,300,32,64,6,2,2,0.6666666666666666,50,0.001,0.9792553191489362
