@@ -94,7 +94,7 @@ def create_activation_map(X_test, y_test, dict_id_to_class, parameter_config, n:
         height, width = 50, max_size * 50
         heatmap = cv2.applyColorMap(cv2.resize(CAMs[0], (width, height)), cv2.COLORMAP_JET)
         result = heatmap * 0.3 + img * 0.5
-        cv2.imwrite(acm_path + 'Sample_{}_Predicted_{}_{:.0f}.jpg'.format(y_sample, y_pred, time.time()*10), result)
+        cv2.imwrite(acm_path + 'Sample_{}_Predicted_{}_{:.0f}.png'.format(y_sample, y_pred, time.time()*10), result)
 
     return
 

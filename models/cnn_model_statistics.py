@@ -122,6 +122,7 @@ def get_cnn_model_info(y_test, model_name, model_class, parameter_config, model_
     logger.log(subtitle='Model parameters')
     logger.log(text='Size of test set: {}'.format(len(y_test)))
     logger.log(text='Part of test size compared to total: {}'.format(test_size))
+    logger.log(text='Parameter config raw: {}'.format(parameter_config))
     for attribute, value in parameter_config.items():
         logger.log(text='Parameter config: {} = {}'.format(attribute, value))
     for attribute, value in model_class.__dict__.items():

@@ -1,2 +1,0 @@
-sequence_origin,primers_origin,selected_primer,taxonomy_level,dimension,k_mer,vector_max_size,out_channel_1,out_channel_2,kernel_size_1_W,kernel_size_2_W,max_pool_stride_1_W,max_pool_stride_2_W,ratio_fc_1,n_epochs,learning_rate,accuracy,training_time
-DairyDB,DairyDB,V4,1,2,1,300,32,64,8,8,8,8,0.5,50,0.001,0.9813829787234043,474.86883902549744
