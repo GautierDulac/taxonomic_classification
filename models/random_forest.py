@@ -15,7 +15,8 @@ from processings.sequence_processing import get_ATCG_k_mer_proportion_in_seq
 from utils.utils import taxonomy_levels, folder_paths
 
 
-def random_forest_k_grid_search_cv(k=4, sequence_origin='DairyDB', primers_origin='DairyDB', taxonomy_level: int = 1,
+def random_forest_k_grid_search_cv(k=5, param_grid=None, sequence_origin='DairyDB', primers_origin='DairyDB',
+                                   taxonomy_level: int = 1,
                                    selected_primer: str = 'V4',
                                    model_preprocessing='Computing frequency of {}-mer (ATCG) in every sequence',
                                    test_size=0.2):
@@ -24,34 +25,34 @@ def random_forest_k_grid_search_cv(k=4, sequence_origin='DairyDB', primers_origi
     :return:
     """
     model_preprocessing = model_preprocessing.format(k)
-
-    # Number of trees in random forest
-    # n_estimators = [200]  # Checked as often the best option
-    # Number of features to consider at every split
-    # max_features = ['auto']  # Checked as best option
-    # Maximum number of levels in tree
-    # max_depth = [None]  # Checked as best option -> Due to memory errors, limiting at 30
-    # Minimum number of samples required to split a node
-    # min_samples_split = [2]  # Instead of 2, 5, 10 because of unbalanced classes
-    # Minimum number of samples required at each leaf node
-    # min_samples_leaf = [1]  # Instead of 1, 2, 4 because of unbalanced classes
-    # Method of selecting samples for training each tree
-    # bootstrap = [False]  # Checked as best option
-    # Create the random grid
-    param_grid = {}
+    if param_grid is None:
+        # Number of trees in random forest
+        n_estimators = [200]  # Checked as often the best option
+        # Number of features to consider at every split
+        max_features = ['auto']  # Checked as best option
+        # Maximum number of levels in tree
+        max_depth = [None]  # Checked as best option -> Due to memory errors, limiting at 30
+        # Minimum number of samples required to split a node
+        min_samples_split = [2]  # Instead of 2, 5, 10 because of unbalanced classes
+        # Minimum number of samples required at each leaf node
+        min_samples_leaf = [1]  # Instead of 1, 2, 4 because of unbalanced classes
+        # Method of selecting samples for training each tree
+        bootstrap = [False]  # Checked as best option
+        # Create the random grid
+        param_grid = {'n_estimators': n_estimators,
+                      'max_features': max_features,
+                      'max_depth': max_depth,
+                      'min_samples_split': min_samples_split,
+                      'boostrap': bootstrap}
 
     X_train, X_test, y_train, y_test = ETL_RF_k_mer(k=k,
                                                     sequence_origin=sequence_origin,
                                                     primers_origin=primers_origin,
                                                     taxonomy_level=taxonomy_level,
                                                     selected_primer=selected_primer)
-    if taxonomy_level == 0:
-        bootstrap = True
-    else:
-        bootstrap = False
-    RF = RandomForestClassifier(bootstrap=bootstrap, min_samples_leaf=1, min_samples_split=2, max_features='auto',
-                                n_estimators=200, max_depth=30)
-    grid_search = GridSearchCV(estimator=RF, param_grid=param_grid, cv=3, n_jobs=-1, verbose=1)
+
+    RF = RandomForestClassifier()
+    grid_search = GridSearchCV(estimator=RF, param_grid=param_grid, cv=3, n_jobs=2, verbose=1)
     grid_search.fit(X_train, y_train)
     RF_opt = grid_search.best_estimator_
     y_pred = RF_opt.fit(X_train, y_train).predict(X_test)
@@ -68,10 +69,12 @@ def random_forest_k_grid_search_cv(k=4, sequence_origin='DairyDB', primers_origi
                                                             selected_primer=selected_primer,
                                                             test_size=test_size,
                                                             feature_importances=RF_opt.feature_importances_,
+                                                            save_model=True,
+                                                            rf_model=RF_opt,
                                                             k=k,
                                                             save_csv=True)
 
-    return RF_opt, test_size, prop_main_class, accuracy
+    return test_size, prop_main_class, accuracy
 
 
 # Main function without CV and Grid search - Now parameters are chosen thanks to previous function
@@ -89,14 +92,14 @@ def random_forest_k_default(k=4, sequence_origin='DairyDB', primers_origin='Dair
                                                     primers_origin=primers_origin,
                                                     taxonomy_level=taxonomy_level,
                                                     selected_primer=selected_primer)
-        
+
     if taxonomy_level >= 5:
         max_depth = 10
     elif taxonomy_level >= 3 and selected_primer == 'sequence' and sequence_origin == '':
         max_depth = 20
     else:
-        max_depth = 30
-    RF = RandomForestClassifier(bootstrap=False, min_samples_leaf=1, min_samples_split=2, max_features=min(50, 4**k),
+        max_depth = 50
+    RF = RandomForestClassifier(bootstrap=False, min_samples_leaf=1, min_samples_split=2, max_features=min(50, 4 ** k),
                                 n_estimators=200, max_depth=max_depth, n_jobs=-1)  # 30 for max_depth is not backed-up
     y_pred = RF.fit(X_train, y_train).predict(X_test)
 

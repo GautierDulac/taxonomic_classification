@@ -3,6 +3,7 @@ functions to Analyse a model and save results
 """
 # Package
 import os
+import pickle
 import random
 from typing import Union, List
 
@@ -30,9 +31,13 @@ def main_stats_model(y_train: pd.DataFrame, y_test: pd.DataFrame, y_pred: np.nda
                      k: int = 4,
                      save_csv: bool = False,
                      xgb_model=None,
+                     rf_model=None,
+                     save_model=False,
                      save_tree: int = 0):
     """
     Compute relevant statistical analysis on classification model
+    :param rf_model:
+    :param save_model:
     :param y_train: trained class
     :param y_test: real class for comparison
     :param y_pred: result of model .predict
@@ -74,6 +79,13 @@ def main_stats_model(y_train: pd.DataFrame, y_test: pd.DataFrame, y_pred: np.nda
     if save_csv:
         add_optimal_model_params(folder_number, selected_primer, taxonomy_level, accuracy, model_parameters,
                                  model_path=model_path)
+
+    if save_model:
+        if xgb_model is not None:
+            xgb_model.save_model(analysis_path+'0001.model')
+        if rf_model is not None:
+            filename = analysis_path+'0001.model'
+            pickle.dump(rf_model, open(filename, 'wb'))
 
     logger.close_file()
 

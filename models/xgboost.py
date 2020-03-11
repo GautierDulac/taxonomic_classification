@@ -16,7 +16,7 @@ from processings.sequence_processing import get_ATCG_k_mer_proportion_in_seq
 from utils.utils import taxonomy_levels, folder_paths
 
 
-def xgboost_k_grid_search_cv(k=4, sequence_origin='DairyDB', primers_origin='DairyDB', taxonomy_level: int = 1,
+def xgboost_k_grid_search_cv(k=4, param_grid=None, sequence_origin='DairyDB', primers_origin='DairyDB', taxonomy_level: int = 1,
                              selected_primer: str = 'V4',
                              model_preprocessing='Computing frequency of {}-mer (ATCG) in every sequence',
                              test_size=0.2):
@@ -26,21 +26,6 @@ def xgboost_k_grid_search_cv(k=4, sequence_origin='DairyDB', primers_origin='Dai
     """
     model_preprocessing = model_preprocessing.format(k)
 
-    # Number of trees in random forest
-    # n_estimators = [200]
-    # Number of features to consider at every split
-    # max_features = ['auto']
-    # Maximum number of levels in tree
-    # max_depth = [None]
-    # Minimum number of samples required to split a node
-    # min_samples_split = [2]
-    # Minimum number of samples required at each leaf node
-    # min_samples_leaf = [1]
-    # Method of selecting samples for training each tree
-    # bootstrap = [False]
-    # Create the random grid
-    param_grid = {}
-
     X_train, X_test, y_train, y_test = ETL_k_mer(k=k,
                                                  sequence_origin=sequence_origin,
                                                  primers_origin=primers_origin,
@@ -49,7 +34,7 @@ def xgboost_k_grid_search_cv(k=4, sequence_origin='DairyDB', primers_origin='Dai
 
     XGB = XGBClassifier()
 
-    grid_search = GridSearchCV(estimator=XGB, param_grid=param_grid, cv=3, n_jobs=-1, verbose=1)
+    grid_search = GridSearchCV(estimator=XGB, param_grid=param_grid, cv=3, n_jobs=2, verbose=2)
     grid_search.fit(X_train, y_train)
     XGB_opt = grid_search.best_estimator_
     y_pred = XGB_opt.fit(X_train, y_train).predict(X_test)
@@ -68,9 +53,10 @@ def xgboost_k_grid_search_cv(k=4, sequence_origin='DairyDB', primers_origin='Dai
                                                             feature_importances=XGB_opt.feature_importances_,
                                                             k=k,
                                                             save_csv=True,
-                                                            xgb_model=None)
+                                                            xgb_model=XGB_opt,
+                                                            save_model=True)
 
-    return XGB_opt, test_size, prop_main_class, accuracy
+    return test_size, prop_main_class, accuracy
 
 
 # Main function without CV and Grid search - Now parameters are chosen thanks to previous function
@@ -94,7 +80,7 @@ def xgboost_k_default(k=4, sequence_origin='DairyDB', primers_origin='DairyDB', 
     else:
         n_estimators = 100
 
-    XGB = XGBClassifier(silent=0, eta=0.3, max_depth=3, n_estimators=n_estimators)
+    XGB = XGBClassifier(silent=0, eta=0.3, max_depth=4, n_estimators=n_estimators)
     y_pred = XGB.fit(X_train, y_train).predict(X_test)
 
     test_size, prop_main_class, accuracy = main_stats_model(y_train=y_train,
@@ -111,7 +97,8 @@ def xgboost_k_default(k=4, sequence_origin='DairyDB', primers_origin='DairyDB', 
                                                             k=k,
                                                             feature_importances=XGB.feature_importances_,
                                                             xgb_model=XGB,
-                                                            save_tree=1)
+                                                            save_model=True,
+                                                            save_tree=20)
 
     del XGB, X_train, X_test, y_train, y_test, y_pred
 
