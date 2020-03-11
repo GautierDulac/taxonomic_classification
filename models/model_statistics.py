@@ -14,7 +14,7 @@ from xgboost import plot_tree
 
 from processings.sequence_processing import get_all_kmers
 from utils.logger import StatLogger
-from utils.utils import folder_paths
+from utils.utils import folder_paths, slash
 
 
 # Main function
@@ -56,12 +56,12 @@ def main_stats_model(y_train: pd.DataFrame, y_test: pd.DataFrame, y_pred: np.nda
     :param save_tree: Number of random tree to save
     :return: No return, only save analysis in results/models folder
     """
-    model_path = folder_paths['model_results'] + model_name + '\\'
+    model_path = folder_paths['model_results'] + model_name + '{}'.format(slash)
     if not os.path.exists(model_path):
         os.makedirs(model_path)
 
     folder_number = get_new_model_folder_number(model_name=model_name)
-    analysis_path = model_path + '{:0>5d}_analysis_{}_{}\\'.format(folder_number, selected_primer, taxonomy_level)
+    analysis_path = model_path + '{:0>5d}_analysis_{}_{}{}'.format(folder_number, selected_primer, taxonomy_level, slash)
     os.makedirs(analysis_path)
 
     log_path = analysis_path + 'model_results.txt'
@@ -209,7 +209,7 @@ def get_metrics_model(y_train, y_test, y_pred, logger, feature_importances, k, s
         plt.close()
 
     if xgb_model is not None:
-        tree_plot_folder = analysis_path + 'tree_plots\\'
+        tree_plot_folder = analysis_path + 'tree_plots{}'.format(slash)
         if not os.path.exists(tree_plot_folder):
             os.makedirs(tree_plot_folder)
         train_classes = np.unique(y_train)
@@ -264,7 +264,7 @@ def get_new_model_folder_number(model_name: str = '') -> int:
     Extract folders already used in model_data folder, to give the new folder_number for a given model_name
     :return: (int) folder number
     """
-    current_folders = [f for f in os.listdir(folder_paths['model_results'] + model_name + '\\')]
+    current_folders = [f for f in os.listdir(folder_paths['model_results'] + model_name + '{}'.format(slash))]
     folder_numbers = [int(f.split('_')[0]) for f in current_folders if f.split('_')[0] != 'optimal']
     if len(folder_numbers) == 0:
         return 0

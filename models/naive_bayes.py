@@ -11,7 +11,7 @@ from sklearn.naive_bayes import GaussianNB
 from models.loading_model_data import main_loading_model_data, get_saved_folder_number
 from models.model_statistics import main_stats_model
 from processings.sequence_processing import get_ATCG_proportion_in_seq
-from utils.utils import taxonomy_levels, folder_paths
+from utils.utils import taxonomy_levels, folder_paths, slash
 
 
 # Main function
@@ -63,8 +63,8 @@ def ETL_NB(sequence_origin='DairyDB', primers_origin='DairyDB', taxonomy_level: 
                                             selected_primer=selected_primer,
                                             test_size=test_size)
 
-    folder_name = '{:0>3d}_data\\'.format(folder_number)
-    preprocessed_folder_path = folder_paths['model_data'] + folder_name + 'preprocessed_NB\\'
+    folder_name = '{:0>3d}_data{}'.format(folder_number, slash)
+    preprocessed_folder_path = folder_paths['model_data'] + folder_name + 'preprocessed_NB{}'.format(slash)
 
     if isdir(preprocessed_folder_path):
         # Already preprocessed data

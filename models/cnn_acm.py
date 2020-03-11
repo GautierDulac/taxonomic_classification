@@ -15,6 +15,8 @@ from torch.nn import functional as F
 from models.cnn_model import classifier_GD_2_ACM
 from models.cnn_preprocessing import get_homogenous_vector
 
+from utils.utils import slash
+
 
 def create_activation_map(X_test, y_test, dict_id_to_class, parameter_config, n: int = 5,
                           analysis_path: str = ''):
@@ -34,7 +36,7 @@ def create_activation_map(X_test, y_test, dict_id_to_class, parameter_config, n:
                                      parameter_config=parameter_config)
 
     model_path = analysis_path + 'model.pt'
-    acm_path = analysis_path + 'ACM\\'
+    acm_path = analysis_path + 'ACM{}'.format(slash)
 
     if not os.path.exists(acm_path):
         os.makedirs(acm_path)
@@ -104,7 +106,7 @@ def image_from_sequence(seq, max_size: int = 300):
     for index in range(0, max_size):
         if index < len(seq):
             bw_img = cv2.imread(
-                "utils/letters/icons8-{}-50.png".format(seq[index].lower()),
+                "utils{}letters{}icons8-{}-50.png".format(slash, slash, seq[index].lower()),
                 cv2.IMREAD_UNCHANGED
             )[:, :, 3]
             letter_img = np.zeros((50, 50, 3))

@@ -7,18 +7,26 @@ import numpy as np
 from IPython.display import display_html
 
 # Constants
-folder_paths = {'Sequence': 'D:\\0 - Boulot\\5 - X4\\16. Research Paper\\data\\gg_13_5_otus\\rep_set\\',
-                'Taxonomy': 'D:\\0 - Boulot\\5 - X4\\16. Research Paper\\data\\gg_13_5_otus\\taxonomy\\',
-                'data': 'D:\\0 - Boulot\\5 - X4\\16. Research Paper\\data\\',
-                'model_data': 'D:\\0 - Boulot\\5 - X4\\16. Research Paper\\model_data\\',
-                'data_server': 'D:\\0 - Boulot\\5 - X4\\16. Research Paper\\taxonomic_classification\\data\\',
-                'model_data_server': 'D:\\0 - Boulot\\5 - X4\\16. Research Paper\\taxonomic_classification\\model_data\\',
-                'Chaudhary': 'D:\\0 - Boulot\\5 - X4\\16. Research Paper\\data\\primers\\Chaudhary\\',
-                'DairyDB': 'D:\\0 - Boulot\\5 - X4\\16. Research Paper\\data\\primers\\DairyDB\\',
-                'stats_results': 'D:\\0 - Boulot\\5 - X4\\16. Research Paper\\taxonomic_classification\\results\\statistics\\',
-                'model_results': 'D:\\0 - Boulot\\5 - X4\\16. Research Paper\\model_results\\',
-                'model_final_results': 'D:\\0 - Boulot\\5 - X4\\16. Research Paper\\taxonomic_classification\\results\\models\\'}
-
+if os.name == 'nt':
+    folder_paths = {'Sequence': 'D:\\0 - Boulot\\5 - X4\\16. Research Paper\\data\\gg_13_5_otus\\rep_set\\',
+                    'Taxonomy': 'D:\\0 - Boulot\\5 - X4\\16. Research Paper\\data\\gg_13_5_otus\\taxonomy\\',
+                    'data': 'D:\\0 - Boulot\\5 - X4\\16. Research Paper\\data\\',
+                    'model_data': 'D:\\0 - Boulot\\5 - X4\\16. Research Paper\\model_data\\',
+                    'Chaudhary': 'D:\\0 - Boulot\\5 - X4\\16. Research Paper\\data\\primers\\Chaudhary\\',
+                    'DairyDB': 'D:\\0 - Boulot\\5 - X4\\16. Research Paper\\data\\primers\\DairyDB\\',
+                    'stats_results': 'D:\\0 - Boulot\\5 - X4\\16. Research Paper\\taxonomic_classification\\results\\statistics\\',
+                    'model_results': 'D:\\0 - Boulot\\5 - X4\\16. Research Paper\\model_results\\',
+                    'model_final_results': 'D:\\0 - Boulot\\5 - X4\\16. Research Paper\\taxonomic_classification\\results\\models\\'}
+    slash = '\\'
+else:
+    # Adapted to server
+    folder_paths = {'data': 'data/',
+                    'model_data': 'model_data/',
+                    'stats_results': 'results/statistics/',
+                    'model_results': 'model_results/',
+                    'model_final_results': 'results/models/'}
+    slash = '/'
+    
 target_alphabet = 'ATCG'
 taxonomy_levels = ['kingdom', 'phylum', 'class', 'order', 'family', 'genus', 'species']
 nomenclature_dict = {

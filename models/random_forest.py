@@ -12,7 +12,7 @@ from sklearn.model_selection import GridSearchCV
 from models.loading_model_data import main_loading_model_data, get_saved_folder_number
 from models.model_statistics import main_stats_model
 from processings.sequence_processing import get_ATCG_k_mer_proportion_in_seq
-from utils.utils import taxonomy_levels, folder_paths
+from utils.utils import taxonomy_levels, folder_paths, slash
 
 
 def random_forest_k_grid_search_cv(k=5, param_grid=None, sequence_origin='DairyDB', primers_origin='DairyDB',
@@ -139,9 +139,9 @@ def ETL_RF_k_mer(k, sequence_origin='DairyDB', primers_origin='DairyDB', taxonom
                                             selected_primer=selected_primer,
                                             test_size=test_size)
 
-    folder_name = '{:0>3d}_data\\'.format(folder_number)
+    folder_name = '{:0>3d}_data{}'.format(folder_number, slash)
     # Data used for NB is the same as the one for RF (when 4-mers are used)
-    preprocessed_folder_path = folder_paths['model_data'] + folder_name + 'preprocessed_NB_{}\\'.format(k)
+    preprocessed_folder_path = folder_paths['model_data'] + folder_name + 'preprocessed_NB_{}{}'.format(k, slash)
 
     if isdir(preprocessed_folder_path):
         # Already preprocessed data

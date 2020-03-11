@@ -13,7 +13,7 @@ import torch
 from models.cnn_acm import create_activation_map
 from models.model_statistics import get_new_model_folder_number
 from utils.logger import StatLogger
-from utils.utils import folder_paths, taxonomy_levels
+from utils.utils import folder_paths, taxonomy_levels, slash
 
 
 # Main function
@@ -57,12 +57,12 @@ def main_cnn_stats_model(y_train, y_test_torch, y_pred_torch, dict_id_to_class, 
     :param test_size:
     :return: No return, only save analysis in results/models folder
     """
-    model_path = folder_paths['model_results'] + model_name + '\\'
+    model_path = folder_paths['model_results'] + model_name + '{}'.format(slash)
     if not os.path.exists(model_path):
         os.makedirs(model_path)
 
     folder_number = get_new_model_folder_number(model_name=model_name)
-    analysis_path = model_path + '{:0>5d}_analysis_{}_{}\\'.format(folder_number, selected_primer, taxonomy_level)
+    analysis_path = model_path + '{:0>5d}_analysis_{}_{}{}'.format(folder_number, selected_primer, taxonomy_level, slash)
     os.makedirs(analysis_path)
 
     if save_model:

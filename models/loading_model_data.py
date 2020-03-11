@@ -11,7 +11,7 @@ import pandas as pd
 
 from loading.main_sequence_loading import main_sequence_loading
 from processings.hvr_loading.main_hvr_loading import main_hvr_loading
-from utils.utils import folder_paths, taxonomy_levels
+from utils.utils import folder_paths, taxonomy_levels, slash
 
 
 # Main function
@@ -41,7 +41,7 @@ def main_loading_model_data(force_rewrite: bool = False, test_size: float = 0.2,
     model_data_folder = folder_paths['model_data']
     alread_existing_data, folder_number = update_loaded_data(sequence_origin, primers_origin, taxonomy_level,
                                                              selected_primer, test_size)
-    folder_name = '{:0>3d}_data\\'.format(folder_number)
+    folder_name = '{:0>3d}_data{}'.format(folder_number, slash)
     folder_path = model_data_folder + folder_name
     if not force_rewrite and alread_existing_data:
         X_train = pd.read_csv(folder_path + 'x_train.csv')
