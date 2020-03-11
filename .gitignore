@@ -135,4 +135,5 @@ dmypy.json
 # Data
 /data/complete_gg_13_5_otus_rep_set.csv
 /data/gg_13_5_otus/
+/data/
 .Rproj.user

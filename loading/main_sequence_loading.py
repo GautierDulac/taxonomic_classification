@@ -19,7 +19,7 @@ def main_sequence_loading(desired_df: str = '') -> pd.DataFrame:
     dairy_df = pd.read_csv(folder_paths['data'] + 'dairydb_df.csv')
     dairy_df['initial_db'] = 'DairyDB'
     #complete_df = pd.concat([greengenes_df, dairy_df])
-    complete_df = dairy_db
+    complete_df = dairy_df
     complete_df.reset_index(inplace=True, drop=True)
     complete_df.reset_index(inplace=True)
     if desired_df == '':

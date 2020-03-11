@@ -22,6 +22,7 @@ else:
     # Adapted to server
     folder_paths = {'data': 'data/',
                     'model_data': 'model_data/',
+                    'DairyDB': 'data/primers/DairyDB/',
                     'stats_results': 'results/statistics/',
                     'model_results': 'model_results/',
                     'model_final_results': 'results/models/'}
