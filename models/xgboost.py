@@ -75,12 +75,7 @@ def xgboost_k_default(k=4, sequence_origin='DairyDB', primers_origin='DairyDB', 
                                                  taxonomy_level=taxonomy_level,
                                                  selected_primer=selected_primer)
 
-    if taxonomy_level >= 5:
-        n_estimators = 50
-    else:
-        n_estimators = 100
-
-    XGB = XGBClassifier(silent=0, eta=0.3, max_depth=4, n_estimators=n_estimators)
+    XGB = XGBClassifier(silent=0, eta=0.3, max_depth=3, n_estimators=100)
     y_pred = XGB.fit(X_train, y_train).predict(X_test)
 
     test_size, prop_main_class, accuracy = main_stats_model(y_train=y_train,
