@@ -50,6 +50,7 @@ def main_loading_model_data(force_rewrite: bool = False, test_size: float = 0.2,
         y_test = pd.read_csv(folder_path + 'y_test.csv')
     else:
         sequence_df = main_sequence_loading(desired_df=sequence_origin)
+        print(len(sequence_df)) # TODO REMOVE
         hvr_df = main_hvr_loading(desired_sequences=sequence_origin, desired_primers=primers_origin)
         hvr_columns = hvr_df.columns[1:]
 
@@ -90,7 +91,7 @@ def main_loading_model_data(force_rewrite: bool = False, test_size: float = 0.2,
 
         if not isdir(folder_path):
             makedirs(folder_path)
-
+            
         X_train.to_csv(folder_path + 'x_train.csv', index=False)
         X_test.to_csv(folder_path + 'x_test.csv', index=False)
         y_train.to_csv(folder_path + 'y_train.csv', index=False)
