@@ -81,7 +81,9 @@ def random_forest_k_grid_search_cv(k=5, param_grid=None, sequence_origin='DairyD
 def random_forest_k_default(k=4, sequence_origin='DairyDB', primers_origin='DairyDB', taxonomy_level: int = 1,
                             selected_primer: str = 'V4',
                             model_preprocessing='Computing frequency of {}-mer (ATCG) in every sequence',
-                            test_size=0.2):
+                            test_size=0.2, 
+                            max_depth=None, 
+                            n_estimators=None):
     """
     Apply Random Forest model on a set of sequence preprocessed data.
     :return:
@@ -92,15 +94,17 @@ def random_forest_k_default(k=4, sequence_origin='DairyDB', primers_origin='Dair
                                                     primers_origin=primers_origin,
                                                     taxonomy_level=taxonomy_level,
                                                     selected_primer=selected_primer)
-
-    if taxonomy_level >= 5:
-        max_depth = 10
-    elif taxonomy_level >= 3 and selected_primer == 'sequence' and sequence_origin == '':
-        max_depth = 20
-    else:
-        max_depth = 50
+    if max_depth is None:
+        if taxonomy_level >= 5:
+            max_depth = 10
+        elif taxonomy_level >= 3 and selected_primer == 'sequence' and sequence_origin == '':
+            max_depth = 20
+        else:
+            max_depth = 50
+    if n_estimators is None:
+        n_estimators = 200
     RF = RandomForestClassifier(bootstrap=False, min_samples_leaf=1, min_samples_split=2, max_features=min(50, 4 ** k),
-                                n_estimators=200, max_depth=max_depth, n_jobs=-1)  # 30 for max_depth is not backed-up
+                                n_estimators=n_estimators, max_depth=max_depth, n_jobs=-1)  # 30 for max_depth is not backed-up
     y_pred = RF.fit(X_train, y_train).predict(X_test)
 
     test_size, prop_main_class, accuracy = main_stats_model(y_train=y_train,
