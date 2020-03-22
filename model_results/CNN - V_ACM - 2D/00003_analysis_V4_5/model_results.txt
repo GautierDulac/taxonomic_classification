@@ -1,0 +1,112 @@
+########################################################################################################################
+------------------------------------------------------------------------------------------------------------------------
+-------------------------------------- PARAMETER INFORMATION FOR CNN - V_ACM - 2D --------------------------------------
+------------------------------------------------------------------------------------------------------------------------
+
+
+----------------------------------------------------- DATA ORIGINS -----------------------------------------------------
+Sequence origin: DairyDB
+Primers origin: DairyDB
+
+------------------------------------ CHOSEN HYPERVARIABLE REGION AND TAXONOMY RANK -------------------------------------
+HyperVariable Region: V4
+Taxonomy Rank: 5
+
+---------------------------------------------------- PREPROCESSING -----------------------------------------------------
+Preprocessing description: OHE of letters in 4 dimensions (k=1) - max size = 300
+
+--------------------------------------------------- MODEL PARAMETERS ---------------------------------------------------
+Size of test set: 1884
+Part of test size compared to total: 0.2
+Parameter config raw: {'sequence_origin': 'DairyDB', 'primers_origin': 'DairyDB', 'selected_primer': 'V4', 'taxonomy_level': 5, 'dimension': 2, 'k_mer': 1, 'vector_max_size': 300, 'out_channel_1': 64, 'out_channel_2': 64, 'kernel_size_1_W': 5, 'kernel_size_2_W': 12, 'max_pool_stride_1_W': 5, 'max_pool_stride_2_W': 6, 'n_epochs': 50, 'learning_rate': 0.001, 'accuracy': 0.5759023354564756, 'training_time': 171.19018602371216}
+Parameter config: sequence_origin = DairyDB
+Parameter config: primers_origin = DairyDB
+Parameter config: selected_primer = V4
+Parameter config: taxonomy_level = 5
+Parameter config: dimension = 2
+Parameter config: k_mer = 1
+Parameter config: vector_max_size = 300
+Parameter config: out_channel_1 = 64
+Parameter config: out_channel_2 = 64
+Parameter config: kernel_size_1_W = 5
+Parameter config: kernel_size_2_W = 12
+Parameter config: max_pool_stride_1_W = 5
+Parameter config: max_pool_stride_2_W = 6
+Parameter config: n_epochs = 50
+Parameter config: learning_rate = 0.001
+Parameter config: accuracy = 0.5759023354564756
+Parameter config: training_time = 171.19018602371216
+Parameter dict: training = False
+
+------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------- RESULTS --------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------
+
+Number of seen classes in train: 1526
+Number of predicted classes in pred: 603
+Number of classes waited in test: 746
+Number of wrong prediction: 799 over 1884
+Model Accuracy: 57.59%
+
+---------------------------------------------- MAIN CLASSES IN TRAIN SET -----------------------------------------------
+Train - Rank 1 - 3.24%: RUMINOCOCCACEAE_GENUS with 247 occurences
+Train - Rank 2 - 2.05%: CHRISTENSENELLACEAE_R-7_GROUP with 156 occurences
+Train - Rank 3 - 1.73%: LACHNOSPIRACEAE_GENUS with 132 occurences
+Train - Rank 4 - 1.63%: PREVOTELLA with 124 occurences
+Train - Rank 5 - 1.55%: LACTOBACILLUS with 118 occurences
+
+----------------------------------------------- MAIN CLASSES IN TEST SET -----------------------------------------------
+Test - Rank 1 - 3.66%: RUMINOCOCCACEAE_GENUS with 69 occurences
+Test - Rank 2 - 2.44%: LACHNOSPIRACEAE_GENUS with 46 occurences
+Test - Rank 3 - 1.80%: PREVOTELLA with 34 occurences
+Test - Rank 4 - 1.59%: CHRISTENSENELLACEAE_R-7_GROUP with 30 occurences
+Test - Rank 5 - 1.27%: ANAEROBACTERIUM with 24 occurences
+
+--------------------------------------------- MAIN CLASSES IN PREDICTIONS ----------------------------------------------
+Predictions - Rank 1 - 4.09%: RUMINOCOCCACEAE_GENUS with 77 occurences
+Predictions - Rank 2 - 2.12%: LACHNOSPIRACEAE_GENUS with 40 occurences
+Predictions - Rank 3 - 1.91%: CHRISTENSENELLACEAE_R-7_GROUP with 36 occurences
+Predictions - Rank 4 - 1.80%: PREVOTELLA with 34 occurences
+Predictions - Rank 5 - 1.38%: RUMINICLOSTRIDIUM with 26 occurences
+
+------------------------------------------------------------------------------------------------------------------------
+------------------------------------------- LOSS AND ACCURACIES OVER EPOCHS --------------------------------------------
+------------------------------------------------------------------------------------------------------------------------
+
+Number of epochs: 50
+Train loss: [0.10354884 0.09430371 0.08554086 0.07770526 0.07025736 0.06209123
+ 0.05449677 0.04736456 0.0415265  0.03583338 0.03189238 0.02803142
+ 0.02539256 0.02233907 0.02057265 0.01865718 0.01692713 0.01548565
+ 0.01465588 0.01357993 0.01273076 0.01204973 0.01111432 0.01052686
+ 0.01007123 0.00990867 0.00916195 0.00870619 0.00848087 0.00820851
+ 0.00794546 0.00778296 0.00733335 0.00729337 0.00689949 0.00625721
+ 0.00663859 0.00609178 0.00623356 0.00595507 0.00601349 0.00570435
+ 0.00555184 0.00542138 0.00558726 0.00492751 0.00542355 0.00538171
+ 0.00512818 0.0049748 ]
+Test loss: [0.09876052 0.09503763 0.08767535 0.0822566  0.07865594 0.0721391
+ 0.0682799  0.06618089 0.06488948 0.0614408  0.06151109 0.05834938
+ 0.05796564 0.05867634 0.05963209 0.06136091 0.05950656 0.05948374
+ 0.0606421  0.06043453 0.06432558 0.06160263 0.06309108 0.06403115
+ 0.06341317 0.06462853 0.06388877 0.06779377 0.06670352 0.06380564
+ 0.06634746 0.06691027 0.06659846 0.06784033 0.06834822 0.07057862
+ 0.07174999 0.07143144 0.06654741 0.06913017 0.07043303 0.07179022
+ 0.06973545 0.06903554 0.07004357 0.07714063 0.07227211 0.07467579
+ 0.07252322 0.07421315]
+Train accuracy: [0.07103466 0.10806197 0.17817752 0.22058824 0.26733193 0.32838761
+ 0.37316176 0.42397584 0.46139706 0.51129202 0.54503676 0.57970063
+ 0.60609244 0.63694853 0.64797794 0.68159139 0.70246849 0.72570903
+ 0.73713235 0.74737395 0.75945378 0.77376576 0.78899685 0.80081408
+ 0.80396534 0.80449055 0.81893382 0.82733718 0.83639706 0.83810399
+ 0.84611345 0.84755777 0.85267857 0.85477941 0.85845588 0.86909139
+ 0.86541492 0.875      0.87079832 0.87683824 0.875      0.8801208
+ 0.88379727 0.88432248 0.88497899 0.89837185 0.88694853 0.89154412
+ 0.89141282 0.8960084 ]
+Test accuracy: [0.09447983 0.13535032 0.20700637 0.24469214 0.28025478 0.32855626
+ 0.37579618 0.38322718 0.40233546 0.43418259 0.45276008 0.4888535
+ 0.49363057 0.50053079 0.50902335 0.52335456 0.52813163 0.53025478
+ 0.54140127 0.54936306 0.53768577 0.55785563 0.54564756 0.55944798
+ 0.5514862  0.55626327 0.55944798 0.54193206 0.55838641 0.55254777
+ 0.56794055 0.58280255 0.57484076 0.55944798 0.56794055 0.57059448
+ 0.56687898 0.55944798 0.57643312 0.57271762 0.56794055 0.58651805
+ 0.58121019 0.56740977 0.56104034 0.56687898 0.57112527 0.56316348
+ 0.58704883 0.56794055]

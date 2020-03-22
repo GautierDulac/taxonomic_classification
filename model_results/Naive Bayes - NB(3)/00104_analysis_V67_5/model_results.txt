@@ -1,0 +1,52 @@
+########################################################################################################################
+------------------------------------------------------------------------------------------------------------------------
+------------------------------------ PARAMETER INFORMATION FOR NAIVE BAYES - NB(3) -------------------------------------
+------------------------------------------------------------------------------------------------------------------------
+
+
+----------------------------------------------------- DATA ORIGINS -----------------------------------------------------
+Sequence origin: DairyDB
+Primers origin: DairyDB
+
+------------------------------------ CHOSEN HYPERVARIABLE REGION AND TAXONOMY RANK -------------------------------------
+HyperVariable Region: V67
+Taxonomy Rank: 5
+
+---------------------------------------------------- PREPROCESSING -----------------------------------------------------
+Preprocessing description: Computing frequency of 3-mer (ATCG) in every sequence
+
+--------------------------------------------------- MODEL PARAMETERS ---------------------------------------------------
+Parameter dict: {'priors': None, 'var_smoothing': 1e-09}
+Size of test set: 1804
+Part of test size compared to total: 0.2
+
+------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------- RESULTS --------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------
+
+Number of seen classes in train: 1327
+Number of predicted classes in pred: 293
+Number of classes waited in test: 706
+Number of wrong prediction: 939 over 1804
+Model Accuracy: 47.95%
+
+---------------------------------------------- MAIN CLASSES IN TRAIN SET -----------------------------------------------
+Train - Rank 1 - 3.75%: RUMINOCOCCACEAE_GENUS with 263 occurences
+Train - Rank 2 - 2.01%: CHRISTENSENELLACEAE_R-7_GROUP with 141 occurences
+Train - Rank 3 - 1.90%: LACHNOSPIRACEAE_GENUS with 133 occurences
+Train - Rank 4 - 1.74%: PREVOTELLA with 122 occurences
+Train - Rank 5 - 1.66%: LACTOBACILLUS with 116 occurences
+
+----------------------------------------------- MAIN CLASSES IN TEST SET -----------------------------------------------
+Test - Rank 1 - 3.66%: RUMINOCOCCACEAE_GENUS with 66 occurences
+Test - Rank 2 - 2.38%: CHRISTENSENELLACEAE_R-7_GROUP with 43 occurences
+Test - Rank 3 - 2.00%: PREVOTELLA with 36 occurences
+Test - Rank 4 - 2.00%: LACHNOSPIRACEAE_GENUS with 36 occurences
+Test - Rank 5 - 1.22%: BARNESIELLA with 22 occurences
+
+---------------------------------------- MAIN CLASSES IN THE PREDICTED CLASSES -----------------------------------------
+Predictions - Rank 1 - 3.82%: RUMINOCOCCACEAE_GENUS with 69 occurences
+Predictions - Rank 2 - 3.49%: DELTAPROTEOBACTERIA_GENUS with 63 occurences
+Predictions - Rank 3 - 2.83%: RHODOSPIRILLACEAE_GENUS with 51 occurences
+Predictions - Rank 4 - 2.55%: ACIDITERRIMONAS with 46 occurences
+Predictions - Rank 5 - 2.44%: LACHNOSPIRACEAE_GENUS with 44 occurences

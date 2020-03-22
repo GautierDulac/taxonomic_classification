@@ -1,0 +1,52 @@
+########################################################################################################################
+------------------------------------------------------------------------------------------------------------------------
+------------------------------------ PARAMETER INFORMATION FOR NAIVE BAYES - NB(4) -------------------------------------
+------------------------------------------------------------------------------------------------------------------------
+
+
+----------------------------------------------------- DATA ORIGINS -----------------------------------------------------
+Sequence origin: DairyDB
+Primers origin: DairyDB
+
+------------------------------------ CHOSEN HYPERVARIABLE REGION AND TAXONOMY RANK -------------------------------------
+HyperVariable Region: V34
+Taxonomy Rank: 2
+
+---------------------------------------------------- PREPROCESSING -----------------------------------------------------
+Preprocessing description: Computing frequency of 4-mer (ATCG) in every sequence
+
+--------------------------------------------------- MODEL PARAMETERS ---------------------------------------------------
+Parameter dict: {'priors': None, 'var_smoothing': 1e-09}
+Size of test set: 1859
+Part of test size compared to total: 0.2
+
+------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------- RESULTS --------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------
+
+Number of seen classes in train: 93
+Number of predicted classes in pred: 48
+Number of classes waited in test: 70
+Number of wrong prediction: 145 over 1859
+Model Accuracy: 92.20%
+
+---------------------------------------------- MAIN CLASSES IN TRAIN SET -----------------------------------------------
+Train - Rank 1 - 28.34%: CLOSTRIDIA with 2094 occurences
+Train - Rank 2 - 8.58%: BACILLI with 634 occurences
+Train - Rank 3 - 7.66%: ALPHAPROTEOBACTERIA with 566 occurences
+Train - Rank 4 - 7.44%: BACTEROIDIA with 550 occurences
+Train - Rank 5 - 7.32%: GAMMAPROTEOBACTERIA with 541 occurences
+
+----------------------------------------------- MAIN CLASSES IN TEST SET -----------------------------------------------
+Test - Rank 1 - 27.11%: CLOSTRIDIA with 504 occurences
+Test - Rank 2 - 8.23%: BACTEROIDIA with 153 occurences
+Test - Rank 3 - 8.07%: ALPHAPROTEOBACTERIA with 150 occurences
+Test - Rank 4 - 7.80%: BACILLI with 145 occurences
+Test - Rank 5 - 7.32%: GAMMAPROTEOBACTERIA with 136 occurences
+
+---------------------------------------- MAIN CLASSES IN THE PREDICTED CLASSES -----------------------------------------
+Predictions - Rank 1 - 27.06%: CLOSTRIDIA with 503 occurences
+Predictions - Rank 2 - 8.07%: BACTEROIDIA with 150 occurences
+Predictions - Rank 3 - 7.75%: ALPHAPROTEOBACTERIA with 144 occurences
+Predictions - Rank 4 - 7.48%: GAMMAPROTEOBACTERIA with 139 occurences
+Predictions - Rank 5 - 7.26%: BACILLI with 135 occurences
