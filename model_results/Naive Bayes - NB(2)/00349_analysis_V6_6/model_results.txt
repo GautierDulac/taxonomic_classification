@@ -1,0 +1,52 @@
+########################################################################################################################
+------------------------------------------------------------------------------------------------------------------------
+------------------------------------ PARAMETER INFORMATION FOR NAIVE BAYES - NB(2) -------------------------------------
+------------------------------------------------------------------------------------------------------------------------
+
+
+----------------------------------------------------- DATA ORIGINS -----------------------------------------------------
+Sequence origin: DairyDB
+Primers origin: Chaudhary
+
+------------------------------------ CHOSEN HYPERVARIABLE REGION AND TAXONOMY RANK -------------------------------------
+HyperVariable Region: V6
+Taxonomy Rank: 6
+
+---------------------------------------------------- PREPROCESSING -----------------------------------------------------
+Preprocessing description: Computing frequency of 2-mer (ATCG) in every sequence
+
+--------------------------------------------------- MODEL PARAMETERS ---------------------------------------------------
+Parameter dict: {'priors': None, 'var_smoothing': 1e-09}
+Size of test set: 27
+Part of test size compared to total: 0.2
+
+------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------- RESULTS --------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------
+
+Number of seen classes in train: 111
+Number of predicted classes in pred: 12
+Number of classes waited in test: 26
+Number of wrong prediction: 27 over 27
+Model Accuracy: 0.00%
+
+---------------------------------------------- MAIN CLASSES IN TRAIN SET -----------------------------------------------
+Train - Rank 1 - 2.48%: PANTOEA_AGGLOMERAN with 3 occurences
+Train - Rank 2 - 1.65%: VIBRIO_PARAHAEMOLYTICU with 2 occurences
+Train - Rank 3 - 1.65%: RAOULTELLA_PLANTICOL with 2 occurences
+Train - Rank 4 - 1.65%: SODALIS_PRAECAPTIVU with 2 occurences
+Train - Rank 5 - 1.65%: ACTINOBACILLUS_SPECIE with 2 occurences
+
+----------------------------------------------- MAIN CLASSES IN TEST SET -----------------------------------------------
+Test - Rank 1 - 7.41%: SALMONELLA_ENTERIC with 2 occurences
+Test - Rank 2 - 3.70%: SERRATIA_GRIMESI with 1 occurences
+Test - Rank 3 - 3.70%: HALOMONAS_SUBGLACIESCOL with 1 occurences
+Test - Rank 4 - 3.70%: PANTOEA_CYPRIPEDI with 1 occurences
+Test - Rank 5 - 3.70%: PASTEURELLA_PNEUMOTROPIC with 1 occurences
+
+---------------------------------------- MAIN CLASSES IN THE PREDICTED CLASSES -----------------------------------------
+Predictions - Rank 1 - 48.15%: PANTOEA_AGGLOMERAN with 13 occurences
+Predictions - Rank 2 - 11.11%: CITROBACTER_BRAAKI with 3 occurences
+Predictions - Rank 3 - 7.41%: ESCHERICHIA_COL with 2 occurences
+Predictions - Rank 4 - 3.70%: SERRATIA_ODORIFER with 1 occurences
+Predictions - Rank 5 - 3.70%: ACTINOBACILLUS_SPECIE with 1 occurences

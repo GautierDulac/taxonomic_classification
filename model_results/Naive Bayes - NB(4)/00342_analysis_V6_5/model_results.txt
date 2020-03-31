@@ -1,0 +1,52 @@
+########################################################################################################################
+------------------------------------------------------------------------------------------------------------------------
+------------------------------------ PARAMETER INFORMATION FOR NAIVE BAYES - NB(4) -------------------------------------
+------------------------------------------------------------------------------------------------------------------------
+
+
+----------------------------------------------------- DATA ORIGINS -----------------------------------------------------
+Sequence origin: DairyDB
+Primers origin: Chaudhary
+
+------------------------------------ CHOSEN HYPERVARIABLE REGION AND TAXONOMY RANK -------------------------------------
+HyperVariable Region: V6
+Taxonomy Rank: 5
+
+---------------------------------------------------- PREPROCESSING -----------------------------------------------------
+Preprocessing description: Computing frequency of 4-mer (ATCG) in every sequence
+
+--------------------------------------------------- MODEL PARAMETERS ---------------------------------------------------
+Parameter dict: {'priors': None, 'var_smoothing': 1e-09}
+Size of test set: 30
+Part of test size compared to total: 0.2
+
+------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------- RESULTS --------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------
+
+Number of seen classes in train: 46
+Number of predicted classes in pred: 13
+Number of classes waited in test: 21
+Number of wrong prediction: 21 over 30
+Model Accuracy: 30.00%
+
+---------------------------------------------- MAIN CLASSES IN TRAIN SET -----------------------------------------------
+Train - Rank 1 - 10.17%: HALOMONAS with 12 occurences
+Train - Rank 2 - 7.63%: VIBRIO with 9 occurences
+Train - Rank 3 - 5.93%: SERRATIA with 7 occurences
+Train - Rank 4 - 5.08%: YERSINIA with 6 occurences
+Train - Rank 5 - 5.08%: PANTOEA with 6 occurences
+
+----------------------------------------------- MAIN CLASSES IN TEST SET -----------------------------------------------
+Test - Rank 1 - 10.00%: VIBRIO with 3 occurences
+Test - Rank 2 - 10.00%: PANTOEA with 3 occurences
+Test - Rank 3 - 10.00%: HALOMONAS with 3 occurences
+Test - Rank 4 - 6.67%: SERRATIA with 2 occurences
+Test - Rank 5 - 6.67%: ENTEROBACTER with 2 occurences
+
+---------------------------------------- MAIN CLASSES IN THE PREDICTED CLASSES -----------------------------------------
+Predictions - Rank 1 - 30.00%: HALOMONAS with 9 occurences
+Predictions - Rank 2 - 16.67%: MORGANELLA with 5 occurences
+Predictions - Rank 3 - 13.33%: ACTINOBACILLUS with 4 occurences
+Predictions - Rank 4 - 6.67%: SHEWANELLA with 2 occurences
+Predictions - Rank 5 - 6.67%: SERRATIA with 2 occurences

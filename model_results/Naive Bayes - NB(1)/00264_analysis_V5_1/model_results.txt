@@ -1,0 +1,52 @@
+########################################################################################################################
+------------------------------------------------------------------------------------------------------------------------
+------------------------------------ PARAMETER INFORMATION FOR NAIVE BAYES - NB(1) -------------------------------------
+------------------------------------------------------------------------------------------------------------------------
+
+
+----------------------------------------------------- DATA ORIGINS -----------------------------------------------------
+Sequence origin: DairyDB
+Primers origin: Chaudhary
+
+------------------------------------ CHOSEN HYPERVARIABLE REGION AND TAXONOMY RANK -------------------------------------
+HyperVariable Region: V5
+Taxonomy Rank: 1
+
+---------------------------------------------------- PREPROCESSING -----------------------------------------------------
+Preprocessing description: Computing frequency of 1-mer (ATCG) in every sequence
+
+--------------------------------------------------- MODEL PARAMETERS ---------------------------------------------------
+Parameter dict: {'priors': None, 'var_smoothing': 1e-09}
+Size of test set: 1570
+Part of test size compared to total: 0.2
+
+------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------- RESULTS --------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------
+
+Number of seen classes in train: 30
+Number of predicted classes in pred: 13
+Number of classes waited in test: 22
+Number of wrong prediction: 733 over 1570
+Model Accuracy: 53.31%
+
+---------------------------------------------- MAIN CLASSES IN TRAIN SET -----------------------------------------------
+Train - Rank 1 - 43.58%: FIRMICUTES with 2730 occurences
+Train - Rank 2 - 21.15%: PROTEOBACTERIA with 1325 occurences
+Train - Rank 3 - 16.91%: BACTEROIDETES with 1059 occurences
+Train - Rank 4 - 10.25%: ACTINOBACTERIA with 642 occurences
+Train - Rank 5 - 1.85%: ACIDOBACTERIA with 116 occurences
+
+----------------------------------------------- MAIN CLASSES IN TEST SET -----------------------------------------------
+Test - Rank 1 - 44.39%: FIRMICUTES with 697 occurences
+Test - Rank 2 - 20.13%: PROTEOBACTERIA with 316 occurences
+Test - Rank 3 - 16.43%: BACTEROIDETES with 258 occurences
+Test - Rank 4 - 10.06%: ACTINOBACTERIA with 158 occurences
+Test - Rank 5 - 2.04%: ACIDOBACTERIA with 32 occurences
+
+---------------------------------------- MAIN CLASSES IN THE PREDICTED CLASSES -----------------------------------------
+Predictions - Rank 1 - 58.15%: FIRMICUTES with 913 occurences
+Predictions - Rank 2 - 16.88%: ACTINOBACTERIA with 265 occurences
+Predictions - Rank 3 - 13.69%: BACTEROIDETES with 215 occurences
+Predictions - Rank 4 - 7.83%: PROTEOBACTERIA with 123 occurences
+Predictions - Rank 5 - 1.72%: GEMMATIMONADETES with 27 occurences

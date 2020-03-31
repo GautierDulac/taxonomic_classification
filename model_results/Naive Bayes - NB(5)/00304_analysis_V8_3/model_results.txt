@@ -1,0 +1,52 @@
+########################################################################################################################
+------------------------------------------------------------------------------------------------------------------------
+------------------------------------ PARAMETER INFORMATION FOR NAIVE BAYES - NB(5) -------------------------------------
+------------------------------------------------------------------------------------------------------------------------
+
+
+----------------------------------------------------- DATA ORIGINS -----------------------------------------------------
+Sequence origin: DairyDB
+Primers origin: Chaudhary
+
+------------------------------------ CHOSEN HYPERVARIABLE REGION AND TAXONOMY RANK -------------------------------------
+HyperVariable Region: V8
+Taxonomy Rank: 3
+
+---------------------------------------------------- PREPROCESSING -----------------------------------------------------
+Preprocessing description: Computing frequency of 5-mer (ATCG) in every sequence
+
+--------------------------------------------------- MODEL PARAMETERS ---------------------------------------------------
+Parameter dict: {'priors': None, 'var_smoothing': 1e-09}
+Size of test set: 749
+Part of test size compared to total: 0.2
+
+------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------- RESULTS --------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------
+
+Number of seen classes in train: 160
+Number of predicted classes in pred: 64
+Number of classes waited in test: 119
+Number of wrong prediction: 335 over 749
+Model Accuracy: 55.27%
+
+---------------------------------------------- MAIN CLASSES IN TRAIN SET -----------------------------------------------
+Train - Rank 1 - 7.47%: RHIZOBIALES with 211 occurences
+Train - Rank 2 - 4.28%: SPHINGOBACTERIALES with 121 occurences
+Train - Rank 3 - 3.54%: RHODOSPIRILLALES with 100 occurences
+Train - Rank 4 - 3.11%: BURKHOLDERIALES with 88 occurences
+Train - Rank 5 - 3.04%: CHROMATIALES with 86 occurences
+
+----------------------------------------------- MAIN CLASSES IN TEST SET -----------------------------------------------
+Test - Rank 1 - 9.75%: RHIZOBIALES with 73 occurences
+Test - Rank 2 - 4.54%: RHODOSPIRILLALES with 34 occurences
+Test - Rank 3 - 4.14%: SPHINGOBACTERIALES with 31 occurences
+Test - Rank 4 - 3.47%: CHROMATIALES with 26 occurences
+Test - Rank 5 - 3.07%: MYXOCOCCALES with 23 occurences
+
+---------------------------------------- MAIN CLASSES IN THE PREDICTED CLASSES -----------------------------------------
+Predictions - Rank 1 - 28.57%: SPHINGOBACTERIALES with 214 occurences
+Predictions - Rank 2 - 16.15%: RHIZOBIALES with 121 occurences
+Predictions - Rank 3 - 5.34%: RHODOSPIRILLALES with 40 occurences
+Predictions - Rank 4 - 5.07%: MYXOCOCCALES with 38 occurences
+Predictions - Rank 5 - 2.67%: SPIROCHAETALES with 20 occurences

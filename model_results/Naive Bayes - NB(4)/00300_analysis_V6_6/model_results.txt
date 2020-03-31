@@ -1,0 +1,52 @@
+########################################################################################################################
+------------------------------------------------------------------------------------------------------------------------
+------------------------------------ PARAMETER INFORMATION FOR NAIVE BAYES - NB(4) -------------------------------------
+------------------------------------------------------------------------------------------------------------------------
+
+
+----------------------------------------------------- DATA ORIGINS -----------------------------------------------------
+Sequence origin: DairyDB
+Primers origin: Chaudhary
+
+------------------------------------ CHOSEN HYPERVARIABLE REGION AND TAXONOMY RANK -------------------------------------
+HyperVariable Region: V6
+Taxonomy Rank: 6
+
+---------------------------------------------------- PREPROCESSING -----------------------------------------------------
+Preprocessing description: Computing frequency of 4-mer (ATCG) in every sequence
+
+--------------------------------------------------- MODEL PARAMETERS ---------------------------------------------------
+Parameter dict: {'priors': None, 'var_smoothing': 1e-09}
+Size of test set: 28
+Part of test size compared to total: 0.2
+
+------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------- RESULTS --------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------
+
+Number of seen classes in train: 113
+Number of predicted classes in pred: 13
+Number of classes waited in test: 28
+Number of wrong prediction: 27 over 28
+Model Accuracy: 3.57%
+
+---------------------------------------------- MAIN CLASSES IN TRAIN SET -----------------------------------------------
+Train - Rank 1 - 2.50%: PANTOEA_AGGLOMERAN with 3 occurences
+Train - Rank 2 - 1.67%: RAOULTELLA_ORNITHINOLYTIC with 2 occurences
+Train - Rank 3 - 1.67%: RAOULTELLA_PLANTICOL with 2 occurences
+Train - Rank 4 - 1.67%: YERSINIA_ENTEROCOLITIC with 2 occurences
+Train - Rank 5 - 1.67%: PANTOEA_ANANATI with 2 occurences
+
+----------------------------------------------- MAIN CLASSES IN TEST SET -----------------------------------------------
+Test - Rank 1 - 3.57%: SALMONELLA_ENTERIC with 1 occurences
+Test - Rank 2 - 3.57%: HALOMONAS_VILAMENSI with 1 occurences
+Test - Rank 3 - 3.57%: PANTOEA_CYPRIPEDI with 1 occurences
+Test - Rank 4 - 3.57%: YERSINIA_FREDERIKSENI with 1 occurences
+Test - Rank 5 - 3.57%: ERWINIA_AMYLOVOR with 1 occurences
+
+---------------------------------------- MAIN CLASSES IN THE PREDICTED CLASSES -----------------------------------------
+Predictions - Rank 1 - 39.29%: RAOULTELLA_PLANTICOL with 11 occurences
+Predictions - Rank 2 - 10.71%: YERSINIA_ROHDE with 3 occurences
+Predictions - Rank 3 - 10.71%: ENTEROBACTER_ASBURIA with 3 occurences
+Predictions - Rank 4 - 7.14%: PANTOEA_AGGLOMERAN with 2 occurences
+Predictions - Rank 5 - 3.57%: PANTOEA_ANANATI with 1 occurences

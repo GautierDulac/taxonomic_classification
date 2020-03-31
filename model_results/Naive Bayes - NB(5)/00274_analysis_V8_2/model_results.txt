@@ -1,0 +1,52 @@
+########################################################################################################################
+------------------------------------------------------------------------------------------------------------------------
+------------------------------------ PARAMETER INFORMATION FOR NAIVE BAYES - NB(5) -------------------------------------
+------------------------------------------------------------------------------------------------------------------------
+
+
+----------------------------------------------------- DATA ORIGINS -----------------------------------------------------
+Sequence origin: DairyDB
+Primers origin: Chaudhary
+
+------------------------------------ CHOSEN HYPERVARIABLE REGION AND TAXONOMY RANK -------------------------------------
+HyperVariable Region: V8
+Taxonomy Rank: 2
+
+---------------------------------------------------- PREPROCESSING -----------------------------------------------------
+Preprocessing description: Computing frequency of 5-mer (ATCG) in every sequence
+
+--------------------------------------------------- MODEL PARAMETERS ---------------------------------------------------
+Parameter dict: {'priors': None, 'var_smoothing': 1e-09}
+Size of test set: 741
+Part of test size compared to total: 0.2
+
+------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------- RESULTS --------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------
+
+Number of seen classes in train: 82
+Number of predicted classes in pred: 22
+Number of classes waited in test: 65
+Number of wrong prediction: 279 over 741
+Model Accuracy: 62.35%
+
+---------------------------------------------- MAIN CLASSES IN TRAIN SET -----------------------------------------------
+Train - Rank 1 - 17.78%: ALPHAPROTEOBACTERIA with 504 occurences
+Train - Rank 2 - 16.13%: GAMMAPROTEOBACTERIA with 457 occurences
+Train - Rank 3 - 12.07%: DELTAPROTEOBACTERIA with 342 occurences
+Train - Rank 4 - 6.21%: ACTINOBACTERIA with 176 occurences
+Train - Rank 5 - 6.10%: BETAPROTEOBACTERIA with 173 occurences
+
+----------------------------------------------- MAIN CLASSES IN TEST SET -----------------------------------------------
+Test - Rank 1 - 19.03%: GAMMAPROTEOBACTERIA with 141 occurences
+Test - Rank 2 - 15.38%: ALPHAPROTEOBACTERIA with 114 occurences
+Test - Rank 3 - 12.55%: DELTAPROTEOBACTERIA with 93 occurences
+Test - Rank 4 - 5.80%: ACTINOBACTERIA with 43 occurences
+Test - Rank 5 - 5.40%: BETAPROTEOBACTERIA with 40 occurences
+
+---------------------------------------- MAIN CLASSES IN THE PREDICTED CLASSES -----------------------------------------
+Predictions - Rank 1 - 42.65%: DELTAPROTEOBACTERIA with 316 occurences
+Predictions - Rank 2 - 18.35%: GAMMAPROTEOBACTERIA with 136 occurences
+Predictions - Rank 3 - 15.25%: ALPHAPROTEOBACTERIA with 113 occurences
+Predictions - Rank 4 - 5.94%: SPHINGOBACTERIIA with 44 occurences
+Predictions - Rank 5 - 3.91%: ACTINOBACTERIA with 29 occurences

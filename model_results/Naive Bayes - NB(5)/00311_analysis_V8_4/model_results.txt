@@ -1,0 +1,52 @@
+########################################################################################################################
+------------------------------------------------------------------------------------------------------------------------
+------------------------------------ PARAMETER INFORMATION FOR NAIVE BAYES - NB(5) -------------------------------------
+------------------------------------------------------------------------------------------------------------------------
+
+
+----------------------------------------------------- DATA ORIGINS -----------------------------------------------------
+Sequence origin: DairyDB
+Primers origin: Chaudhary
+
+------------------------------------ CHOSEN HYPERVARIABLE REGION AND TAXONOMY RANK -------------------------------------
+HyperVariable Region: V8
+Taxonomy Rank: 4
+
+---------------------------------------------------- PREPROCESSING -----------------------------------------------------
+Preprocessing description: Computing frequency of 5-mer (ATCG) in every sequence
+
+--------------------------------------------------- MODEL PARAMETERS ---------------------------------------------------
+Parameter dict: {'priors': None, 'var_smoothing': 1e-09}
+Size of test set: 713
+Part of test size compared to total: 0.2
+
+------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------- RESULTS --------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------
+
+Number of seen classes in train: 279
+Number of predicted classes in pred: 96
+Number of classes waited in test: 187
+Number of wrong prediction: 339 over 713
+Model Accuracy: 52.45%
+
+---------------------------------------------- MAIN CLASSES IN TRAIN SET -----------------------------------------------
+Train - Rank 1 - 3.49%: RHODOSPIRILLACEAE with 100 occurences
+Train - Rank 2 - 2.87%: RHODOBACTERACEAE with 82 occurences
+Train - Rank 3 - 2.69%: ACETOBACTERACEAE with 77 occurences
+Train - Rank 4 - 2.34%: SPIROCHAETACEAE with 67 occurences
+Train - Rank 5 - 2.31%: SPHINGOBACTERIACEAE with 66 occurences
+
+----------------------------------------------- MAIN CLASSES IN TEST SET -----------------------------------------------
+Test - Rank 1 - 3.09%: SPIROCHAETACEAE with 22 occurences
+Test - Rank 2 - 3.09%: RHODOSPIRILLACEAE with 22 occurences
+Test - Rank 3 - 2.66%: ENTEROBACTERIACEAE with 19 occurences
+Test - Rank 4 - 2.38%: RHODOBACTERACEAE with 17 occurences
+Test - Rank 5 - 2.24%: ACIDOBACTERIACEAE with 16 occurences
+
+---------------------------------------- MAIN CLASSES IN THE PREDICTED CLASSES -----------------------------------------
+Predictions - Rank 1 - 27.91%: RHODOSPIRILLACEAE with 199 occurences
+Predictions - Rank 2 - 9.40%: SPIROCHAETACEAE with 67 occurences
+Predictions - Rank 3 - 6.45%: ECTOTHIORHODOSPIRACEAE with 46 occurences
+Predictions - Rank 4 - 2.66%: ACIDIMICROBIACEAE with 19 occurences
+Predictions - Rank 5 - 2.52%: ACIDOBACTERIACEAE with 18 occurences

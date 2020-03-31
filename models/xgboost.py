@@ -34,7 +34,7 @@ def xgboost_k_grid_search_cv(k=4, param_grid=None, sequence_origin='DairyDB', pr
 
     XGB = XGBClassifier()
 
-    grid_search = GridSearchCV(estimator=XGB, param_grid=param_grid, cv=3, n_jobs=2, verbose=2)
+    grid_search = GridSearchCV(estimator=XGB, param_grid=param_grid, cv=3, n_jobs=8, verbose=2)
     grid_search.fit(X_train, y_train)
     XGB_opt = grid_search.best_estimator_
     y_pred = XGB_opt.fit(X_train, y_train).predict(X_test)

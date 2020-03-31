@@ -1,0 +1,52 @@
+########################################################################################################################
+------------------------------------------------------------------------------------------------------------------------
+------------------------------------ PARAMETER INFORMATION FOR NAIVE BAYES - NB(3) -------------------------------------
+------------------------------------------------------------------------------------------------------------------------
+
+
+----------------------------------------------------- DATA ORIGINS -----------------------------------------------------
+Sequence origin: DairyDB
+Primers origin: Chaudhary
+
+------------------------------------ CHOSEN HYPERVARIABLE REGION AND TAXONOMY RANK -------------------------------------
+HyperVariable Region: V8
+Taxonomy Rank: 6
+
+---------------------------------------------------- PREPROCESSING -----------------------------------------------------
+Preprocessing description: Computing frequency of 3-mer (ATCG) in every sequence
+
+--------------------------------------------------- MODEL PARAMETERS ---------------------------------------------------
+Parameter dict: {'priors': None, 'var_smoothing': 1e-09}
+Size of test set: 722
+Part of test size compared to total: 0.2
+
+------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------- RESULTS --------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------
+
+Number of seen classes in train: 1563
+Number of predicted classes in pred: 110
+Number of classes waited in test: 520
+Number of wrong prediction: 578 over 722
+Model Accuracy: 19.94%
+
+---------------------------------------------- MAIN CLASSES IN TRAIN SET -----------------------------------------------
+Train - Rank 1 - 1.37%: ACIDIPILA_ROSE with 39 occurences
+Train - Rank 2 - 0.98%: ECTOTHIORHODOSPIRACEAE_SPECIE with 28 occurences
+Train - Rank 3 - 0.98%: GEOTHRIX_FERMENTAN with 28 occurences
+Train - Rank 4 - 0.98%: GEMMATIMONAS_AURANTIAC with 28 occurences
+Train - Rank 5 - 0.95%: RHODOSPIRILLACEAE_SPECIE with 27 occurences
+
+----------------------------------------------- MAIN CLASSES IN TEST SET -----------------------------------------------
+Test - Rank 1 - 1.52%: GEMMATIMONADETES_SPECIE with 11 occurences
+Test - Rank 2 - 1.11%: ACIDIPILA_ROSE with 8 occurences
+Test - Rank 3 - 1.11%: GEMMATIMONAS_AURANTIAC with 8 occurences
+Test - Rank 4 - 0.97%: ACIDITERRIMONAS_FERRIREDUCEN with 7 occurences
+Test - Rank 5 - 0.83%: ECTOTHIORHODOSPIRACEAE_SPECIE with 6 occurences
+
+---------------------------------------- MAIN CLASSES IN THE PREDICTED CLASSES -----------------------------------------
+Predictions - Rank 1 - 18.56%: DELTAPROTEOBACTERIA_SPECIE with 134 occurences
+Predictions - Rank 2 - 9.14%: ACIDITERRIMONAS_FERRIREDUCEN with 66 occurences
+Predictions - Rank 3 - 8.73%: RHODOSPIRILLACEAE_SPECIE with 63 occurences
+Predictions - Rank 4 - 6.79%: GAMMAPROTEOBACTERIA_SPECIE with 49 occurences
+Predictions - Rank 5 - 5.96%: ECTOTHIORHODOSPIRACEAE_SPECIE with 43 occurences

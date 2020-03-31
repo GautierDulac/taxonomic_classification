@@ -1,0 +1,52 @@
+########################################################################################################################
+------------------------------------------------------------------------------------------------------------------------
+------------------------------------ PARAMETER INFORMATION FOR NAIVE BAYES - NB(2) -------------------------------------
+------------------------------------------------------------------------------------------------------------------------
+
+
+----------------------------------------------------- DATA ORIGINS -----------------------------------------------------
+Sequence origin: DairyDB
+Primers origin: Chaudhary
+
+------------------------------------ CHOSEN HYPERVARIABLE REGION AND TAXONOMY RANK -------------------------------------
+HyperVariable Region: V8
+Taxonomy Rank: 5
+
+---------------------------------------------------- PREPROCESSING -----------------------------------------------------
+Preprocessing description: Computing frequency of 2-mer (ATCG) in every sequence
+
+--------------------------------------------------- MODEL PARAMETERS ---------------------------------------------------
+Parameter dict: {'priors': None, 'var_smoothing': 1e-09}
+Size of test set: 697
+Part of test size compared to total: 0.2
+
+------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------- RESULTS --------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------
+
+Number of seen classes in train: 896
+Number of predicted classes in pred: 190
+Number of classes waited in test: 394
+Number of wrong prediction: 485 over 697
+Model Accuracy: 30.42%
+
+---------------------------------------------- MAIN CLASSES IN TRAIN SET -----------------------------------------------
+Train - Rank 1 - 1.32%: TREPONEMA with 38 occurences
+Train - Rank 2 - 1.22%: PSEUDOMONAS with 35 occurences
+Train - Rank 3 - 1.22%: ACIDIPILA with 35 occurences
+Train - Rank 4 - 1.11%: ECTOTHIORHODOSPIRACEAE_GENUS with 32 occurences
+Train - Rank 5 - 1.08%: SPHINGOBACTERIUM with 31 occurences
+
+----------------------------------------------- MAIN CLASSES IN TEST SET -----------------------------------------------
+Test - Rank 1 - 1.72%: DESULFOVIBRIO with 12 occurences
+Test - Rank 2 - 1.72%: ACIDIPILA with 12 occurences
+Test - Rank 3 - 1.58%: TREPONEMA with 11 occurences
+Test - Rank 4 - 1.29%: LACTOBACILLUS with 9 occurences
+Test - Rank 5 - 1.29%: ACIDITERRIMONAS with 9 occurences
+
+---------------------------------------- MAIN CLASSES IN THE PREDICTED CLASSES -----------------------------------------
+Predictions - Rank 1 - 3.44%: ACIDITERRIMONAS with 24 occurences
+Predictions - Rank 2 - 2.58%: GEMMATIMONAS with 18 occurences
+Predictions - Rank 3 - 2.58%: ECTOTHIORHODOSPIRACEAE_GENUS with 18 occurences
+Predictions - Rank 4 - 2.58%: GEOTHRIX with 18 occurences
+Predictions - Rank 5 - 2.44%: ECTOTHIORHODOSPIRA with 17 occurences

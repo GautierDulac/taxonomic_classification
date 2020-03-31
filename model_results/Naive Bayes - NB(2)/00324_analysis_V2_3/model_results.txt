@@ -1,0 +1,52 @@
+########################################################################################################################
+------------------------------------------------------------------------------------------------------------------------
+------------------------------------ PARAMETER INFORMATION FOR NAIVE BAYES - NB(2) -------------------------------------
+------------------------------------------------------------------------------------------------------------------------
+
+
+----------------------------------------------------- DATA ORIGINS -----------------------------------------------------
+Sequence origin: DairyDB
+Primers origin: Chaudhary
+
+------------------------------------ CHOSEN HYPERVARIABLE REGION AND TAXONOMY RANK -------------------------------------
+HyperVariable Region: V2
+Taxonomy Rank: 3
+
+---------------------------------------------------- PREPROCESSING -----------------------------------------------------
+Preprocessing description: Computing frequency of 2-mer (ATCG) in every sequence
+
+--------------------------------------------------- MODEL PARAMETERS ---------------------------------------------------
+Parameter dict: {'priors': None, 'var_smoothing': 1e-09}
+Size of test set: 1190
+Part of test size compared to total: 0.2
+
+------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------- RESULTS --------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------
+
+Number of seen classes in train: 151
+Number of predicted classes in pred: 86
+Number of classes waited in test: 103
+Number of wrong prediction: 445 over 1190
+Model Accuracy: 62.61%
+
+---------------------------------------------- MAIN CLASSES IN TRAIN SET -----------------------------------------------
+Train - Rank 1 - 37.87%: CLOSTRIDIALES with 1847 occurences
+Train - Rank 2 - 6.60%: BACILLALES with 322 occurences
+Train - Rank 3 - 3.16%: LACTOBACILLALES with 154 occurences
+Train - Rank 4 - 2.19%: BURKHOLDERIALES with 107 occurences
+Train - Rank 5 - 1.91%: MICROCOCCALES with 93 occurences
+
+----------------------------------------------- MAIN CLASSES IN TEST SET -----------------------------------------------
+Test - Rank 1 - 38.07%: CLOSTRIDIALES with 453 occurences
+Test - Rank 2 - 6.81%: BACILLALES with 81 occurences
+Test - Rank 3 - 3.36%: LACTOBACILLALES with 40 occurences
+Test - Rank 4 - 2.52%: CHROMATIALES with 30 occurences
+Test - Rank 5 - 2.27%: ACTINOMYCETALES with 27 occurences
+
+---------------------------------------- MAIN CLASSES IN THE PREDICTED CLASSES -----------------------------------------
+Predictions - Rank 1 - 35.55%: CLOSTRIDIALES with 423 occurences
+Predictions - Rank 2 - 6.97%: BACILLALES with 83 occurences
+Predictions - Rank 3 - 3.28%: LACTOBACILLALES with 39 occurences
+Predictions - Rank 4 - 2.35%: DESULFOBACTERALES with 28 occurences
+Predictions - Rank 5 - 2.18%: ACTINOMYCETALES with 26 occurences

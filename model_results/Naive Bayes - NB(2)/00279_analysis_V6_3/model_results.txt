@@ -1,0 +1,51 @@
+########################################################################################################################
+------------------------------------------------------------------------------------------------------------------------
+------------------------------------ PARAMETER INFORMATION FOR NAIVE BAYES - NB(2) -------------------------------------
+------------------------------------------------------------------------------------------------------------------------
+
+
+----------------------------------------------------- DATA ORIGINS -----------------------------------------------------
+Sequence origin: DairyDB
+Primers origin: Chaudhary
+
+------------------------------------ CHOSEN HYPERVARIABLE REGION AND TAXONOMY RANK -------------------------------------
+HyperVariable Region: V6
+Taxonomy Rank: 3
+
+---------------------------------------------------- PREPROCESSING -----------------------------------------------------
+Preprocessing description: Computing frequency of 2-mer (ATCG) in every sequence
+
+--------------------------------------------------- MODEL PARAMETERS ---------------------------------------------------
+Parameter dict: {'priors': None, 'var_smoothing': 1e-09}
+Size of test set: 29
+Part of test size compared to total: 0.2
+
+------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------- RESULTS --------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------
+
+Number of seen classes in train: 9
+Number of predicted classes in pred: 4
+Number of classes waited in test: 6
+Number of wrong prediction: 13 over 29
+Model Accuracy: 55.17%
+
+---------------------------------------------- MAIN CLASSES IN TRAIN SET -----------------------------------------------
+Train - Rank 1 - 52.94%: ENTEROBACTERIALES with 63 occurences
+Train - Rank 2 - 14.29%: PASTEURELLALES with 17 occurences
+Train - Rank 3 - 11.76%: VIBRIONALES with 14 occurences
+Train - Rank 4 - 11.76%: OCEANOSPIRILLALES with 14 occurences
+Train - Rank 5 - 5.88%: ALTEROMONADALES with 7 occurences
+
+----------------------------------------------- MAIN CLASSES IN TEST SET -----------------------------------------------
+Test - Rank 1 - 62.07%: ENTEROBACTERIALES with 18 occurences
+Test - Rank 2 - 13.79%: OCEANOSPIRILLALES with 4 occurences
+Test - Rank 3 - 10.34%: PASTEURELLALES with 3 occurences
+Test - Rank 4 - 6.90%: ALTEROMONADALES with 2 occurences
+Test - Rank 5 - 3.45%: VIBRIONALES with 1 occurences
+
+---------------------------------------- MAIN CLASSES IN THE PREDICTED CLASSES -----------------------------------------
+Predictions - Rank 1 - 44.83%: ENTEROBACTERIALES with 13 occurences
+Predictions - Rank 2 - 20.69%: ALTEROMONADALES with 6 occurences
+Predictions - Rank 3 - 17.24%: OCEANOSPIRILLALES with 5 occurences
+Predictions - Rank 4 - 17.24%: PASTEURELLALES with 5 occurences
