@@ -121,7 +121,7 @@ def random_forest_k_default(k=4, sequence_origin='DairyDB', primers_origin='Dair
                                                             k=k,
                                                             feature_importances=RF.feature_importances_)
 
-    return test_size, prop_main_class, accuracy
+    return RF, test_size, prop_main_class, accuracy
 
 
 # Function
